@@ -1,0 +1,368 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --font-size: 16px;
+  --background: #1E1E24;
+  --foreground: #F0F2F5;
+  --card: #23232A;
+  --card-foreground: #F0F2F5;
+  --popover: #23232A;
+  --popover-foreground: #F0F2F5;
+  --primary: #7A9AEC;
+  --primary-foreground: #1E1E24;
+  --secondary: #2A2A33;
+  --secondary-foreground: #9DA2AB;
+  --muted: #2A2A33;
+  --muted-foreground: #9DA2AB;
+  --accent: #E8B4CB;
+  --accent-foreground: #1E1E24;
+  --destructive: #d4183d;
+  --destructive-foreground: #F0F2F5;
+  --border: #F0F2F514;
+  --input: #F0F2F50A;
+  --input-background: #F0F2F50A;
+  --switch-background: #3a3a44;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring: #7A9AEC;
+  --chart-1: #7A9AEC;
+  --chart-2: #8DA48E;
+  --chart-3: #E8B4CB;
+  --chart-4: #9DA2AB;
+  --chart-5: #F0F2F5;
+  --radius: 0.5rem;
+  --sidebar: #23232A;
+  --sidebar-foreground: #F0F2F5;
+  --sidebar-primary: #7A9AEC;
+  --sidebar-primary-foreground: #1E1E24;
+  --sidebar-accent: #2A2A33;
+  --sidebar-accent-foreground: #9DA2AB;
+  --sidebar-border: #F0F2F514;
+  --sidebar-ring: #7A9AEC;
+}
+
+.dark {
+  --background: #1E1E24;
+  --foreground: #F0F2F5;
+  --card: #23232A;
+  --card-foreground: #F0F2F5;
+  --popover: #23232A;
+  --popover-foreground: #F0F2F5;
+  --primary: #7A9AEC;
+  --primary-foreground: #1E1E24;
+  --secondary: #2A2A33;
+  --secondary-foreground: #9DA2AB;
+  --muted: #2A2A33;
+  --muted-foreground: #9DA2AB;
+  --accent: #E8B4CB;
+  --accent-foreground: #1E1E24;
+  --destructive: #d4183d;
+  --destructive-foreground: #F0F2F5;
+  --border: #F0F2F514;
+  --input: #F0F2F50A;
+  --ring: #7A9AEC;
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --chart-1: #7A9AEC;
+  --chart-2: #8DA48E;
+  --chart-3: #E8B4CB;
+  --chart-4: #9DA2AB;
+  --chart-5: #F0F2F5;
+  --sidebar: #23232A;
+  --sidebar-foreground: #F0F2F5;
+  --sidebar-primary: #7A9AEC;
+  --sidebar-primary-foreground: #1E1E24;
+  --sidebar-accent: #2A2A33;
+  --sidebar-accent-foreground: #9DA2AB;
+  --sidebar-border: #F0F2F514;
+  --sidebar-ring: #7A9AEC;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --font-sans: 'DM Sans', 'Inter', 'Roboto', system-ui, -apple-system, sans-serif;
+  --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-roboto: 'Roboto', system-ui, -apple-system, sans-serif;
+  --font-dm: 'DM Sans', system-ui, -apple-system, sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    @apply bg-background text-foreground;
+  }
+
+  /**
+  * Default typography styles for HTML elements (h1-h4, p, label, button, input).
+  * These are in @layer base, so Tailwind utility classes (like text-sm, text-lg) automatically override them.
+  */
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}
+
+/* ==========================================================================
+   Cyber-Light Theme Comprehensive Overrides
+   ========================================================================== */
+.cyber-light {
+  background-color: #F8FAFC !important;
+  color: #0F172A !important;
+}
+
+/* Headings & Main Text in Cyber-Light */
+.cyber-light h1,
+.cyber-light h2,
+.cyber-light h3,
+.cyber-light h4,
+.cyber-light .text-white {
+  color: #0F172A !important;
+}
+
+.cyber-light p,
+.cyber-light .text-gray-200,
+.cyber-light .text-gray-300 {
+  color: #334155 !important;
+}
+
+.cyber-light .text-gray-400,
+.cyber-light .text-gray-500 {
+  color: #475569 !important;
+}
+
+.cyber-light .text-gray-600 {
+  color: #64748B !important;
+}
+
+/* Accents with High-Contrast Light Mode Alternatives */
+.cyber-light .text-\[\#00F2FE\] {
+  color: #0284C7 !important; /* Deep Sky Blue for high contrast on white */
+}
+
+.cyber-light .text-\[\#7F00FF\] {
+  color: #6D28D9 !important; /* Rich Royal Violet */
+}
+
+.cyber-light .text-\[\#C084FC\] {
+  color: #7E22CE !important; /* Deep Purple */
+}
+
+/* Card & Surface Containers */
+.cyber-light .bg-white\/\[0\.015\],
+.cyber-light .bg-white\/\[0\.02\],
+.cyber-light .bg-white\/\[0\.025\],
+.cyber-light .bg-white\/\[0\.03\],
+.cyber-light .bg-white\/\[0\.04\],
+.cyber-light .bg-white\/\[0\.05\],
+.cyber-light .bg-white\/5,
+.cyber-light .bg-white\/10 {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 4px 15px -1px rgba(15, 23, 42, 0.06);
+}
+
+.cyber-light .hover\:border-\[\#00F2FE\]\/50:hover {
+  border-color: #0284C7 !important;
+}
+
+.cyber-light .glow-border {
+  background-color: #FFFFFF !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.05) !important;
+}
+
+.cyber-light .glow-border:hover {
+  border-color: #0284C7 !important;
+  box-shadow: 0 12px 30px -5px rgba(2, 132, 199, 0.18) !important;
+}
+
+/* Badges, Chips & Highlights */
+.cyber-light .bg-\[\#00F2FE\]\/5,
+.cyber-light .bg-\[\#00F2FE\]\/10,
+.cyber-light .bg-\[\#00F2FE\]\/15,
+.cyber-light .bg-\[\#00F2FE\]\/20,
+.cyber-light .bg-\[\#00F2FE\]\/25 {
+  background-color: rgba(2, 132, 199, 0.08) !important;
+  border-color: rgba(2, 132, 199, 0.3) !important;
+  color: #0369A1 !important;
+}
+
+.cyber-light .bg-\[\#7F00FF\]\/10,
+.cyber-light .bg-\[\#7F00FF\]\/15,
+.cyber-light .bg-\[\#7F00FF\]\/20,
+.cyber-light .bg-\[\#7F00FF\]\/30 {
+  background-color: rgba(109, 40, 217, 0.08) !important;
+  border-color: rgba(109, 40, 217, 0.3) !important;
+  color: #6D28D9 !important;
+}
+
+/* Header & Floating Banner */
+.cyber-light header .text-transparent {
+  background-image: linear-gradient(to right, #0284C7, #6D28D9) !important;
+}
+
+.cyber-light header nav button.text-gray-400 {
+  color: #475569 !important;
+}
+
+.cyber-light header nav button.text-gray-400:hover {
+  color: #0F172A !important;
+}
+
+.cyber-light #fixed-section-heading button {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Form Controls & Inputs */
+.cyber-light input,
+.cyber-light textarea {
+  background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+.cyber-light input::placeholder,
+.cyber-light textarea::placeholder {
+  color: #64748B !important;
+}
+
+.cyber-light input:focus,
+.cyber-light textarea:focus {
+  border-color: #0284C7 !important;
+  box-shadow: 0 0 0 3px rgba(2, 132, 199, 0.15) !important;
+}
+
+.cyber-light label {
+  color: #334155 !important;
+}
+
+/* Scroll Progress Dot Navigation */
+.cyber-light aside#section-scroll-progress .bg-gray-600 {
+  background-color: #94A3B8 !important;
+}
+
+.cyber-light aside#section-scroll-progress .text-gray-500 {
+  color: #64748B !important;
+}
+
+/* Modal Windows in Cyber-Light */
+.cyber-light .bg-\[\#090C15\] {
+  background-color: #FFFFFF !important;
+  border-color: #CBD5E1 !important;
+  color: #0F172A !important;
+}
+
+.cyber-light .bg-\[\#05070D\] {
+  background-color: #F1F5F9 !important;
+}
+
+.cyber-light .border-white\/10,
+.cyber-light .border-white\/5 {
+  border-color: #E2E8F0 !important;
+}
+
+.cyber-light .bg-white\/\[0\.025\] {
+  background-color: #F8FAFC !important;
+}
+
+/* Dock & Equalizer */
+.cyber-light footer {
+  background: linear-gradient(to top, #F8FAFC, rgba(248, 250, 252, 0.85), transparent) !important;
+}
+
+.cyber-light footer .bg-\[\#06080F\]\/80 {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #CBD5E1 !important;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08) !important;
+}
+
+.cyber-light footer .eq-bar {
+  background-color: #0284C7 !important;
+}
