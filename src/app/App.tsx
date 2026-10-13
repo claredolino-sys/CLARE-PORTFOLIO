@@ -69,7 +69,7 @@ const PROJECTS: ProjectItem[] = [
     id: 1, 
     title: "PIA R8 Finance Monitoring System", 
     org: "Philippine Information Agency – Region 8",
-    role: "Lead BA, Project Manager & Sole Full-Stack Developer",
+    role: "Lead Systems Analyst, Project Manager & Sole Full-Stack Developer",
     type: "Production Platform", 
     year: "2026", 
     link: "https://finance-monitoring-system-demo.vercel.app/", 
@@ -1601,7 +1601,7 @@ function ProjectDetailModal({ project, onClose }: { project: ProjectItem; onClos
               <ComplexityMeter level={project.complexity.level} label={project.complexity.label} />
             </div>
             <h2 className="text-base sm:text-xl md:text-2xl font-bold text-white tracking-tight leading-tight break-words">{project.title}</h2>
-            <div className="text-[11px] sm:text-xs font-mono text-[#C084FC] break-words">{project.role} · {project.org}</div>
+            <div className="text-[11px] sm:text-xs font-mono text-[#C084FC] break-words leading-relaxed">{project.role} · {project.org}</div>
           </div>
 
           <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/5">

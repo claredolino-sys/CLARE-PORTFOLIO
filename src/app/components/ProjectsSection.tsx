@@ -45,7 +45,7 @@ export const PROJECTS: ProjectItem[] = [
     id: 1,
     title: "PIA R8 Finance Monitoring System",
     org: "Philippine Information Agency – Region 8",
-    role: "Lead BA, Project Manager & Sole Full-Stack Developer",
+    role: "Lead Systems Analyst, Project Manager & Sole Full-Stack Developer",
     type: "Production Platform",
     year: "2026",
     link: "https://finance-monitoring-system-demo.vercel.app/",

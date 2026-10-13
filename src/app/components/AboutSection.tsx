@@ -56,7 +56,7 @@ export function AboutSection() {
             <div className="flex items-start gap-2.5">
               <Briefcase className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
               <div>
-                <strong className="text-white block">Lead BA & Developer (Internship)</strong>
+                <strong className="text-white block">Lead Systems Analyst & Developer (Internship)</strong>
                 <span className="text-slate-300">PIA Region 8 (Jan 2026 – Apr 2026)</span>
                 <span className="text-slate-400 block text-[11px]">3 production platforms delivered</span>
               </div>
