@@ -616,28 +616,28 @@ function SkillItemRow({
         ? "bg-[#00F2FE]/10 border-[#00F2FE] shadow-[0_0_15px_rgba(0,242,254,0.3)]" 
         : "bg-white/[0.02] border-white/5 hover:border-[#00F2FE]/40"
     }`}>
-      <div className="flex items-start justify-between gap-2 mb-1.5 min-w-0">
+      <div className="flex flex-wrap items-start justify-between gap-x-2 gap-y-1.5 mb-1.5 min-w-0">
         <div 
           onClick={handleCopySkill}
-          className="flex items-center gap-1.5 min-w-0 cursor-pointer group/copy hover:text-[#00F2FE]"
+          className="flex items-start gap-1.5 min-w-0 cursor-pointer group/copy hover:text-[#00F2FE] flex-1 basis-36"
           title="Click to copy skill name to clipboard"
         >
           <SkillIcon name={item.name} className="w-4 h-4 shrink-0 text-[#00F2FE] group-hover/skill:scale-110 transition-transform mt-0.5" />
           <span className="text-xs font-semibold text-white group-hover/skill:text-[#00F2FE] transition-colors leading-snug break-words">
             {item.name}
           </span>
-          <span className="opacity-0 group-hover/skill:opacity-100 transition-opacity p-0.5 text-gray-400 hover:text-[#00F2FE] shrink-0">
+          <span className="opacity-0 group-hover/skill:opacity-100 transition-opacity p-0.5 text-gray-400 hover:text-[#00F2FE] shrink-0 mt-0.5">
             {copied ? <Check className="w-3 h-3 text-[#00F2FE]" /> : <Copy className="w-3 h-3" />}
           </span>
         </div>
 
-        <div className="flex items-center gap-1 shrink-0">
+        <div className="flex items-center gap-1 shrink-0 ml-auto">
           {copied ? (
             <span className="px-2 py-0.5 rounded bg-[#00F2FE]/20 border border-[#00F2FE]/50 text-[9px] font-mono text-[#00F2FE] font-bold uppercase animate-pulse">
               ✓ Copied!
             </span>
           ) : (
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] font-mono text-gray-300 uppercase shrink-0 whitespace-nowrap">
+            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-[9px] font-mono text-gray-300 uppercase shrink-0 whitespace-nowrap leading-tight tracking-tight">
               {item.proofBadge}
             </span>
           )}
@@ -2095,33 +2095,39 @@ export default function App() {
               className="absolute inset-0 w-full h-full pt-24 sm:pt-28 pb-28 sm:pb-36 px-3 sm:px-6 md:px-8 overflow-y-auto no-scrollbar flex flex-col pointer-events-auto"
             >
           <TiltWrapper className="my-auto" maxTilt={0.8}>
-            <div className="text-center max-w-4xl mx-auto space-y-5 sm:space-y-6">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#7F00FF]/15 border border-[#7F00FF]/30 text-[#00F2FE] font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.15em] max-w-full truncate">
-                <Sparkles className="w-3 h-3 text-[#00F2FE] shrink-0" />
-                <span className="truncate">Technical Product Builder · Systems Thinker · Software Developer</span>
+            <div className="text-center max-w-4xl mx-auto space-y-4 sm:space-y-6">
+              {/* Role badge */}
+              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#7F00FF]/15 border border-[#7F00FF]/30 text-[#00F2FE] font-mono text-[10px] sm:text-xs uppercase tracking-[0.12em] max-w-full">
+                <Sparkles className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
+                <span className="whitespace-normal break-words text-center">Technical Product Builder · Systems Thinker · Software Developer</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight break-words">
+              {/* Main Headline */}
+              <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.18] sm:leading-[1.16] tracking-tight break-words px-2">
                 I turn complex problems into<br className="hidden sm:inline" />{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F2FE] to-[#7F00FF]">practical digital solutions.</span>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] inline-block">
+                  practical digital solutions.
+                </span>
               </h1>
 
-              <div className="flex flex-wrap items-center justify-center gap-2 max-w-3xl mx-auto">
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-gray-200 font-mono text-[11px] sm:text-xs">
+              {/* Honor & Relocation Badges */}
+              <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 max-w-3xl mx-auto px-1">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-gray-200 font-mono text-[11px] sm:text-xs">
                   <GraduationCap className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
                   <span>Magna Cum Laude (Rank 1, GWA 1.32)</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/[0.05] border border-white/10 text-gray-200 font-mono text-[11px] sm:text-xs">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-gray-200 font-mono text-[11px] sm:text-xs">
                   <Award className="w-3.5 h-3.5 text-[#7F00FF] shrink-0" />
                   <span>PIA Region 8 Proficiency Awardee</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[11px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(0,242,254,0.15)]">
+                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[11px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(0,242,254,0.15)]">
                   <Globe className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
                   <span>Open for Relocation &amp; International Opportunities</span>
                 </span>
               </div>
 
-              <p className="text-gray-300 text-xs sm:text-sm md:text-base font-light max-w-3xl mx-auto leading-relaxed">
+              {/* Bio Paragraph */}
+              <p className="text-gray-300 text-xs sm:text-sm md:text-base font-light max-w-3xl mx-auto leading-relaxed sm:leading-loose px-2 sm:px-4">
                 I'm Clare Angelie Dolino, a Magna Cum Laude Information Systems graduate who works across systems analysis, software development, product-oriented problem-solving, and AI-assisted development. I enjoy understanding how people and organizations work, identifying opportunities for improvement, and translating ideas into useful software solutions.
               </p>
 
