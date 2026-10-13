@@ -2593,7 +2593,6 @@ export default function App() {
           </button>
           <span className="flex items-center gap-1 text-[11px] text-gray-400">
             <span>Navigate</span>
-            <span className="text-[10px] text-gray-500 hidden lg:inline font-mono">[Arrow Keys]</span>
           </span>
           <button 
             onClick={handleNext} 
