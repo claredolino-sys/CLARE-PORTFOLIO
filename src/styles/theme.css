@@ -231,6 +231,42 @@
   color: #7E22CE !important; /* Deep Purple */
 }
 
+/* Code Blocks & Dark Surfaces in Cyber-Light (Prevents dark text on dark surfaces) */
+.cyber-light .code-block-container,
+.cyber-light .code-block-container pre,
+.cyber-light .code-block-container pre code,
+.cyber-light .code-block-container code {
+  color: #a5f3fc !important;
+}
+
+.cyber-light .code-block-container .text-white,
+.cyber-light .code-block-container .text-slate-300,
+.cyber-light .code-block-container span.font-semibold {
+  color: #F8FAFC !important;
+}
+
+.cyber-light .code-block-container button {
+  background-color: #334155 !important;
+  color: #F8FAFC !important;
+  border-color: #475569 !important;
+}
+
+.cyber-light .code-block-container button:hover {
+  background-color: #1E293B !important;
+  color: #FFFFFF !important;
+}
+
+.cyber-light .code-block-container button span {
+  color: #F8FAFC !important;
+}
+
+.cyber-light button.bg-slate-900,
+.cyber-light button.bg-slate-900 span,
+.cyber-light .bg-slate-900.text-white,
+.cyber-light .bg-slate-900 .text-white {
+  color: #FFFFFF !important;
+}
+
 /* Card & Surface Containers */
 .cyber-light .bg-white\/\[0\.015\],
 .cyber-light .bg-white\/\[0\.02\],

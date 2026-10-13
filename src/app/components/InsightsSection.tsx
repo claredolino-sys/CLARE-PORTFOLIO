@@ -2,7 +2,7 @@ import React, { useState, useEffect, useMemo, useRef } from "react";
 import { 
   BookOpen, Calendar, Clock, ArrowUpRight, Search, X, Check, Copy, 
   Sparkles, Layers, Cpu, ShieldCheck, Share2, Tag, Terminal,
-  Maximize2, Minimize2, Type, Columns, List, ChevronRight,
+  Type, Columns, List, ChevronRight,
   ArrowLeft, ArrowRight, ExternalLink, ArrowUp, Hash
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -433,16 +433,22 @@ function RenderMarkdownBody({
                     return (
                       <div 
                         key={pIdx} 
-                        className={`rounded-2xl overflow-hidden border my-5 shadow-2xl transition-all ${
+                        className={`code-block-container rounded-2xl overflow-hidden border my-5 shadow-xl transition-all ${
                           isLight 
-                            ? "border-slate-300 bg-slate-950 text-cyan-200" 
+                            ? "border-slate-300 bg-slate-900 text-cyan-200" 
                             : "border-white/15 bg-black/80 text-cyan-300"
                         }`}
                       >
-                        <div className="flex items-center justify-between px-4 sm:px-5 py-2.5 bg-white/[0.06] border-b border-white/10 text-gray-300 text-xs font-mono">
+                        <div className={`flex items-center justify-between px-4 sm:px-5 py-2.5 border-b text-xs font-mono ${
+                          isLight 
+                            ? "bg-slate-800 border-slate-700 text-slate-300" 
+                            : "bg-white/[0.06] border-white/10 text-gray-300"
+                        }`}>
                           <div className="flex items-center gap-2">
-                            <Terminal className="w-4 h-4 text-[#00F2FE]" />
-                            <span className="font-semibold text-white uppercase tracking-wider text-[11px]">
+                            <Terminal className={`w-4 h-4 ${isLight ? "text-cyan-400" : "text-[#00F2FE]"}`} />
+                            <span className={`font-semibold uppercase tracking-wider text-[11px] ${
+                              isLight ? "!text-white" : "text-white"
+                            }`}>
                               {lang || "architecture-spec"}
                             </span>
                           </div>
@@ -450,23 +456,29 @@ function RenderMarkdownBody({
                           <button
                             type="button"
                             onClick={() => handleCopyCode(codeBody, codeId)}
-                            className="flex items-center gap-1.5 px-3 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-gray-200 hover:text-white transition-colors cursor-pointer text-[11px]"
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg transition-colors cursor-pointer text-[11px] font-mono ${
+                              isLight
+                                ? "bg-slate-700/80 hover:bg-slate-700 !text-slate-100 hover:!text-white border border-slate-600 shadow-sm"
+                                : "bg-white/10 hover:bg-white/20 text-gray-200 hover:text-white"
+                            }`}
                           >
                             {isCopied ? (
                               <>
-                                <Check className="w-3.5 h-3.5 text-[#00F2FE]" />
-                                <span className="text-[#00F2FE] font-bold">Copied!</span>
+                                <Check className={`w-3.5 h-3.5 ${isLight ? "text-cyan-400" : "text-[#00F2FE]"}`} />
+                                <span className={`${isLight ? "!text-cyan-400 font-bold" : "text-[#00F2FE] font-bold"}`}>Copied!</span>
                               </>
                             ) : (
                               <>
-                                <Copy className="w-3.5 h-3.5" />
-                                <span>Copy Code</span>
+                                <Copy className={`w-3.5 h-3.5 ${isLight ? "text-slate-300" : ""}`} />
+                                <span className={isLight ? "!text-slate-100 font-medium" : ""}>Copy Code</span>
                               </>
                             )}
                           </button>
                         </div>
-                        <pre className="p-4 sm:p-6 overflow-x-auto font-mono text-xs sm:text-sm md:text-[15px] leading-relaxed no-scrollbar select-text">
-                          <code>{codeBody}</code>
+                        <pre className={`p-4 sm:p-6 overflow-x-auto font-mono text-xs sm:text-sm md:text-[15px] leading-relaxed no-scrollbar select-text ${
+                          isLight ? "bg-slate-900 !text-cyan-200" : "text-cyan-300"
+                        }`}>
+                          <code className={isLight ? "!text-cyan-200" : ""}>{codeBody}</code>
                         </pre>
                       </div>
                     );
@@ -574,7 +586,6 @@ function EssayReaderModal({
   onPlaySound?: () => void;
 }) {
   const [copied, setCopied] = useState(false);
-  const [isFullscreen, setIsFullscreen] = useState(false);
   const [fontSize, setFontSize] = useState<"normal" | "large" | "xl">("large");
   const [widthMode, setWidthMode] = useState<"wide" | "focus">("wide");
   const [showOutline, setShowOutline] = useState(true);
@@ -596,7 +607,7 @@ function EssayReaderModal({
     return () => { document.body.style.overflow = orig; };
   }, []);
 
-  // Keyboard controls: Esc to close, F to toggle fullscreen, Left/Right arrows for previous/next essay
+  // Keyboard controls: Esc to close, Left/Right arrows for previous/next essay
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       const isInput = document.activeElement?.tagName === "INPUT" || document.activeElement?.tagName === "TEXTAREA";
@@ -604,8 +615,6 @@ function EssayReaderModal({
 
       if (e.key === "Escape") {
         onClose();
-      } else if (e.key === "f" || e.key === "F") {
-        setIsFullscreen(prev => !prev);
       } else if (e.key === "ArrowLeft" && prevPost) {
         if (onPlaySound) onPlaySound();
         onSelectPost(prevPost);
@@ -680,9 +689,11 @@ function EssayReaderModal({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 0.22 }}
-      className={`fixed inset-0 z-[100] flex ${
-        isFullscreen ? "p-0 items-center justify-center" : "items-start pt-2 sm:pt-3 md:pt-4 px-2 sm:px-4 justify-center"
-      } bg-black/85 backdrop-blur-md`}
+      className={`fixed inset-0 z-[100] flex items-start pt-2 sm:pt-4 px-2 sm:px-4 justify-center transition-colors ${
+        isLight
+          ? "bg-slate-900/25 backdrop-blur-sm"
+          : "bg-black/60 backdrop-blur-sm"
+      }`}
       onClick={onClose}
     >
       <motion.div
@@ -692,14 +703,10 @@ function EssayReaderModal({
         exit={{ opacity: 0, scale: 0.96, y: 12 }}
         transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
         onClick={(e) => e.stopPropagation()}
-        className={`relative flex flex-col overflow-hidden text-left transition-all ${
-          isFullscreen
-            ? "w-screen h-screen max-w-none max-h-none rounded-none"
-            : "w-[98vw] max-w-6xl xl:max-w-7xl 2xl:max-w-[92vw] h-[97vh] max-h-[98vh] rounded-2xl md:rounded-3xl border shadow-[0_0_90px_rgba(0,0,0,0.9)]"
-        } ${
+        className={`relative flex flex-col overflow-hidden text-left transition-all w-[98vw] max-w-6xl xl:max-w-7xl 2xl:max-w-[92vw] h-[95vh] max-h-[96vh] rounded-2xl md:rounded-3xl border shadow-2xl ${
           isLight
             ? "bg-white border-slate-200 text-slate-800"
-            : "bg-[#090C15] border-white/10 text-white"
+            : "bg-[#0c101c] border-slate-800 text-white"
         }`}
       >
         {/* Top Glowing Reading Progress Bar */}
@@ -801,26 +808,7 @@ function EssayReaderModal({
 
 
 
-            {/* Fullscreen / Bigger View Immersion Toggle */}
-            <button
-              onClick={() => {
-                if (onPlaySound) onPlaySound();
-                setIsFullscreen(prev => !prev);
-              }}
-              className={`p-1.5 sm:px-3 sm:py-1.5 rounded-xl border text-xs font-mono flex items-center gap-1.5 transition-all cursor-pointer ${
-                isFullscreen
-                  ? isLight
-                    ? "bg-cyan-100 border-cyan-300 text-cyan-900 font-bold"
-                    : "bg-[#00F2FE] text-black font-bold shadow-[0_0_15px_rgba(0,242,254,0.4)]"
-                  : isLight
-                    ? "bg-white border-slate-200 text-slate-700 hover:text-slate-900"
-                    : "bg-white/5 border-white/10 text-gray-300 hover:text-white"
-              }`}
-              title={isFullscreen ? "Exit Fullscreen (F / Esc)" : "Bigger View / Fullscreen Immersion (F)"}
-            >
-              {isFullscreen ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5 text-[#00F2FE]" />}
-              <span className="hidden sm:inline font-semibold">{isFullscreen ? "Exit Fullscreen" : "Bigger View"}</span>
-            </button>
+
 
             {/* Share / Copy */}
             <button
@@ -914,19 +902,19 @@ function EssayReaderModal({
                   }`}>
                     <div className="flex items-center justify-between">
                       <span>Article ID:</span>
-                      <span className="text-gray-200 font-bold">#{post.id}</span>
+                      <span className={isLight ? "text-slate-900 font-bold" : "text-gray-200 font-bold"}>#{post.id}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Published:</span>
-                      <span className="text-gray-200 font-bold">{post.date}</span>
+                      <span className={isLight ? "text-slate-900 font-bold" : "text-gray-200 font-bold"}>{post.date}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Est. Read:</span>
-                      <span className="text-cyan-400 font-bold">{post.readTime}</span>
+                      <span className={isLight ? "text-cyan-700 font-bold" : "text-cyan-400 font-bold"}>{post.readTime}</span>
                     </div>
                     <div className="flex items-center justify-between">
                       <span>Author:</span>
-                      <span className="text-gray-200 font-bold">C. Dolino</span>
+                      <span className={isLight ? "text-slate-900 font-bold" : "text-gray-200 font-bold"}>C. Dolino</span>
                     </div>
                   </div>
 
@@ -1075,7 +1063,7 @@ function EssayReaderModal({
                     onClick={onClose}
                     className={`px-5 py-2.5 rounded-full text-xs font-mono uppercase font-bold tracking-wider transition-all cursor-pointer shrink-0 ${
                       isLight 
-                        ? "bg-slate-900 text-white hover:bg-slate-800" 
+                        ? "bg-slate-900 !text-white hover:bg-slate-800 shadow-md" 
                         : "bg-white/10 hover:bg-white/20 text-white border border-white/15"
                     }`}
                   >

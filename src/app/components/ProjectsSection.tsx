@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ArrowUpRight, Flame, ShieldCheck, CheckCircle2, Calendar, Milestone, ExternalLink, X, Zap, AlertCircle, Sparkles, Layers } from "lucide-react";
+import { ArrowUpRight, Flame, ShieldCheck, CheckCircle2, Calendar, Milestone, ExternalLink, X, Zap, AlertCircle, Sparkles, Layers, Scale, Bot } from "lucide-react";
 
 export interface ProjectMilestone {
   phase: string;
@@ -28,6 +28,8 @@ export interface ProjectItem {
     overview: string;
     challenge: string;
     solution: string;
+    tradeoffs: string;
+    aiNecessity: string;
   };
   stack: string[];
   detailedStack: ProjectStackCategory[];
@@ -51,7 +53,9 @@ export const PROJECTS: ProjectItem[] = [
     fullDesc: {
       overview: "An enterprise financial tracking and audit reconciliation platform built directly for the Philippine Information Agency (PIA) Regional Office 8. Designed to automate and govern multi-million peso public fund allocations, disbursement vouchers, and liquidation trails with zero accounting discrepancies.",
       challenge: "Finance officers relied on disconnected Excel workbooks and paper vouchers, resulting in multi-day reconciliation cycles, risk of duplicate voucher disbursements, and laborious manual classification between Personnel Services (PS) and Maintenance and Other Operating Expenses (MOOE) line items.",
-      solution: "Engineered a dual-layer resilient architecture pairing Supabase PostgreSQL with in-memory state fallbacks. Integrated a context-aware lexical tokenizer that automatically classifies line items, chunked batch ingestion for thousand-row balance sheets, and real-time budget burn rate visualizers."
+      solution: "Engineered a dual-layer resilient architecture pairing Supabase PostgreSQL with in-memory state fallbacks. Integrated a context-aware lexical tokenizer that automatically classifies line items, chunked batch ingestion for thousand-row balance sheets, and real-time budget burn rate visualizers.",
+      tradeoffs: "Considered pure cloud persistence vs. dual-layer in-memory caching. Cloud-only was discarded due to frequent provincial network dropouts that risked aborted voucher reviews. Also evaluated calling an LLM API for account categorization vs. an in-engine lexical tokenizer: selected the rule-based lexical tokenizer because Commission on Audit (COA) accounting rules are strictly deterministic and require <250ms zero-latency execution with 100% mathematical auditability and zero external API costs.",
+      aiNecessity: "Evaluated and deliberately bypassed generative AI: Government fiscal reconciliation requires 100% deterministic, non-hallucinatory compliance with legal charts of accounts. A probabilistic LLM was inappropriate for legal financial disbursements; instead, deterministic token scoring combined with compound database relational constraints delivered guaranteed audit accuracy."
     },
     stack: ["JavaScript", "Node.js", "Express", "PostgreSQL", "Supabase", "SheetJS", "Cloud Run"],
     detailedStack: [
@@ -120,7 +124,9 @@ export const PROJECTS: ProjectItem[] = [
     fullDesc: {
       overview: "An enterprise Daily Time Record (DTR) and personnel attendance monitoring system engineered with zero-trust security principles for regional government offices and field personnel.",
       challenge: "Paper attendance sheets and basic biometric clocks were susceptible to proxy check-ins, failed during regional power/internet dropouts, and created massive administrative overhead when verifying civil service travel orders and leaves.",
-      solution: "Architected a zero-trust multi-factor check-in pipeline combining subnet verification, GPS geofencing radius validation, and client-side facial liveness detection. Powered by an IndexedDB offline-first synchronization engine and Google Gemini multimodal function calling for autonomous document parsing."
+      solution: "Architected a zero-trust multi-factor check-in pipeline combining subnet verification, GPS geofencing radius validation, and client-side facial liveness detection. Powered by an IndexedDB offline-first synchronization engine and Google Gemini multimodal function calling for autonomous document parsing.",
+      tradeoffs: "Evaluated browser localStorage vs. IndexedDB for offline attendance caching: localStorage was rejected due to its 5MB hard quota and synchronous thread-blocking during camera frame caching. IndexedDB was chosen for asynchronous structured blob caching. For document analysis, evaluated standard OCR (Tesseract) vs. Gemini Multimodal API: Tesseract failed on variable-layout smartphone photos and non-standard government travel order templates, whereas Gemini function calling reliably extracted nested structured data.",
+      aiNecessity: "AI was strictly necessary because personnel submit heterogeneous travel orders, hospital clearances, and authority slips issued by dozens of external government agencies across varying formats (.pdf, .docx, scanned photos). Rigid regex and static OCR fail on arbitrary layouts; Google Gemini multimodal function calling was required to semantically parse dates, destination names, and authorized hours while returning strictly typed JSON schemas for automated leave credit balance deduction."
     },
     stack: ["TypeScript", "React", "Node.js", "Supabase", "IndexedDB", "Gemini API", "Tailwind"],
     detailedStack: [
@@ -189,7 +195,9 @@ export const PROJECTS: ProjectItem[] = [
     fullDesc: {
       overview: "An institutional-grade Centralized Document Management and Information System developed for Biliran Province State University (BiPSU). Built as a comprehensive university capstone and institutional research project to digitize, index, and secure decades of academic and administrative records.",
       challenge: "University records across 12 academic and administrative units suffered from slow manual filing, physical degradation risks, lack of document tracking across approval chains, and lack of auditable access controls.",
-      solution: "Led an agile team of 6 engineers to build a centralized repository with hierarchical Role-Based Access Control (RBAC), multi-stage digital endorsement pipelines, SHA-256 integrity verification, and full-text indexing."
+      solution: "Led an agile team of 6 engineers to build a centralized repository with hierarchical Role-Based Access Control (RBAC), multi-stage digital endorsement pipelines, SHA-256 integrity verification, and full-text indexing.",
+      tradeoffs: "Considered NoSQL document storage (MongoDB) vs. a normalized 3NF MySQL relational model: relational was chosen because multi-department approval chains demand strict foreign key integrity to eliminate orphaned endorsement records. Also evaluated commercial cloud drives (Google Drive/OneDrive API): rejected because they lack ISO/IEC 25010 granular auditability, role-segregated endorsement trees, and cryptographic SHA-256 tamper verification.",
+      aiNecessity: "Evaluated AI vector embeddings vs. deterministic hierarchical RBAC search: Vector similarity was deliberately ruled out to protect strictly confidential academic tenure and presidential clearance documents from cross-department leakage. Instead, deterministic role hierarchies and SHA-256 cryptographic fingerprinting were chosen to ensure 100% compliance with ISO/IEC 25010 data security and integrity standards."
     },
     stack: ["TypeScript", "React 18", "Tailwind", "Vite", "MySQL", "Cloud Run"],
     detailedStack: [
@@ -258,7 +266,9 @@ export const PROJECTS: ProjectItem[] = [
     fullDesc: {
       overview: "A digital supply chain and asset requisition portal designed to automate internal material requisitions, stock disbursements, and inventory audits in strict compliance with Philippine Commission on Audit (COA) Appendix 63 standards.",
       challenge: "Supply requisition processes relied on multi-copy paper slips prone to loss, unmonitored stock depletion, lack of real-time inventory ledger balances, and risk of data loss due to lack of automated database backups.",
-      solution: "Engineered an end-to-end requisition portal featuring dynamic stock balancing, role-segregated authorization workflows (Requester -> Recommending Approval -> Approving Authority -> Custodian), COA Appendix 63 Excel/PDF report generation, and automated 24-hour database disaster recovery."
+      solution: "Engineered an end-to-end requisition portal featuring dynamic stock balancing, role-segregated authorization workflows (Requester -> Recommending Approval -> Approving Authority -> Custodian), COA Appendix 63 Excel/PDF report generation, and automated 24-hour database disaster recovery.",
+      tradeoffs: "Evaluated client-side inventory deduction vs. PostgreSQL server triggers: selected atomic database triggers with Row-Level Security (RLS) to prevent race conditions during simultaneous requisitions. For backup resilience, considered third-party SaaS backup tools vs. native Supabase pg_cron Edge Functions: chose native pg_cron to ensure automated 24h disaster recovery with zero additional vendor costs and zero external credential exposure.",
+      aiNecessity: "Evaluated generative AI for stock predictions: Deliberately avoided using an LLM where deterministic arithmetic was mandatory. Government procurement compliance (COA Circular Appendix 63) legally mandates exact arithmetic balances and immutable audit trails; applying AI here would introduce non-deterministic risk into a legally regulated process."
     },
     stack: ["TypeScript", "React 18", "PostgreSQL", "Supabase", "Edge Functions", "SheetJS"],
     detailedStack: [
@@ -465,7 +475,7 @@ function CaseStudyModal({ project, onClose }: CaseStudyModalProps) {
               activeTab === "overview" ? "bg-cyan-500/20 text-cyan-300 font-semibold border border-cyan-500/30" : "text-slate-400 hover:text-white"
             }`}
           >
-            01. System Overview & Challenge
+            01. Problem, Tradeoffs & AI Rationale
           </button>
           <button
             onClick={() => setActiveTab("milestones")}
@@ -509,7 +519,7 @@ function CaseStudyModal({ project, onClose }: CaseStudyModalProps) {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
                   <div className="p-3.5 sm:p-5 rounded-xl bg-rose-500/5 border border-rose-500/20">
-                    <h4 className="text-xs font-mono uppercase tracking-wider text-rose-400 mb-2 font-semibold">The Operational Challenge</h4>
+                    <h4 className="text-xs font-mono uppercase tracking-wider text-rose-400 mb-2 font-semibold">1. Process: The Operational Problem</h4>
                     <p className="text-xs text-slate-300 leading-relaxed font-light">{project.fullDesc.challenge}</p>
                   </div>
 
@@ -518,11 +528,32 @@ function CaseStudyModal({ project, onClose }: CaseStudyModalProps) {
                     <p className="text-xs text-slate-300 leading-relaxed font-light">{project.fullDesc.solution}</p>
                   </div>
                 </div>
+
+                {/* Architectural Tradeoffs & Options Considered */}
+                <div className="p-3.5 sm:p-5 rounded-xl bg-amber-500/5 border border-amber-500/20 space-y-2">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-amber-400 font-semibold flex items-center gap-1.5">
+                    <Scale className="w-3.5 h-3.5" />
+                    <span>2. Architectural Tradeoffs &amp; Options Considered</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed font-light">{project.fullDesc.tradeoffs}</p>
+                </div>
+
+                {/* AI Engineering & Necessity */}
+                <div className="p-3.5 sm:p-5 rounded-xl bg-violet-500/5 border border-violet-500/20 space-y-2">
+                  <h4 className="text-xs font-mono uppercase tracking-wider text-violet-400 font-semibold flex items-center gap-1.5">
+                    <Bot className="w-3.5 h-3.5" />
+                    <span>4. AI Necessity &amp; Implementation Rationale</span>
+                  </h4>
+                  <p className="text-xs text-slate-300 leading-relaxed font-light">{project.fullDesc.aiNecessity}</p>
+                </div>
               </div>
 
-              {/* Deliverables */}
+              {/* Deliverables & Individual Contributions */}
               <div className="p-3.5 sm:p-5 rounded-xl bg-slate-950/40 border border-slate-800 space-y-3">
-                <h4 className="text-xs font-mono uppercase tracking-wider text-indigo-300 font-semibold">Key Deliverables & Individual Contributions</h4>
+                <h4 className="text-xs font-mono uppercase tracking-wider text-indigo-300 font-semibold flex items-center gap-1.5">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-indigo-400" />
+                  <span>3. Key Deliverables &amp; Specific Individual Contributions</span>
+                </h4>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                   {project.highlights.map((h, i) => (
                     <div key={i} className="flex items-start gap-2 text-slate-300 font-light leading-relaxed">
