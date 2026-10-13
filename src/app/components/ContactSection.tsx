@@ -194,7 +194,7 @@ export function ContactSection({
         </button>
 
         <a
-          href="https://linkedin.com/in/clare-angelie-taringting-dolino-4180823a3"
+          href="https://www.linkedin.com/in/clare-angelie-taringting-dolino-4180823a3"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-indigo-400/50 text-slate-300 hover:text-white transition-colors"
@@ -205,7 +205,7 @@ export function ContactSection({
         </a>
 
         <a
-          href="https://github.com"
+          href="https://github.com/claredolino-sys"
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-slate-900 border border-slate-800 hover:border-slate-600 text-slate-300 hover:text-white transition-colors"

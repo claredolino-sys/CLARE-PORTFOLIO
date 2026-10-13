@@ -831,17 +831,29 @@ function GitHubContributions({ className = "", style }: { className?: string; st
     >
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-5 pb-4 border-b border-white/5">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[#00F2FE] shadow-[0_0_12px_rgba(0,242,254,0.3)] shrink-0">
+          <a
+            href="https://github.com/claredolino-sys"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[#00F2FE] hover:bg-[#00F2FE]/15 hover:border-[#00F2FE]/40 transition-colors shadow-[0_0_12px_rgba(0,242,254,0.3)] shrink-0"
+            title="Open GitHub Profile (@claredolino-sys)"
+          >
             <Github className="w-5 h-5" />
-          </div>
+          </a>
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-sm sm:text-base md:text-lg font-bold text-white tracking-tight">
                 GitHub Contribution Activity
               </h3>
-              <span className="px-2 py-0.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[9px] uppercase tracking-wider">
-                Cadence
-              </span>
+              <a
+                href="https://github.com/claredolino-sys"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-2 py-0.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] hover:bg-[#00F2FE]/20 font-mono text-[9px] uppercase tracking-wider transition-colors"
+                title="View @claredolino-sys on GitHub"
+              >
+                @claredolino-sys
+              </a>
             </div>
             <p className="text-gray-400 text-xs font-light leading-relaxed mt-0.5">
               Continuous commit frequency & engineering velocity across repositories (2025–2026)
@@ -2523,10 +2535,24 @@ export default function App() {
                 </div>
 
                 <div className="flex items-center gap-3">
-                  <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:border-[#00F2FE]/50 text-gray-400 hover:text-white">
+                  <a 
+                    href="https://github.com/claredolino-sys" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:border-[#00F2FE]/50 text-gray-400 hover:text-white transition-colors"
+                    title="GitHub Profile (claredolino-sys)"
+                    aria-label="GitHub Profile"
+                  >
                     <Github className="w-4 h-4" />
                   </a>
-                  <a href="https://linkedin.com/in/clare-angelie-taringting-dolino-4180823a3" target="_blank" rel="noopener noreferrer" className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:border-[#7F00FF]/50 text-gray-400 hover:text-white">
+                  <a 
+                    href="https://www.linkedin.com/in/clare-angelie-taringting-dolino-4180823a3" 
+                    target="_blank" 
+                    rel="noopener noreferrer" 
+                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:border-[#7F00FF]/50 text-gray-400 hover:text-white transition-colors"
+                    title="LinkedIn Profile"
+                    aria-label="LinkedIn Profile"
+                  >
                     <Linkedin className="w-4 h-4" />
                   </a>
                 </div>
