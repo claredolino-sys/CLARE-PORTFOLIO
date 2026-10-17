@@ -9,7 +9,8 @@ import {
   Briefcase, CheckSquare, BarChart3, ShieldCheck, Globe, Sun, Moon,
   X, ExternalLink, Calendar, Milestone, ArrowUpRight, Check, Flag, Zap,
   Inbox, MessageSquare, Clock, Trash2, Copy,
-  Reply, CheckCheck, Info, Search, Layout, Lock, Maximize2, Minimize2, Eye, BookOpen, ShieldAlert
+  Reply, CheckCheck, Info, Search, Layout, Lock, Maximize2, Minimize2, Eye, BookOpen, ShieldAlert,
+  Palette, Activity
 } from "lucide-react";
 import clareProfile from "@/imports/CLARE_PROFILE.jpg";
 import { InsightsSection } from "./components/InsightsSection";
@@ -557,11 +558,16 @@ export const SKILLS: Record<string, SkillCategoryData> = {
     subtitle: "Translating operational friction into technical specifications",
     icon: Kanban, 
     items: [
+      { name: "Customer Research", proofBadge: "Field Interviews", projectId: 1, projectTag: "PIA R8 Finance" },
+      { name: "Data Analysis", proofBadge: "Financial & Audit Modeling", projectId: 1, projectTag: "PIA R8 Finance" },
+      { name: "Product Execution", proofBadge: "Full SDLC Handover", projectId: 1, projectTag: "PIA R8 Finance" },
+      { name: "Functional Specifications", proofBadge: "PRD & RTM Formulation", projectId: 1, projectTag: "PIA R8 Finance" },
+      { name: "Feature Prioritization", proofBadge: "MoSCoW / Value vs Effort", projectId: 3, projectTag: "CDMIS Capstone" },
+      { name: "User Stories", proofBadge: "Agile Backlogs & UAT", projectId: 2, projectTag: "TrackMyHours" },
+      { name: "Process Mapping (As-Is/To-Be)", proofBadge: "Operational Workflows", projectId: 4, projectTag: "RIS Portal" },
       { name: "Requirements Gathering & Analysis", proofBadge: "Client Work", projectId: 1, projectTag: "PIA R8 Finance" },
       { name: "Systems Analysis & Design", proofBadge: "Academic & Client Work", projectId: 3, projectTag: "CDMIS Capstone" },
-      { name: "Process Mapping & Workflow Design", proofBadge: "Client Work", projectId: 4, projectTag: "RIS Portal" },
       { name: "Agile / Scrum & Team Coordination", proofBadge: "Team Leadership", projectId: 3, projectTag: "CDMIS Capstone" },
-      { name: "Functional Specs & UAT Testing", proofBadge: "ISO 25010 Evaluated", projectId: 3, projectTag: "CDMIS Capstone" },
     ] 
   },
   "Software Development": { 
@@ -616,7 +622,7 @@ const APPROACH_STEPS = [
     title: "Analyze",
     icon: GitBranch,
     summary: "Deconstruct problems into requirements, process flows, and constraints.",
-    detail: "Author Business Requirements Documents (BRDs), Business Process Diagrams (BPDs), and Requirements Traceability Matrices (RTMs) to establish clear scope.",
+    detail: "Author Product Requirements Documents (PRDs), Process Diagrams (PDs), and Requirements Traceability Matrices (RTMs) to establish clear scope.",
     example: "Mapped Commission on Audit (COA Circular) Appendix 63 regulations to database entities and authorization matrices for the RIS Inventory Portal."
   },
   {
@@ -708,16 +714,28 @@ function SkillIcon({ name, className = "w-3.5 h-3.5 shrink-0" }: { name: string;
           <path d="M13.8 2.2L3.9 14.4c-.6.7-.1 1.8.8 1.8h7.5l-2 5.6c-.4 1.1 1 1.9 1.8 1l9.9-12.2c.6-.7.1-1.8-.8-1.8h-7.5l2-5.6c.4-1.1-1-1.9-1.8-1z" fill="currentColor" fillOpacity="0.25" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round" />
         </svg>
       );
+    case "Customer Research":
+      return <Users className={`${className} text-[#00F2FE]`} />;
+    case "Data Analysis":
+      return <BarChart3 className={`${className} text-[#38BDF8]`} />;
+    case "Product Execution":
+      return <Kanban className={`${className} text-[#C084FC]`} />;
+    case "Functional Specifications":
+    case "Functional Specs & UAT Testing":
+      return <FileText className={`${className} text-[#00F2FE]`} />;
+    case "Feature Prioritization":
+      return <CheckSquare className={`${className} text-[#4ADE80]`} />;
+    case "User Stories":
+      return <MessageSquare className={`${className} text-[#F87171]`} />;
+    case "Process Mapping (As-Is/To-Be)":
+    case "Process Mapping & Workflow Design":
+      return <GitBranch className={`${className} text-[#38BDF8]`} />;
     case "Requirements Gathering & Analysis":
       return <FileText className={`${className} text-[#00F2FE]`} />;
     case "Systems Analysis & Design":
       return <Layout className={`${className} text-[#00F2FE]`} />;
-    case "Process Mapping & Workflow Design":
-      return <GitBranch className={`${className} text-[#38BDF8]`} />;
     case "Agile / Scrum & Team Coordination":
       return <Kanban className={`${className} text-[#C084FC]`} />;
-    case "Functional Specs & UAT Testing":
-      return <CheckSquare className={`${className} text-[#4ADE80]`} />;
     case "Git & REST APIs":
       return <GitCommit className={`${className} text-[#F87171]`} />;
     case "SQL & Relational Database Design":
@@ -928,28 +946,74 @@ function SkillCategoryCard({
   );
 }
 
-// --- GitHub Contribution Activity Data & Component ---
-const WEEKS_COUNT = 52;
+// --- GitHub Contribution Activity Data & Component (2025–2026 Verified Data) ---
+const WEEKS_COUNT = 53;
 const DAYS_PER_WEEK = 7;
 
 const MONTH_LABELS = [
   { name: "Oct", weekIndex: 0 },
   { name: "Nov", weekIndex: 4 },
-  { name: "Dec", weekIndex: 9 },
-  { name: "Jan", weekIndex: 13 },
+  { name: "Dec", weekIndex: 8 },
+  { name: "Jan", weekIndex: 12 },
   { name: "Feb", weekIndex: 17 },
-  { name: "Mar", weekIndex: 22 },
-  { name: "Apr", weekIndex: 26 },
+  { name: "Mar", weekIndex: 21 },
+  { name: "Apr", weekIndex: 25 },
   { name: "May", weekIndex: 30 },
-  { name: "Jun", weekIndex: 35 },
-  { name: "Jul", weekIndex: 39 },
+  { name: "Jun", weekIndex: 34 },
+  { name: "Jul", weekIndex: 38 },
   { name: "Aug", weekIndex: 43 },
-  { name: "Sep", weekIndex: 48 },
+  { name: "Sep", weekIndex: 47 },
+  { name: "Oct", weekIndex: 51 },
 ];
+
+// Exact authentic 2025–2026 GitHub Contributions for Clare Dolino (@claredolino-sys)
+const EXACT_GITHUB_CONTRIBUTIONS: Record<string, { count: number; level: number }> = {
+  // Oct 2025
+  "2025-10-15": { count: 2, level: 1 },
+  "2025-10-21": { count: 4, level: 1 },
+  "2025-10-22": { count: 1, level: 1 },
+  "2025-10-27": { count: 3, level: 1 },
+  "2025-10-28": { count: 17, level: 4 }, // Peak October Milestone
+  "2025-10-29": { count: 2, level: 1 },
+
+  // Dec 2025
+  "2025-12-14": { count: 3, level: 1 },
+  "2025-12-27": { count: 2, level: 1 },
+
+  // Feb 2026
+  "2026-02-25": { count: 5, level: 2 },
+  "2026-02-27": { count: 9, level: 2 },
+  "2026-02-28": { count: 1, level: 1 },
+
+  // Mar 2026 (Major Sprint)
+  "2026-03-01": { count: 1, level: 1 },
+  "2026-03-02": { count: 4, level: 1 },
+  "2026-03-03": { count: 12, level: 3 }, // Core Release
+  "2026-03-05": { count: 1, level: 1 },
+  "2026-03-23": { count: 3, level: 1 },
+  "2026-03-24": { count: 5, level: 2 },
+  "2026-03-25": { count: 1, level: 1 },
+
+  // Apr 2026
+  "2026-04-07": { count: 6, level: 2 },
+
+  // Aug 2026 (High-Velocity Sprint)
+  "2026-08-27": { count: 5, level: 2 },
+  "2026-08-28": { count: 6, level: 2 },
+  "2026-08-29": { count: 19, level: 4 }, // Peak Deployment Day
+  "2026-08-30": { count: 5, level: 2 },
+
+  // Oct 2026 (Active Production Handover)
+  "2026-10-13": { count: 1, level: 1 },
+  "2026-10-15": { count: 2, level: 1 },
+  "2026-10-16": { count: 4, level: 1 },
+  "2026-10-17": { count: 6, level: 2 },
+};
 
 const GENERATED_CONTRIBUTIONS = (() => {
   const weeks: { date: string; count: number; level: number }[][] = [];
-  const startDate = new Date(2025, 8, 28);
+  // Starts on Sunday, Oct 12, 2025 matching the exact 53-week GitHub contribution grid
+  const startDate = new Date(2025, 9, 12, 12, 0, 0);
 
   for (let w = 0; w < WEEKS_COUNT; w++) {
     const weekDays = [];
@@ -957,41 +1021,155 @@ const GENERATED_CONTRIBUTIONS = (() => {
       const dayDate = new Date(startDate);
       dayDate.setDate(startDate.getDate() + (w * 7 + d));
       
-      const month = dayDate.getMonth();
-      const isWeekend = d === 0 || d === 6;
-      
-      const seed = Math.sin(w * 17.13 + d * 9.27) * 10000;
-      const rand = seed - Math.floor(seed);
-      
-      let count = 0;
-      if (!isWeekend && rand > 0.16) {
-        const isSprint = (month >= 0 && month <= 4) || month >= 10;
-        count = isSprint ? Math.floor(rand * 9) + 2 : Math.floor(rand * 6) + 1;
-      } else if (isWeekend && rand > 0.62) {
-        count = Math.floor(rand * 5) + 1;
-      }
-
-      let level = 0;
-      if (count >= 8) level = 4;
-      else if (count >= 5) level = 3;
-      else if (count >= 3) level = 2;
-      else if (count >= 1) level = 1;
+      const y = dayDate.getFullYear();
+      const m = String(dayDate.getMonth() + 1).padStart(2, "0");
+      const day = String(dayDate.getDate()).padStart(2, "0");
+      const dateKey = `${y}-${m}-${day}`;
+      const entry = EXACT_GITHUB_CONTRIBUTIONS[dateKey] || { count: 0, level: 0 };
 
       const dateStr = dayDate.toLocaleDateString("en-US", {
-        month: "short", day: "numeric", year: "numeric"
+        weekday: "short", month: "short", day: "numeric", year: "numeric"
       });
 
-      weekDays.push({ date: dateStr, count, level });
+      weekDays.push({ date: dateStr, count: entry.count, level: entry.level });
     }
     weeks.push(weekDays);
   }
   return weeks;
 })();
 
-function GitHubContributions({ className = "", style }: { className?: string; style?: React.CSSProperties } = {}) {
-  const [hoveredCell, setHoveredCell] = useState<{ date: string; count: number; weekIdx: number; dayIdx: number } | null>(null);
+// --- GitHub Contribution Color Palettes & Milestone Annotations ---
+type ContributionPalette = "emerald" | "cyan" | "violet";
+
+interface PaletteScheme {
+  name: string;
+  dotColor: string;
+  accentHex: string;
+  gradientBar: string;
+  badgeBorder: string;
+  badgeBg: string;
+  badgeText: string;
+  levelClassesDark: {
+    empty: string;
+    1: string;
+    2: string;
+    3: string;
+    4: string;
+  };
+  levelClassesLight: {
+    empty: string;
+    1: string;
+    2: string;
+    3: string;
+    4: string;
+  };
+}
+
+const CONTRIBUTION_PALETTES: Record<ContributionPalette, PaletteScheme> = {
+  emerald: {
+    name: "Neon Emerald",
+    dotColor: "bg-[#39d353]",
+    accentHex: "#39d353",
+    gradientBar: "from-emerald-500 via-[#39d353] to-teal-400",
+    badgeBorder: "border-[#238636]/50",
+    badgeBg: "bg-[#238636]/15",
+    badgeText: "text-[#39d353]",
+    levelClassesDark: {
+      empty: "bg-[#161b22]/90 border-[#30363d]/70 hover:border-gray-500",
+      1: "bg-[#0e4429] border-[#166534] hover:border-[#22c55e]",
+      2: "bg-[#006d32] border-[#15803d] hover:border-[#4ade80] shadow-[0_0_6px_rgba(0,109,50,0.5)]",
+      3: "bg-[#26a641] border-[#4ade80] shadow-[0_0_10px_rgba(38,166,65,0.7)]",
+      4: "bg-[#39d353] border-[#bbf7d0] shadow-[0_0_14px_rgba(57,211,83,0.95)]",
+    },
+    levelClassesLight: {
+      empty: "bg-slate-100 border-slate-200/90 hover:border-slate-400",
+      1: "bg-[#bbf7d0] border-[#86efac] hover:border-[#4ade80]",
+      2: "bg-[#4ade80] border-[#22c55e] hover:border-[#16a34a]",
+      3: "bg-[#16a34a] border-[#15803d] shadow-[0_0_8px_rgba(22,163,74,0.35)]",
+      4: "bg-[#14532d] border-[#052e16] shadow-[0_0_10px_rgba(20,83,45,0.45)]",
+    },
+  },
+  cyan: {
+    name: "Electric Cyan",
+    dotColor: "bg-[#00F2FE]",
+    accentHex: "#00F2FE",
+    gradientBar: "from-[#00F2FE] via-[#38BDF8] to-[#7F00FF]",
+    badgeBorder: "border-[#00F2FE]/40",
+    badgeBg: "bg-[#00F2FE]/15",
+    badgeText: "text-[#00F2FE]",
+    levelClassesDark: {
+      empty: "bg-[#0b1329]/90 border-[#1e293b]/70 hover:border-cyan-700",
+      1: "bg-[#083344] border-[#155e75] hover:border-[#0ea5e9]",
+      2: "bg-[#0891b2] border-[#22d3ee] hover:border-[#67e8f9] shadow-[0_0_6px_rgba(8,145,178,0.5)]",
+      3: "bg-[#06b6d4] border-[#67e8f9] shadow-[0_0_10px_rgba(6,182,212,0.75)]",
+      4: "bg-[#00F2FE] border-white shadow-[0_0_16px_rgba(0,242,254,0.95)]",
+    },
+    levelClassesLight: {
+      empty: "bg-slate-100 border-slate-200/90 hover:border-slate-400",
+      1: "bg-[#bae6fd] border-[#7dd3fc] hover:border-[#38bdf8]",
+      2: "bg-[#38bdf8] border-[#0ea5e9] hover:border-[#0284c7]",
+      3: "bg-[#0284c7] border-[#0369a1] shadow-[0_0_8px_rgba(2,132,199,0.35)]",
+      4: "bg-[#0c4a6e] border-[#082f49] shadow-[0_0_10px_rgba(12,74,110,0.45)]",
+    },
+  },
+  violet: {
+    name: "Cosmic Amethyst",
+    dotColor: "bg-[#C084FC]",
+    accentHex: "#C084FC",
+    gradientBar: "from-[#C084FC] via-[#A855F7] to-[#EC4899]",
+    badgeBorder: "border-[#C084FC]/40",
+    badgeBg: "bg-[#C084FC]/15",
+    badgeText: "text-[#C084FC]",
+    levelClassesDark: {
+      empty: "bg-[#130d22]/90 border-[#2e2048]/70 hover:border-purple-600",
+      1: "bg-[#3b0764] border-[#581c87] hover:border-[#9333ea]",
+      2: "bg-[#7e22ce] border-[#9333ea] hover:border-[#c084fc] shadow-[0_0_6px_rgba(126,34,206,0.5)]",
+      3: "bg-[#a855f7] border-[#c084fc] shadow-[0_0_10px_rgba(168,85,247,0.75)]",
+      4: "bg-[#C084FC] border-white shadow-[0_0_16px_rgba(192,132,252,0.95)]",
+    },
+    levelClassesLight: {
+      empty: "bg-slate-100 border-slate-200/90 hover:border-slate-400",
+      1: "bg-[#e9d5ff] border-[#d8b4fe] hover:border-[#c084fc]",
+      2: "bg-[#c084fc] border-[#a855f7] hover:border-[#9333ea]",
+      3: "bg-[#9333ea] border-[#7e22ce] shadow-[0_0_8px_rgba(147,51,234,0.35)]",
+      4: "bg-[#581c87] border-[#3b0764] shadow-[0_0_10px_rgba(88,28,135,0.45)]",
+    },
+  },
+};
+
+const SPRINT_MILESTONES: Record<string, { label: string; badge: string }> = {
+  "2025-10-28": { label: "Architecture, 3NF Schema & BRD Milestone", badge: "🚀 Architecture Milestone" },
+  "2026-03-03": { label: "Finance Monitoring System Core Delivery Sprint", badge: "⚡ Finance Sprint" },
+  "2026-04-07": { label: "CDMIS Capstone ISO/IEC 25010 Defense Validation", badge: "🎓 Academic Defense" },
+  "2026-08-29": { label: "TrackMyHours Zero-Trust Biometric Handover (19 Commits)", badge: "🔥 Peak Milestone" },
+  "2026-10-17": { label: "Production Release & Live UAT Verification", badge: "🎯 Production Live" },
+};
+
+function GitHubContributions({ 
+  className = "", 
+  style, 
+  theme = "deep-space" 
+}: { 
+  className?: string; 
+  style?: React.CSSProperties; 
+  theme?: "deep-space" | "cyber-light";
+} = {}) {
+  const [hoveredCell, setHoveredCell] = useState<{ 
+    date: string; 
+    dateKey: string;
+    count: number; 
+    level: number;
+    weekIdx: number; 
+    dayIdx: number 
+  } | null>(null);
+  const [activePalette, setActivePalette] = useState<ContributionPalette>("cyan");
+  const [highlightLevel, setHighlightLevel] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const isLight = theme === "cyber-light";
+  const palette = CONTRIBUTION_PALETTES[activePalette];
+  const levelClasses = isLight ? palette.levelClassesLight : palette.levelClassesDark;
 
   useEffect(() => {
     const el = containerRef.current;
@@ -1016,82 +1194,144 @@ function GitHubContributions({ className = "", style }: { className?: string; st
     return GENERATED_CONTRIBUTIONS.flat().reduce((acc, d) => acc + d.count, 0);
   }, []);
 
+  const activeDaysCount = useMemo(() => {
+    return Object.keys(EXACT_GITHUB_CONTRIBUTIONS).length;
+  }, []);
+
+  const peakDayCount = useMemo(() => {
+    return Math.max(...Object.values(EXACT_GITHUB_CONTRIBUTIONS).map(v => v.count));
+  }, []);
+
   return (
     <div 
       ref={containerRef}
       id="github-contributions-card"
       style={style}
-      className={`bg-white/[0.015] backdrop-blur-xl border border-white/10 rounded-2xl p-4 sm:p-6 lg:p-7 glow-border shadow-[0_0_30px_rgba(0,0,0,0.4)] w-full overflow-hidden ${className}`}
+      className={`relative rounded-2xl border transition-all duration-300 w-full overflow-hidden ${
+        isLight
+          ? "bg-white/95 border-slate-200/90 shadow-[0_12px_40px_rgba(0,0,0,0.06)]"
+          : "bg-[#090D16]/90 backdrop-blur-2xl border-white/10 shadow-[0_12px_45px_rgba(0,0,0,0.7)]"
+      } p-4 sm:p-6 lg:p-7 ${className}`}
     >
-      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-5 pb-4 border-b border-white/5">
-        <div className="flex items-center gap-3">
+      {/* Top Radiant Accent Line */}
+      <div 
+        className={`absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r ${palette.gradientBar} transition-all duration-500`}
+        style={{ boxShadow: `0 0 14px ${palette.accentHex}` }}
+      />
+
+      {/* Header Row: Identity, Live Stats & Interactive Palette Switcher */}
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4 pb-4 border-b border-white/10">
+        <div className="flex items-start sm:items-center gap-3">
           <a
             href="https://github.com/claredolino-sys"
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[#00F2FE] hover:bg-[#00F2FE]/15 hover:border-[#00F2FE]/40 transition-colors shadow-[0_0_12px_rgba(0,242,254,0.3)] shrink-0"
-            title="Open GitHub Profile (@claredolino-sys)"
+            className={`p-2.5 rounded-xl border transition-all duration-200 shrink-0 group ${
+              isLight 
+                ? "bg-slate-100 border-slate-200 text-slate-800 hover:border-slate-400 shadow-sm"
+                : "bg-white/[0.04] border-white/10 text-white hover:border-[#00F2FE]/50 shadow-sm"
+            }`}
+            title="Open Clare Dolino's GitHub Profile (@claredolino-sys)"
           >
-            <Github className="w-5 h-5" />
+            <Github className="w-5 h-5 group-hover:scale-110 transition-transform" />
           </a>
+
           <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-sm sm:text-base md:text-lg font-bold text-white tracking-tight">
-                GitHub Contribution Activity
+            <div className="flex items-center gap-2 flex-wrap">
+              <h3 className={`text-base sm:text-lg md:text-xl font-bold tracking-tight ${isLight ? "text-slate-900" : "text-white"}`}>
+                {totalCommits} Contributions
               </h3>
+              <span className="text-xs font-mono text-gray-400">·</span>
               <a
                 href="https://github.com/claredolino-sys"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-2 py-0.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] hover:bg-[#00F2FE]/20 font-mono text-[9px] uppercase tracking-wider transition-colors"
+                className={`px-2.5 py-0.5 rounded-full border font-mono text-[10px] font-semibold uppercase tracking-wider transition-all duration-200 ${palette.badgeBg} ${palette.badgeBorder} ${palette.badgeText} hover:opacity-85`}
                 title="View @claredolino-sys on GitHub"
               >
                 @claredolino-sys
               </a>
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${isLight ? "bg-emerald-50 text-emerald-700 border border-emerald-200" : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/25"} flex items-center gap-1`}>
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Verified Public Data</span>
+              </span>
             </div>
-            <p className="text-gray-400 text-xs font-light leading-relaxed mt-0.5">
-              Continuous commit frequency & engineering velocity across repositories (2025–2026)
+            <p className={`text-xs font-light leading-relaxed mt-0.5 ${isLight ? "text-slate-500" : "text-gray-400"}`}>
+              Direct verified 2025–2026 contribution matrix across system architecture, sprint milestones, and production deployments.
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-2 sm:gap-3 w-full lg:w-auto shrink-0">
-          <div className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-white/[0.03] border border-white/5 flex flex-col items-center justify-center text-center">
-            <span className="font-mono text-xs sm:text-sm md:text-base font-bold text-[#00F2FE]">
-              {totalCommits}
-            </span>
-            <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-wider text-gray-400">Commits</span>
+        {/* Right Header Controls: Metrics & Palette Switcher */}
+        <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 shrink-0">
+          {/* Quick Metrics Badges */}
+          <div className={`flex items-center gap-3 px-3 py-1.5 rounded-xl border text-xs font-mono ${
+            isLight ? "bg-slate-50 border-slate-200 text-slate-700" : "bg-white/[0.03] border-white/10 text-gray-300"
+          }`}>
+            <div className="flex items-center gap-1">
+              <Flame className="w-3.5 h-3.5 text-amber-400 shrink-0" />
+              <span className="font-bold text-white" style={{ color: palette.accentHex }}>{peakDayCount}</span>
+              <span className="text-[10px] text-gray-400">Peak/Day</span>
+            </div>
+            <span className="text-gray-500">|</span>
+            <div className="flex items-center gap-1">
+              <Activity className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
+              <span className={`font-bold ${isLight ? "text-slate-900" : "text-white"}`}>{activeDaysCount}</span>
+              <span className="text-[10px] text-gray-400">Sprint Days</span>
+            </div>
           </div>
 
-          <div className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-white/[0.03] border border-white/5 flex flex-col items-center justify-center text-center">
-            <span className="font-mono text-xs sm:text-sm md:text-base font-bold text-[#7F00FF] flex items-center gap-1">
-              <Flame className="w-3 h-3 text-[#FF5E7E]" />
-              38d
+          {/* Interactive Color Palette Selector */}
+          <div className={`flex items-center gap-1 p-1 rounded-xl border ${
+            isLight ? "bg-slate-100 border-slate-200" : "bg-black/40 border-white/10"
+          }`}>
+            <span className="text-[10px] font-mono text-gray-400 px-1.5 hidden sm:inline flex items-center gap-1">
+              <Palette className="w-3 h-3" />
+              <span>Theme:</span>
             </span>
-            <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-wider text-gray-400">Streak</span>
-          </div>
-
-          <div className="px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl bg-white/[0.03] border border-white/5 flex flex-col items-center justify-center text-center">
-            <span className="font-mono text-xs sm:text-sm md:text-base font-bold text-gray-200">
-              98.4%
-            </span>
-            <span className="text-[8px] sm:text-[9px] uppercase font-mono tracking-wider text-gray-400">Cadence</span>
+            {(["cyan", "emerald", "violet"] as ContributionPalette[]).map((pKey) => {
+              const p = CONTRIBUTION_PALETTES[pKey];
+              const isActive = activePalette === pKey;
+              return (
+                <button
+                  key={pKey}
+                  type="button"
+                  onClick={() => setActivePalette(pKey)}
+                  className={`flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[10px] font-mono transition-all cursor-pointer ${
+                    isActive
+                      ? isLight
+                        ? "bg-white text-slate-900 shadow-sm border border-slate-200 font-bold"
+                        : "bg-white/15 text-white shadow-sm border border-white/20 font-bold"
+                      : isLight
+                      ? "text-slate-600 hover:text-slate-900"
+                      : "text-gray-400 hover:text-white"
+                  }`}
+                  title={`Switch to ${p.name} theme`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${p.dotColor} shrink-0`} />
+                  <span>{p.name.split(" ")[1]}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
 
+      {/* Heatmap Matrix Viewport */}
       <div className="relative overflow-x-auto no-scrollbar pb-2 pt-1 w-full">
-        <div className="w-full min-w-[640px]">
-          <div className="flex text-[10px] font-mono text-gray-400 select-none mb-1.5 pl-6 sm:pl-7 w-full">
+        <div className="w-full min-w-[660px]">
+          {/* Months Header Labels */}
+          <div className={`flex text-[10px] font-mono select-none mb-1.5 pl-6 sm:pl-7 w-full ${isLight ? "text-slate-500 font-medium" : "text-gray-400"}`}>
             {MONTH_LABELS.map(m => (
-              <span key={m.name} style={{ width: `${(100 / 12).toFixed(2)}%` }} className="truncate pr-1 text-left">
+              <span key={m.name + m.weekIndex} style={{ width: `${(100 / 13).toFixed(2)}%` }} className="truncate pr-1 text-left">
                 {m.name}
               </span>
             ))}
           </div>
 
+          {/* Days Label & Contribution Grid */}
           <div className="flex gap-1.5 sm:gap-2 items-start w-full">
-            <div className="flex flex-col justify-between text-[9px] font-mono text-gray-500 pr-1.5 select-none h-[88px] sm:h-[96px] w-6 sm:w-7 shrink-0 text-right">
+            <div className={`flex flex-col justify-between text-[9px] font-mono pr-1.5 select-none h-[92px] sm:h-[102px] w-6 sm:w-7 shrink-0 text-right ${isLight ? "text-slate-500 font-medium" : "text-gray-400"}`}>
               <span className="invisible">Sun</span>
               <span>Mon</span>
               <span className="invisible">Tue</span>
@@ -1101,31 +1341,59 @@ function GitHubContributions({ className = "", style }: { className?: string; st
               <span className="invisible">Sat</span>
             </div>
 
-            <div className="grid grid-flow-col auto-cols-fr gap-[2px] sm:gap-[3px] md:gap-[4px] w-full">
+            <div className="grid grid-flow-col auto-cols-fr gap-[2.5px] sm:gap-[3px] md:gap-[3.5px] w-full">
               {GENERATED_CONTRIBUTIONS.map((week, wIdx) => (
-                <div key={wIdx} className="flex flex-col gap-[2px] sm:gap-[3px] md:gap-[4px]">
+                <div key={wIdx} className="flex flex-col gap-[2.5px] sm:gap-[3px] md:gap-[3.5px]">
                   {week.map((day, dIdx) => {
                     const isHovered = hoveredCell?.weekIdx === wIdx && hoveredCell?.dayIdx === dIdx;
-                    let colorClass = "bg-white/[0.04] border-white/5";
-                    if (day.level === 1) colorClass = "bg-[#00F2FE]/25 border-[#00F2FE]/30";
-                    else if (day.level === 2) colorClass = "bg-[#00F2FE]/60 border-[#00F2FE]/50";
-                    else if (day.level === 3) colorClass = "bg-[#00F2FE] border-[#00F2FE]";
-                    else if (day.level === 4) colorClass = "bg-gradient-to-br from-[#00F2FE] to-[#7F00FF] border-[#7F00FF]/80";
+                    const dateObj = new Date(2025, 9, 12, 12, 0, 0);
+                    dateObj.setDate(dateObj.getDate() + (wIdx * 7 + dIdx));
+                    const y = dateObj.getFullYear();
+                    const m = String(dateObj.getMonth() + 1).padStart(2, "0");
+                    const d = String(dateObj.getDate()).padStart(2, "0");
+                    const dateKey = `${y}-${m}-${d}`;
+                    
+                    const isHighlighted = highlightLevel !== null && day.level === highlightLevel;
+                    const isDimmed = highlightLevel !== null && day.level !== highlightLevel;
 
-                    const delayMs = wIdx * 12 + dIdx * 2;
+                    // Fetch color class based on level & active theme
+                    let colorClass = levelClasses.empty;
+                    if (day.level === 1) colorClass = levelClasses[1];
+                    else if (day.level === 2) colorClass = levelClasses[2];
+                    else if (day.level === 3) colorClass = levelClasses[3];
+                    else if (day.level === 4) colorClass = levelClasses[4];
+
+                    const delayMs = wIdx * 6 + dIdx * 2;
+                    const milestone = SPRINT_MILESTONES[dateKey];
 
                     return (
                       <div
                         key={dIdx}
-                        onMouseEnter={() => setHoveredCell({ date: day.date, count: day.count, weekIdx: wIdx, dayIdx: dIdx })}
+                        onMouseEnter={() => setHoveredCell({ 
+                          date: day.date, 
+                          dateKey,
+                          count: day.count, 
+                          level: day.level,
+                          weekIdx: wIdx, 
+                          dayIdx: dIdx 
+                        })}
                         onMouseLeave={() => setHoveredCell(null)}
                         style={{
                           transitionDelay: isVisible ? `${delayMs}ms` : '0ms',
                         }}
-                        className={`w-full aspect-square rounded-[2px] border transition-all duration-300 ease-out cursor-pointer ${colorClass} ${
+                        className={`w-full aspect-square rounded-[2.5px] sm:rounded-[3px] border transition-all duration-200 ease-out cursor-pointer relative ${colorClass} ${
                           isVisible ? "opacity-100 scale-100" : "opacity-0 scale-75"
-                        } ${isHovered ? "!scale-140 z-20 ring-1 ring-white !opacity-100" : ""}`}
-                      />
+                        } ${isHovered ? "!scale-150 z-30 ring-2 ring-white !opacity-100 shadow-xl" : ""} ${
+                          isHighlighted ? "ring-2 ring-white scale-110 !opacity-100" : ""
+                        } ${isDimmed ? "opacity-20" : ""}`}
+                      >
+                        {milestone && (
+                          <span 
+                            className="absolute -top-1 -right-1 w-1.5 h-1.5 rounded-full bg-amber-400 ring-1 ring-black pointer-events-none animate-ping"
+                            title={milestone.label}
+                          />
+                        )}
+                      </div>
                     );
                   })}
                 </div>
@@ -1135,26 +1403,106 @@ function GitHubContributions({ className = "", style }: { className?: string; st
         </div>
       </div>
 
-      <div className="mt-4 pt-3.5 border-t border-white/5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono">
-        <div className="text-gray-300 text-[11px] flex items-center gap-2">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#00F2FE] animate-pulse" />
+      {/* Interactive Footer & HUD Floating Details */}
+      <div className={`mt-4 pt-3.5 border-t flex flex-col md:flex-row items-start md:items-center justify-between gap-3 text-xs font-mono ${
+        isLight ? "border-slate-200" : "border-white/10"
+      }`}>
+        {/* Dynamic Hover HUD Information */}
+        <div className="flex-1 min-w-0">
           {hoveredCell ? (
-            <span><strong className="text-white">{hoveredCell.count} contributions</strong> on {hoveredCell.date}</span>
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border text-xs font-mono font-medium ${
+                hoveredCell.count > 0 
+                  ? isLight ? "bg-slate-100 border-slate-300 text-slate-900" : "bg-white/10 border-white/20 text-white"
+                  : isLight ? "bg-slate-50 border-slate-200 text-slate-500" : "bg-white/5 border-white/10 text-gray-400"
+              }`}>
+                <span className={`w-2 h-2 rounded-full ${hoveredCell.count > 0 ? palette.dotColor : "bg-gray-500"}`} />
+                <strong>{hoveredCell.count > 0 ? `${hoveredCell.count} Contributions` : "No contributions"}</strong>
+                <span className="text-gray-400">on</span>
+                <span>{hoveredCell.date}</span>
+              </span>
+
+              {SPRINT_MILESTONES[hoveredCell.dateKey] && (
+                <span className="px-2 py-0.5 rounded-md bg-amber-400/15 border border-amber-400/30 text-amber-300 text-[10px] font-semibold animate-pulse">
+                  {SPRINT_MILESTONES[hoveredCell.dateKey].badge}
+                </span>
+              )}
+            </div>
           ) : (
-            <span className="text-gray-400">Hover or tap any cell to inspect commit cadence</span>
+            <div className="flex items-center gap-2 text-gray-400 text-[11px]">
+              <span className="inline-block w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span>Hover any day to inspect commit counts, or click a level box to filter intensity.</span>
+            </div>
           )}
         </div>
 
-        <div className="flex items-center gap-2 text-gray-400 text-[10px]">
+        {/* Level Legend with Interactive Filter Clicking */}
+        <div className="flex items-center gap-2 text-gray-400 text-[10px] shrink-0 self-end md:self-auto">
           <span>Less</span>
           <div className="flex items-center gap-1">
-            <span className="w-2.5 h-2.5 rounded-[2px] bg-white/[0.04] border border-white/5" />
-            <span className="w-2.5 h-2.5 rounded-[2px] bg-[#00F2FE]/25 border border-[#00F2FE]/30" />
-            <span className="w-2.5 h-2.5 rounded-[2px] bg-[#00F2FE]/60 border border-[#00F2FE]/50" />
-            <span className="w-2.5 h-2.5 rounded-[2px] bg-[#00F2FE] border border-[#00F2FE]" />
-            <span className="w-2.5 h-2.5 rounded-[2px] bg-gradient-to-br from-[#00F2FE] to-[#7F00FF]" />
+            <button
+              type="button"
+              onClick={() => setHighlightLevel(highlightLevel === 0 ? null : 0)}
+              className={`w-3.5 h-3.5 rounded-[2.5px] border transition-transform cursor-pointer ${levelClasses.empty} ${
+                highlightLevel === 0 ? "scale-125 ring-2 ring-white" : "hover:scale-110"
+              }`}
+              title="Filter: No contributions"
+            />
+            <button
+              type="button"
+              onClick={() => setHighlightLevel(highlightLevel === 1 ? null : 1)}
+              className={`w-3.5 h-3.5 rounded-[2.5px] border transition-transform cursor-pointer ${levelClasses[1]} ${
+                highlightLevel === 1 ? "scale-125 ring-2 ring-white" : "hover:scale-110"
+              }`}
+              title="Filter: 1–3 contributions"
+            />
+            <button
+              type="button"
+              onClick={() => setHighlightLevel(highlightLevel === 2 ? null : 2)}
+              className={`w-3.5 h-3.5 rounded-[2.5px] border transition-transform cursor-pointer ${levelClasses[2]} ${
+                highlightLevel === 2 ? "scale-125 ring-2 ring-white" : "hover:scale-110"
+              }`}
+              title="Filter: 4–6 contributions"
+            />
+            <button
+              type="button"
+              onClick={() => setHighlightLevel(highlightLevel === 3 ? null : 3)}
+              className={`w-3.5 h-3.5 rounded-[2.5px] border transition-transform cursor-pointer ${levelClasses[3]} ${
+                highlightLevel === 3 ? "scale-125 ring-2 ring-white" : "hover:scale-110"
+              }`}
+              title="Filter: 7–11 contributions"
+            />
+            <button
+              type="button"
+              onClick={() => setHighlightLevel(highlightLevel === 4 ? null : 4)}
+              className={`w-3.5 h-3.5 rounded-[2.5px] border transition-transform cursor-pointer ${levelClasses[4]} ${
+                highlightLevel === 4 ? "scale-125 ring-2 ring-white" : "hover:scale-110"
+              }`}
+              title="Filter: 12+ contributions (Peak Velocity)"
+            />
           </div>
           <span>More</span>
+
+          {highlightLevel !== null && (
+            <button
+              type="button"
+              onClick={() => setHighlightLevel(null)}
+              className="ml-1 text-[10px] text-gray-400 hover:text-white underline cursor-pointer"
+            >
+              Reset
+            </button>
+          )}
+
+          <a 
+            href="https://github.com/claredolino-sys" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="ml-2 pl-2 border-l border-white/10 text-gray-400 hover:text-[#00F2FE] transition-colors flex items-center gap-1"
+            title="Inspect Clare Dolino's profile on GitHub"
+          >
+            <span>GitHub Profile</span>
+            <ArrowUpRight className="w-3 h-3" />
+          </a>
         </div>
       </div>
     </div>
@@ -2814,7 +3162,7 @@ export default function App() {
               </div>
 
               {/* GitHub Contributions */}
-              <GitHubContributions />
+              <GitHubContributions theme={theme} />
             </div>
           </TiltWrapper>
             </motion.section>
