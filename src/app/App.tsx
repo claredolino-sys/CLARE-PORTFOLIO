@@ -9,7 +9,7 @@ import {
   Briefcase, CheckSquare, BarChart3, ShieldCheck, Globe, Sun, Moon,
   X, ExternalLink, Calendar, Milestone, ArrowUpRight, Check, Flag, Zap,
   Inbox, MessageSquare, Clock, Trash2, Copy,
-  Reply, CheckCheck, Info, Search, Layout
+  Reply, CheckCheck, Info, Search, Layout, Lock, Maximize2, Minimize2, Eye, BookOpen, ShieldAlert
 } from "lucide-react";
 import clareProfile from "@/imports/CLARE_PROFILE.jpg";
 import { InsightsSection } from "./components/InsightsSection";
@@ -41,6 +41,21 @@ export interface ProjectStackCategory {
   items: string[];
 }
 
+export interface ProjectPRD {
+  fileName: string;
+  pdfUrl: string;
+  documentTitle: string;
+  version: string;
+  status: string;
+  standard: string;
+  classification: string;
+  pages: number;
+  executiveSummary: string;
+  keyObjectives: string[];
+  coreSpecifications: { section: string; details: string[] }[];
+  complianceNotes: string;
+}
+
 export interface ProjectItem {
   id: number;
   title: string;
@@ -62,6 +77,7 @@ export interface ProjectItem {
   complexity: { level: number; label: string };
   milestones: ProjectMilestone[];
   highlights: string[];
+  prd: ProjectPRD;
 }
 
 const PROJECTS: ProjectItem[] = [
@@ -132,7 +148,51 @@ const PROJECTS: ProjectItem[] = [
         deliverables: ["100% Passed UAT Test Case Sign-off", "Administrator & End-User Training Manual", "Live Regional Production Deployment"]
       }
     ],
-    complexity: { level: 5, label: "Lvl 5" }
+    complexity: { level: 5, label: "Lvl 5" },
+    prd: {
+      fileName: "PRD_PIA_R8_Finance_Monitoring_System.pdf",
+      pdfUrl: "/prds/PRD_PIA_R8_Finance_Monitoring_System.pdf",
+      documentTitle: "Product Requirements Document (PRD): PIA R8 Finance Monitoring System",
+      version: "v2.1.0 (Production Release)",
+      status: "Approved / Active in Production",
+      standard: "Commission on Audit (COA) Accounting Circulars & PH Government Audit Rules",
+      classification: "Official Internal Government / Financial (Sanitized Portfolio Demo)",
+      pages: 6,
+      executiveSummary: "Authoritative Product Requirements Document governing the architectural modernization of the Philippine Information Agency (PIA) Regional Office 8 financial tracking operations. Codifies the dual-layer persistence model, lexical token auto-classification rules, thousand-row chunked batch spreadsheet ingestion, and real-time budget burn rate governance with zero financial reconciliation discrepancies.",
+      keyObjectives: [
+        "Eliminate multi-day manual spreadsheet reconciliation cycles across ORS and disbursement vouchers",
+        "Enforce zero duplicate voucher disbursements via compound unique relational integrity constraints",
+        "Automate lexical parsing of Personal Services (PS) vs. MOOE line items in under 250ms",
+        "Guarantee strict adherence to Commission on Audit (COA) standardized reporting outputs"
+      ],
+      coreSpecifications: [
+        {
+          section: "Dual-Layer Persistence & Offline Fallback",
+          details: [
+            "Primary Supabase PostgreSQL with strict foreign keys and Row-Level Security (RLS)",
+            "In-memory transaction caching fallback for regional network dropouts",
+            "Optimistic concurrency control with deterministic conflict-free reconciliation"
+          ]
+        },
+        {
+          section: "Lexical Classification Engine",
+          details: [
+            "Context-aware rule-based tokenizer inspecting voucher remarks and account descriptions",
+            "Deterministic PS vs. MOOE budget allotment category mapping with zero latency",
+            "Real-time confidence scoring backed by immutable audit verification trails"
+          ]
+        },
+        {
+          section: "Batch Ingestion & Reporting Suite",
+          details: [
+            "SheetJS chunked parser capable of processing 1,000+ row government financial workbooks",
+            "One-click COA-compliant spreadsheet and summary generation ready for state auditors",
+            "Dynamic budget burn rate calculation engine with automated expenditure threshold alerts"
+          ]
+        }
+      ],
+      complianceNotes: "Sanitized demo release compliant with Philippine government privacy standards and non-disclosure regulations. All production payee names and exact budget allocations have been masked."
+    }
   },
   { 
     id: 2, 
@@ -201,7 +261,51 @@ const PROJECTS: ProjectItem[] = [
         deliverables: ["Live Staging & Production Deployment", "CSC Form 48 Dynamic PDF Engine", "Admin Realtime Monitoring Dashboard"]
       }
     ],
-    complexity: { level: 5, label: "Lvl 5" }
+    complexity: { level: 5, label: "Lvl 5" },
+    prd: {
+      fileName: "PRD_TrackMyHours_Biometric_Attendance_System.pdf",
+      pdfUrl: "/prds/PRD_TrackMyHours_Biometric_Attendance_System.pdf",
+      documentTitle: "Product Requirements Document (PRD): TrackMyHours Biometric Attendance Platform",
+      version: "v3.2 (Portfolio Release)",
+      status: "Approved / Production Live",
+      standard: "Civil Service Form 48 (CSC Form 48 PH Statutory Standard)",
+      classification: "Official Specification (Sanitized Portfolio Demo)",
+      pages: 8,
+      executiveSummary: "Institutional PRD defining an anti-spoofing, zero-trust attendance ecosystem for regional public agencies and immersion personnel. Specifies client-side facial liveness neural detection, multi-tier geofencing and IP subnet policies, offline-first IndexedDB buffer storage, and Google Gemini multimodal tool calling for automated medical slip and travel order validation.",
+      keyObjectives: [
+        "Eliminate proxy check-ins ('buddy punching') via client-side 68-point facial mesh neural verification",
+        "Provide 100% attendance resilience in low-connectivity zones via local IndexedDB queuing",
+        "Automate statutory CSC Form 48 daily time record generation and undertime calculations",
+        "Enable autonomous extraction of employee leave slips and travel orders using Gemini multimodal AI"
+      ],
+      coreSpecifications: [
+        {
+          section: "Zero-Trust Verification Pipeline",
+          details: [
+            "IP Subnet validation matching against whitelisted agency office network gateways",
+            "HTML5 GPS Geolocation radius verification with client-side mock coordinate detection",
+            "Face-API neural landmark mesh liveness check requiring blink and multi-angle orientation"
+          ]
+        },
+        {
+          section: "Offline-First Sync Engine",
+          details: [
+            "IndexedDB persistent client store bypassing standard 5MB browser localStorage limits",
+            "AES-256 local punch payload encryption before offline queue write",
+            "Background synchronization worker with exponential backoff and optimistic state update"
+          ]
+        },
+        {
+          section: "Gemini Autonomous Document Processing",
+          details: [
+            "Multimodal vision extraction from scanned PDFs, photos, and medical certificates",
+            "Structured JSON tool calling schema extracting dates, approval stamps, and reasons",
+            "Automated leave ledger balance debit calculation upon official approval confirmation"
+          ]
+        }
+      ],
+      complianceNotes: "Adheres to Philippine Civil Service Commission statutory attendance tracking guidelines. Production biometric images and biometric hashes have been replaced with simulated vectors."
+    }
   },
   { 
     id: 3, 
@@ -270,7 +374,52 @@ const PROJECTS: ProjectItem[] = [
         deliverables: ["Published Research Manuscript & Defense", "ISO/IEC 25010 Empirical Statistical Report", "University Records Office System Handover"]
       }
     ],
-    complexity: { level: 5, label: "Lvl 5" }
+    complexity: { level: 5, label: "Lvl 5" },
+    prd: {
+      fileName: "PRD_CDMIS_Centralized_Document_Management_System.pdf",
+      pdfUrl: "/prds/PRD_CDMIS_Centralized_Document_Management_System.pdf",
+      documentTitle: "Product Requirements Document (PRD): Centralized Document Management Information System (CDMIS)",
+      version: "v1.0.0 (University Archives Edition / Defended Capstone)",
+      status: "Defended Capstone / Production-Ready Demo",
+      standard: "ISO/IEC 25010 Software Quality Standard & NAP Form 1 Records Inventory",
+      classification: "Institutional Research Specification / Archival System",
+      pages: 4,
+      executiveSummary: "Comprehensive institutional PRD authored for the BiPSU Records & Archives Office. Formulates the complete functional and technical specifications for digitizing campus archives, standardizing National Archives of the Philippines (NAP) Form 1 inventory appraisal workflows, and establishing a 3-tier RBAC clearance hierarchy backed by empirical ISO/IEC 25010 software quality evaluation.",
+      keyObjectives: [
+        "Slash physical document retrieval latency by ~80% across 12 academic and administrative units",
+        "Attain measurable ISO/IEC 25010 benchmark excellence (achieved 4.85/5.00 across 50 evaluators)",
+        "Implement National Archives of the Philippines (NAP) Form 1 statutory archival records taxonomy",
+        "Ensure complete audit traceability and tamper-proofing via SHA-256 document hashing"
+      ],
+      coreSpecifications: [
+        {
+          section: "3-Tier Hierarchical RBAC",
+          details: [
+            "Admin: System Configuration, Global Audit Logs, User Provisions, and Security Controls",
+            "Unit Officers: Document Ingestion, Departmental Filing, Unit-level Endorsement Routing",
+            "Archive Custodian: Formal Archival Appraisal, NAP Form 1 Compliance, Permanent Retention"
+          ]
+        },
+        {
+          section: "NAP Form 1 Records Appraisal Engine",
+          details: [
+            "Section 1: Department & Office Information Registration with verified unit custodians",
+            "Section 2: Records Series Title, Retention Periods & Statutory Classifications (General vs. Specific)",
+            "Section 3: Physical Volume & Condition Assessment with storage location tracking",
+            "Section 4: Formal Disposition Recommendation & Archival Clearance Handover matrix"
+          ]
+        },
+        {
+          section: "Security & Audit Governance",
+          details: [
+            "SHA-256 file checksum generation upon upload to detect unauthorized modifications",
+            "Immutable activity logging recording user ID, timestamp, IP, and document mutations",
+            "Granular unit-level privacy boundaries preventing cross-department record exposure"
+          ]
+        }
+      ],
+      complianceNotes: "Evaluated under ISO/IEC 25010 standard across Functional Suitability, Performance Efficiency, Usability, Reliability, Security, and Maintainability. All personnel signatures and real student IDs have been sanitized."
+    }
   },
   { 
     id: 4, 
@@ -339,7 +488,52 @@ const PROJECTS: ProjectItem[] = [
         deliverables: ["Live Production Deployment", "Supply Custodian User Handbook", "Administrative Security Audit Report"]
       }
     ],
-    complexity: { level: 4, label: "Lvl 4" }
+    complexity: { level: 4, label: "Lvl 4" },
+    prd: {
+      fileName: "PRD_RIS_Inventory_Management_Portal.pdf",
+      pdfUrl: "/prds/PRD_RIS_Inventory_Management_Portal.pdf",
+      documentTitle: "Product Requirements Document (PRD): RIS Inventory Management Portal",
+      version: "v1.2.0 (Approved / Demo Release)",
+      status: "Approved / Active in Production",
+      standard: "Government Accounting Manual (GAM) Vol. II Appendix 63 & COA Standards",
+      classification: "Official Specification (Sanitized Portfolio Demo)",
+      pages: 6,
+      executiveSummary: "Production PRD governing the end-to-end requisition, stock ledger balance verification, and custodian issuance workflows for regional public sector operations. Details the 4-tier approval matrix, automated 24-hour database disaster recovery snapshot pipeline using pg_cron and Supabase Edge Functions, and GAM Appendix 63 standardized export engines.",
+      keyObjectives: [
+        "Replace paper multi-copy requisition slips with real-time digital supply cart and routing",
+        "Maintain real-time atomic stock ledger balances with zero overselling or inventory drift",
+        "Enforce 4-tier approval chain: Requester -> Recommending -> Approver -> Property Custodian",
+        "Guarantee automated 24-hour disaster recovery and data retention with zero data loss"
+      ],
+      coreSpecifications: [
+        {
+          section: "Dynamic Supply Cart & Stock Balancing",
+          details: [
+            "Real-time inventory lookup preventing requisition of depleted or low-stock items",
+            "Atomic reservation locking preventing race conditions during concurrent staff submissions",
+            "Automatic unit cost calculation and expenditure balance reporting against division allotments"
+          ]
+        },
+        {
+          section: "4-Tier Segregated Approval Chain",
+          details: [
+            "Tier 1 Requester: Item catalog selection, official justification, and digital draft submission",
+            "Tier 2 Recommending Officer: Division-level budget and operational necessity clearance",
+            "Tier 3 Approving Authority: Executive regional director procurement sign-off",
+            "Tier 4 Property Custodian: Physical inspection, issue slip generation, and atomic stock deduction"
+          ]
+        },
+        {
+          section: "24-Hour Automated Disaster Recovery",
+          details: [
+            "Scheduled daily database snapshot triggers orchestrated via PostgreSQL pg_cron extension",
+            "Supabase Edge Functions encrypting and staging incremental backups to external bucket",
+            "One-command restore verification ensuring Recovery Point Objective (RPO) < 24 hours"
+          ]
+        }
+      ],
+      complianceNotes: "Complies with Government Accounting Manual (GAM) Volume II, Appendix 63 format specifications for government supply management. All official agency seals and personnel identifiers have been replaced with sanitized representations."
+    }
   }
 ];
 
@@ -1575,9 +1769,17 @@ class SoundEngine {
 
 const soundEngine = new SoundEngine();
 
-// --- Project Detail Modal Component ---
-function ProjectDetailModal({ project, onClose }: { project: ProjectItem; onClose: () => void }) {
-  const [activeTab, setActiveTab] = useState<"overview" | "milestones" | "stack">("overview");
+function ProjectDetailModal({ 
+  project, 
+  initialTab = "overview", 
+  onClose 
+}: { 
+  project: ProjectItem; 
+  initialTab?: "overview" | "milestones" | "stack" | "prd"; 
+  onClose: () => void; 
+}) {
+  const [activeTab, setActiveTab] = useState<"overview" | "milestones" | "stack" | "prd">(initialTab);
+  const [isFullscreenPrd, setIsFullscreenPrd] = useState(false);
 
   useEffect(() => {
     const orig = document.body.style.overflow;
@@ -1585,157 +1787,455 @@ function ProjectDetailModal({ project, onClose }: { project: ProjectItem; onClos
     return () => { document.body.style.overflow = orig; };
   }, []);
 
+  // Escape key for fullscreen PRD reader
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && isFullscreenPrd) {
+        e.stopPropagation();
+        setIsFullscreenPrd(false);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isFullscreenPrd]);
+
   return (
-    <motion.div
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.22 }}
-      className="fixed inset-0 z-[100] flex items-center justify-center p-2.5 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md"
-      onClick={onClose}
-    >
+    <>
       <motion.div
-        initial={{ opacity: 0, scale: 0.94, y: 18 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.95, y: 14 }}
-        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-4xl max-h-[92vh] sm:max-h-[88vh] bg-[#090C15] border border-white/10 rounded-2xl md:rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden text-left"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.22 }}
+        className="fixed inset-0 z-[100] flex items-center justify-center p-2.5 sm:p-4 md:p-6 bg-black/85 backdrop-blur-md"
+        onClick={onClose}
       >
-        
-        {/* Modal Header */}
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 sm:p-5 md:p-6 border-b border-white/10 bg-white/[0.02] shrink-0">
-          <div className="space-y-1.5 min-w-0 w-full sm:w-auto">
-            {/* Clean Badges */}
-            <div className="flex flex-wrap items-center gap-1.5 text-[10px] sm:text-xs font-mono">
-              <span className="px-2 py-0.5 rounded bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-semibold uppercase">{project.type}</span>
-              <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300 font-medium">{project.year}</span>
-              <ComplexityMeter level={project.complexity.level} label={project.complexity.label} />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.94, y: 18 }}
+          animate={{ opacity: 1, scale: 1, y: 0 }}
+          exit={{ opacity: 0, scale: 0.95, y: 14 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+          onClick={(e) => e.stopPropagation()}
+          className="relative w-full max-w-4xl max-h-[92vh] sm:max-h-[88vh] bg-[#090C15] border border-white/10 rounded-2xl md:rounded-3xl shadow-[0_0_50px_rgba(0,0,0,0.8)] flex flex-col overflow-hidden text-left"
+        >
+          
+          {/* Modal Header */}
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 p-3.5 sm:p-5 md:p-6 border-b border-white/10 bg-white/[0.02] shrink-0">
+            <div className="space-y-1.5 min-w-0 w-full sm:w-auto">
+              {/* Clean Badges */}
+              <div className="flex flex-wrap items-center gap-1.5 text-[10px] sm:text-xs font-mono">
+                <span className="px-2 py-0.5 rounded bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-semibold uppercase">{project.type}</span>
+                <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300 font-medium">{project.year}</span>
+                <ComplexityMeter level={project.complexity.level} label={project.complexity.label} />
+                <span className="px-2 py-0.5 rounded bg-purple-500/10 border border-purple-500/30 text-[#C084FC] font-semibold flex items-center gap-1">
+                  <FileText className="w-3 h-3 text-[#C084FC]" />
+                  <span>PRD Embedded</span>
+                </span>
+              </div>
+              <h2 className="text-base sm:text-xl md:text-2xl font-bold text-white tracking-tight leading-tight break-words">{project.title}</h2>
+              <div className="text-[11px] sm:text-xs font-mono text-[#C084FC] break-words leading-relaxed">{project.role} · {project.org}</div>
             </div>
-            <h2 className="text-base sm:text-xl md:text-2xl font-bold text-white tracking-tight leading-tight break-words">{project.title}</h2>
-            <div className="text-[11px] sm:text-xs font-mono text-[#C084FC] break-words leading-relaxed">{project.role} · {project.org}</div>
+
+            <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/5">
+              <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] text-black font-semibold text-xs font-mono uppercase shadow-md flex-1 sm:flex-initial">
+                <span>Live Demo</span>
+                <ExternalLink className="w-3.5 h-3.5 shrink-0" />
+              </a>
+              <button onClick={onClose} className="p-1.5 sm:p-2 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white cursor-pointer shrink-0 flex items-center gap-1.5" title="Close (Escape key)">
+                <span className="hidden sm:inline text-[10px] font-mono text-gray-400">Esc</span>
+                <X className="w-4 h-4 sm:w-5 sm:h-5" />
+              </button>
+            </div>
           </div>
 
-          <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/5">
-            <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] text-black font-semibold text-xs font-mono uppercase shadow-md flex-1 sm:flex-initial">
-              <span>Live Demo</span>
-              <ExternalLink className="w-3.5 h-3.5 shrink-0" />
-            </a>
-            <button onClick={onClose} className="p-1.5 sm:p-2 rounded-xl bg-white/5 border border-white/10 text-gray-400 hover:text-white cursor-pointer shrink-0 flex items-center gap-1.5" title="Close (Escape key)">
-              <span className="hidden sm:inline text-[10px] font-mono text-gray-400">Esc</span>
-              <X className="w-4 h-4 sm:w-5 sm:h-5" />
+          {/* Modal Nav Tabs */}
+          <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 pt-2.5 pb-2 border-b border-white/5 font-mono text-[11px] sm:text-xs overflow-x-auto no-scrollbar shrink-0">
+            <button onClick={() => setActiveTab("overview")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "overview" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
+              01. Architecture & Impact
+            </button>
+            <button onClick={() => setActiveTab("milestones")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "milestones" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
+              02. SDLC Milestones ({project.milestones.length})
+            </button>
+            <button onClick={() => setActiveTab("stack")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "stack" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
+              03. Tech Stack Breakdown
+            </button>
+            <button 
+              onClick={() => setActiveTab("prd")} 
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "prd" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold shadow-[0_0_12px_rgba(0,242,254,0.2)]" : "text-gray-400 hover:text-white"}`}
+            >
+              <FileText className="w-3.5 h-3.5 text-[#00F2FE]" />
+              <span>04. Product Requirements Doc (PRD)</span>
+              <span className="px-1.5 py-0.2 text-[9px] rounded bg-[#00F2FE]/20 text-[#00F2FE] font-bold uppercase tracking-wider">
+                PDF Embed
+              </span>
             </button>
           </div>
-        </div>
 
-        {/* Modal Nav Tabs */}
-        <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 pt-2.5 pb-2 border-b border-white/5 font-mono text-[11px] sm:text-xs overflow-x-auto no-scrollbar shrink-0">
-          <button onClick={() => setActiveTab("overview")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "overview" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
-            01. Architecture & Impact
-          </button>
-          <button onClick={() => setActiveTab("milestones")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "milestones" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
-            02. SDLC Milestones ({project.milestones.length})
-          </button>
-          <button onClick={() => setActiveTab("stack")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "stack" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
-            03. Tech Stack Breakdown
-          </button>
-        </div>
-
-        {/* Modal Content */}
-        <div className="flex-1 overflow-y-auto p-3.5 sm:p-6 space-y-4 sm:space-y-6 text-left">
-          {activeTab === "overview" && (
-            <div className="space-y-4 sm:space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
-                {project.keyMetrics.map((km, idx) => (
-                  <div key={idx} className="p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/10">
-                    <div className="text-[10px] font-mono text-gray-400 uppercase">{km.label}</div>
-                    <div className="text-base sm:text-xl font-bold font-mono text-[#00F2FE] mt-0.5">{km.value}</div>
-                    <div className="text-xs text-gray-300 font-light mt-0.5 leading-relaxed">{km.detail}</div>
-                  </div>
-                ))}
-              </div>
-
-              <div className="p-3.5 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
-                <h4 className="text-xs font-mono uppercase tracking-widest text-[#00F2FE] font-semibold">Executive Overview</h4>
-                <p className="text-xs sm:text-sm text-gray-200 leading-relaxed font-light">{project.fullDesc.overview}</p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-                <div className="p-3.5 sm:p-5 rounded-2xl bg-rose-500/[0.03] border border-rose-500/20 space-y-2">
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-rose-400 font-semibold">Operational Challenge</h4>
-                  <p className="text-xs text-gray-300 leading-relaxed font-light">{project.fullDesc.challenge}</p>
-                </div>
-                <div className="p-3.5 sm:p-5 rounded-2xl bg-[#00F2FE]/[0.03] border border-[#00F2FE]/20 space-y-2">
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-[#00F2FE] font-semibold">Engineered Solution</h4>
-                  <p className="text-xs text-gray-300 leading-relaxed font-light">{project.fullDesc.solution}</p>
-                </div>
-              </div>
-
-              <div className="p-3.5 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-3">
-                <h4 className="text-xs font-mono uppercase tracking-widest text-[#C084FC] font-semibold">Key Individual Deliverables & Contributions</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                  {project.highlights.map((h, i) => (
-                    <div key={i} className="flex items-start gap-2 text-gray-300 font-light leading-relaxed">
-                      <CheckCircle2 className="w-4 h-4 text-[#00F2FE] shrink-0 mt-0.5" />
-                      <span className="break-words">{h}</span>
+          {/* Modal Content */}
+          <div className="flex-1 overflow-y-auto p-3.5 sm:p-6 space-y-4 sm:space-y-6 text-left">
+            {activeTab === "overview" && (
+              <div className="space-y-4 sm:space-y-6">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 sm:gap-3">
+                  {project.keyMetrics.map((km, idx) => (
+                    <div key={idx} className="p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/10">
+                      <div className="text-[10px] font-mono text-gray-400 uppercase">{km.label}</div>
+                      <div className="text-base sm:text-xl font-bold font-mono text-[#00F2FE] mt-0.5">{km.value}</div>
+                      <div className="text-xs text-gray-300 font-light mt-0.5 leading-relaxed">{km.detail}</div>
                     </div>
                   ))}
                 </div>
-              </div>
-            </div>
-          )}
 
-          {activeTab === "milestones" && (
-            <div className="space-y-3 sm:space-y-4">
-              {project.milestones.map((m, idx) => (
-                <div key={idx} className="p-3.5 sm:p-5 rounded-xl bg-white/[0.025] border border-white/10 space-y-2">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs font-mono">
-                    <span className="text-[#00F2FE] font-semibold break-words">{m.phase}</span>
-                    <div className="flex items-center gap-2 text-[10px] sm:text-[11px] text-gray-400 shrink-0">
-                      <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10">{m.date}</span>
-                      <span className="px-2 py-0.5 rounded bg-[#00F2FE]/10 text-[#00F2FE] border border-[#00F2FE]/20 font-medium">{m.status}</span>
+                <div className="p-3.5 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-[#00F2FE] font-semibold">Executive Overview</h4>
+                  <p className="text-xs sm:text-sm text-gray-200 leading-relaxed font-light">{project.fullDesc.overview}</p>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                  <div className="p-3.5 sm:p-5 rounded-2xl bg-rose-500/[0.03] border border-rose-500/20 space-y-2">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-rose-400 font-semibold">Operational Challenge</h4>
+                    <p className="text-xs text-gray-300 leading-relaxed font-light">{project.fullDesc.challenge}</p>
+                  </div>
+                  <div className="p-3.5 sm:p-5 rounded-2xl bg-[#00F2FE]/[0.03] border border-[#00F2FE]/20 space-y-2">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-[#00F2FE] font-semibold">Engineered Solution</h4>
+                    <p className="text-xs text-gray-300 leading-relaxed font-light">{project.fullDesc.solution}</p>
+                  </div>
+                </div>
+
+                <div className="p-3.5 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-3">
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-[#C084FC] font-semibold">Key Individual Deliverables & Contributions</h4>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                    {project.highlights.map((h, i) => (
+                      <div key={i} className="flex items-start gap-2 text-gray-300 font-light leading-relaxed">
+                        <CheckCircle2 className="w-4 h-4 text-[#00F2FE] shrink-0 mt-0.5" />
+                        <span className="break-words">{h}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Quick PRD Jump Card */}
+                {project.prd && (
+                  <div className="p-4 rounded-2xl bg-gradient-to-r from-[#00F2FE]/5 to-[#7F00FF]/5 border border-[#00F2FE]/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <div className="p-2 rounded-xl bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] shrink-0">
+                        <FileText className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h5 className="text-xs sm:text-sm font-bold text-white font-mono">Official Product Requirements Document (PRD)</h5>
+                          <span className="text-[9px] px-1.5 py-0.2 rounded bg-amber-400/10 text-amber-300 border border-amber-400/20 font-mono">
+                            Read-Only
+                          </span>
+                        </div>
+                        <p className="text-[11px] text-gray-300 font-light mt-0.5 leading-relaxed">
+                          Authored by Clare Dolino · {project.prd.pages} Pages verified specification embedded directly in the app.
+                        </p>
+                      </div>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => setActiveTab("prd")}
+                      className="px-3.5 py-1.5 rounded-xl bg-[#00F2FE]/15 hover:bg-[#00F2FE]/25 text-[#00F2FE] border border-[#00F2FE]/30 text-xs font-mono font-medium transition-colors cursor-pointer shrink-0"
+                    >
+                      Open PRD Viewer →
+                    </button>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {activeTab === "milestones" && (
+              <div className="space-y-3 sm:space-y-4">
+                {project.milestones.map((m, idx) => (
+                  <div key={idx} className="p-3.5 sm:p-5 rounded-xl bg-white/[0.025] border border-white/10 space-y-2">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs font-mono">
+                      <span className="text-[#00F2FE] font-semibold break-words">{m.phase}</span>
+                      <div className="flex items-center gap-2 text-[10px] sm:text-[11px] text-gray-400 shrink-0">
+                        <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10">{m.date}</span>
+                        <span className="px-2 py-0.5 rounded bg-[#00F2FE]/10 text-[#00F2FE] border border-[#00F2FE]/20 font-medium">{m.status}</span>
+                      </div>
+                    </div>
+                    <h4 className="text-sm sm:text-base font-bold text-white break-words">{m.title}</h4>
+                    <p className="text-xs text-gray-300 font-light leading-relaxed">{m.summary}</p>
+                    <div className="pt-2 border-t border-white/5 flex flex-wrap gap-1.5">
+                      {m.deliverables.map((d, dIdx) => (
+                        <span key={dIdx} className="px-2 py-1 rounded bg-white/5 border border-white/10 text-[10px] sm:text-[11px] text-gray-300 font-mono break-words max-w-full">
+                          ✓ {d}
+                        </span>
+                      ))}
                     </div>
                   </div>
-                  <h4 className="text-sm sm:text-base font-bold text-white break-words">{m.title}</h4>
-                  <p className="text-xs text-gray-300 font-light leading-relaxed">{m.summary}</p>
-                  <div className="pt-2 border-t border-white/5 flex flex-wrap gap-1.5">
-                    {m.deliverables.map((d, dIdx) => (
-                      <span key={dIdx} className="px-2 py-1 rounded bg-white/5 border border-white/10 text-[10px] sm:text-[11px] text-gray-300 font-mono break-words max-w-full">
-                        ✓ {d}
-                      </span>
-                    ))}
+                ))}
+              </div>
+            )}
+
+            {activeTab === "stack" && (
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                {project.detailedStack.map((cat, cIdx) => (
+                  <div key={cIdx} className="p-3.5 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
+                    <h4 className="text-xs font-mono uppercase text-white font-semibold tracking-wider">{cat.category}</h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {cat.items.map((item, tIdx) => (
+                        <span key={tIdx} className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 text-[11px] sm:text-xs font-mono text-gray-200 break-words max-w-full">
+                          {item}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {/* TAB 04: PRD DOCUMENT EMBED & SPECIFICATION OVERVIEW */}
+            {activeTab === "prd" && project.prd && (
+              <div className="space-y-4 sm:space-y-5">
+                {/* Security Governance Notice Banner */}
+                <div className="p-3.5 sm:p-4 rounded-xl bg-amber-500/[0.06] border border-amber-500/25 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs">
+                  <div className="flex items-start gap-2.5">
+                    <Lock className="w-4 h-4 text-amber-400 shrink-0 mt-0.5" />
+                    <div className="space-y-0.5">
+                      <div className="text-amber-300 font-mono font-semibold flex items-center gap-1.5">
+                        <span>Protected Official Document · Read-Only Embed</span>
+                        <span className="text-[10px] px-1.5 py-0.2 rounded bg-amber-400/20 text-amber-200">
+                          Non-Downloadable
+                        </span>
+                      </div>
+                      <p className="text-gray-300 text-[11px] font-light leading-relaxed">
+                        Per institutional governance and intellectual property policy, direct file downloading and local export are restricted. You can review, overview, and inspect the complete verified document directly in this viewport.
+                      </p>
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsFullscreenPrd(true)}
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono text-xs transition-colors cursor-pointer shrink-0"
+                    title="Open in Distraction-Free Fullscreen Reader"
+                  >
+                    <Maximize2 className="w-3.5 h-3.5 text-[#00F2FE]" />
+                    <span>Expand Reader</span>
+                  </button>
+                </div>
+
+                {/* PRD Executive Metadata Dossier */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
+                  <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.025] border border-white/10 space-y-1">
+                    <div className="text-[10px] font-mono text-gray-400 uppercase">Document Version</div>
+                    <div className="text-xs sm:text-sm font-bold font-mono text-[#00F2FE] truncate">{project.prd.version}</div>
+                    <div className="text-[10px] text-emerald-400 font-mono">● {project.prd.status}</div>
+                  </div>
+                  <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.025] border border-white/10 space-y-1">
+                    <div className="text-[10px] font-mono text-gray-400 uppercase">Regulatory Benchmark</div>
+                    <div className="text-xs sm:text-sm font-bold font-mono text-white truncate" title={project.prd.standard}>
+                      {project.prd.standard.split('&')[0]}
+                    </div>
+                    <div className="text-[10px] text-gray-400 font-mono truncate">{project.org}</div>
+                  </div>
+                  <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.025] border border-white/10 space-y-1">
+                    <div className="text-[10px] font-mono text-gray-400 uppercase">Lead Engineer / Author</div>
+                    <div className="text-xs sm:text-sm font-bold font-mono text-[#C084FC]">Clare Angelie T. Dolino</div>
+                    <div className="text-[10px] text-gray-400 font-mono truncate">{project.role}</div>
+                  </div>
+                  <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.025] border border-white/10 space-y-1">
+                    <div className="text-[10px] font-mono text-gray-400 uppercase">Document Scale</div>
+                    <div className="text-xs sm:text-sm font-bold font-mono text-white">{project.prd.pages} Pages</div>
+                    <div className="text-[10px] text-[#00F2FE] font-mono">Full-Stack Specification</div>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
 
-          {activeTab === "stack" && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
-              {project.detailedStack.map((cat, cIdx) => (
-                <div key={cIdx} className="p-3.5 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-3">
-                  <h4 className="text-xs font-mono uppercase text-white font-semibold tracking-wider">{cat.category}</h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {cat.items.map((item, tIdx) => (
-                      <span key={tIdx} className="px-2.5 py-1 rounded-lg bg-white/[0.04] border border-white/10 text-[11px] sm:text-xs font-mono text-gray-200 break-words max-w-full">
-                        {item}
+                {/* Embedded PDF Viewer Viewport */}
+                <div 
+                  className="rounded-2xl border border-white/15 bg-[#090C15] overflow-hidden shadow-2xl select-none"
+                  onContextMenu={(e) => { e.preventDefault(); return false; }}
+                  onDragStart={(e) => { e.preventDefault(); return false; }}
+                >
+                  {/* Viewport Top Header */}
+                  <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-black/60 border-b border-white/10 font-mono text-xs">
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="w-2 h-2 rounded-full bg-[#00F2FE] animate-pulse shrink-0"></span>
+                      <span className="text-white font-medium truncate text-[11px] sm:text-xs">
+                        {project.prd.fileName}
                       </span>
-                    ))}
+                      <span className="hidden md:inline text-gray-500 text-[10px]">
+                        ({project.prd.pages} Pages · Verified Specification)
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className="hidden sm:inline-flex items-center gap-1 text-[10px] text-gray-400 bg-white/5 px-2 py-0.5 rounded border border-white/10">
+                        <Lock className="w-3 h-3 text-amber-400" />
+                        <span>View-Only</span>
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => setIsFullscreenPrd(true)}
+                        className="p-1 sm:px-2.5 sm:py-1 rounded-md bg-[#00F2FE]/15 hover:bg-[#00F2FE]/25 text-[#00F2FE] text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
+                        title="Expand Reader"
+                      >
+                        <Maximize2 className="w-3.5 h-3.5" />
+                        <span className="hidden sm:inline">Fullscreen</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Embedded Iframe Viewer */}
+                  <div className="relative w-full h-[520px] sm:h-[620px] bg-slate-950 flex flex-col items-center justify-center">
+                    <iframe
+                      src={`${project.prd.pdfUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
+                      title={project.prd.documentTitle}
+                      className="w-full h-full border-0 select-none bg-slate-900"
+                      style={{ pointerEvents: "auto" }}
+                      onContextMenu={(e) => { e.preventDefault(); return false; }}
+                    />
+                  </div>
+
+                  {/* Viewport Footer Bar */}
+                  <div className="px-4 py-2 bg-black/40 border-t border-white/10 flex flex-wrap items-center justify-between text-[10px] font-mono text-gray-400">
+                    <span className="flex items-center gap-1">
+                      <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                      <span>Authenticated PRD · Commissioned Specification</span>
+                    </span>
+                    <span className="text-gray-500">
+                      Right-click & downloads disabled for confidentiality
+                    </span>
                   </div>
                 </div>
-              ))}
-            </div>
-          )}
-        </div>
 
-        <div className="p-3 sm:p-4 border-t border-white/10 bg-white/[0.02] flex justify-end shrink-0">
-          <button onClick={onClose} className="px-5 py-2 rounded-xl bg-white/5 text-xs font-mono text-gray-300 hover:text-white cursor-pointer flex items-center gap-2" title="Close (Escape key)">
-            <span>Close</span>
-            <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-gray-400 border border-white/10">Esc</kbd>
-          </button>
-        </div>
+                {/* PRD Document Overview & Executive Specifications */}
+                <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
+                  <div className="space-y-1">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-[#00F2FE] font-semibold">
+                      Document Executive Overview & Context
+                    </h4>
+                    <p className="text-xs text-gray-200 leading-relaxed font-light">
+                      {project.prd.executiveSummary}
+                    </p>
+                  </div>
+
+                  {/* Core System Objectives */}
+                  <div className="space-y-2 pt-2 border-t border-white/5">
+                    <h5 className="text-[11px] font-mono uppercase text-[#C084FC] font-semibold tracking-wider">
+                      Core Functional & Strategic Objectives
+                    </h5>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+                      {project.prd.keyObjectives.map((obj, oIdx) => (
+                        <div key={oIdx} className="flex items-start gap-2 text-gray-300 font-light leading-relaxed">
+                          <Check className="w-3.5 h-3.5 text-[#00F2FE] shrink-0 mt-0.5" />
+                          <span>{obj}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Detailed Specifications Matrix */}
+                  <div className="space-y-2.5 pt-2 border-t border-white/5">
+                    <h5 className="text-[11px] font-mono uppercase text-white font-semibold tracking-wider">
+                      Technical Architecture & Requirements Matrix
+                    </h5>
+                    <div className="grid grid-cols-1 gap-2.5">
+                      {project.prd.coreSpecifications.map((spec, sIdx) => (
+                        <div key={sIdx} className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5">
+                          <div className="text-xs font-mono font-semibold text-[#00F2FE]">
+                            § {spec.section}
+                          </div>
+                          <ul className="space-y-1 text-[11px] text-gray-300 font-light">
+                            {spec.details.map((d, dIdx) => (
+                              <li key={dIdx} className="flex items-start gap-2">
+                                <span className="text-gray-500 font-mono">›</span>
+                                <span>{d}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Compliance & Sanitization Disclaimer */}
+                  <div className="p-3 rounded-xl bg-white/[0.02] border border-white/5 text-[10px] font-mono text-gray-400 space-y-1">
+                    <div className="text-gray-300 font-semibold uppercase">Institutional Compliance & Data Privacy</div>
+                    <p className="leading-relaxed">{project.prd.complianceNotes}</p>
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div className="p-3 sm:p-4 border-t border-white/10 bg-white/[0.02] flex items-center justify-between shrink-0">
+            {project.prd && (
+              <div className="text-[11px] font-mono text-gray-400 flex items-center gap-1.5">
+                <FileText className="w-3.5 h-3.5 text-[#00F2FE]" />
+                <span className="hidden sm:inline">Official Document:</span>
+                <span className="text-white truncate max-w-[180px] sm:max-w-xs">{project.prd.fileName}</span>
+              </div>
+            )}
+            <button onClick={onClose} className="px-5 py-2 rounded-xl bg-white/5 text-xs font-mono text-gray-300 hover:text-white cursor-pointer flex items-center gap-2 ml-auto" title="Close (Escape key)">
+              <span>Close</span>
+              <kbd className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white/10 text-gray-400 border border-white/10">Esc</kbd>
+            </button>
+          </div>
+        </motion.div>
       </motion.div>
-    </motion.div>
+
+      {/* FULLSCREEN PRD READER MODAL */}
+      <AnimatePresence>
+        {isFullscreenPrd && project.prd && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[120] bg-black/95 backdrop-blur-xl flex flex-col select-none"
+            onContextMenu={(e) => { e.preventDefault(); return false; }}
+          >
+            {/* Top Reader Navigation Bar */}
+            <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-[#06080F]/90 shrink-0">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="p-1.5 rounded-lg bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE]">
+                  <FileText className="w-4 h-4" />
+                </div>
+                <div className="min-w-0">
+                  <h3 className="text-xs sm:text-sm font-bold text-white font-mono truncate">
+                    {project.prd.documentTitle}
+                  </h3>
+                  <div className="text-[10px] font-mono text-gray-400 truncate">
+                    {project.prd.version} · {project.prd.pages} Pages · Author: Clare Angelie T. Dolino
+                  </div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-2 sm:gap-3 shrink-0">
+                <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-amber-400/10 border border-amber-400/20 text-amber-300 text-[10px] font-mono">
+                  <Lock className="w-3 h-3" />
+                  <span>Downloads Disabled · View-Only</span>
+                </div>
+                <button
+                  onClick={() => setIsFullscreenPrd(false)}
+                  className="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-mono text-xs flex items-center gap-1.5 transition-colors cursor-pointer"
+                  title="Close Fullscreen (Esc)"
+                >
+                  <Minimize2 className="w-3.5 h-3.5" />
+                  <span className="hidden sm:inline">Minimize</span>
+                  <span className="text-[10px] text-gray-400">Esc</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Fullscreen Embedded Iframe */}
+            <div className="flex-1 w-full h-full bg-slate-950 relative overflow-hidden">
+              <iframe
+                src={`${project.prd.pdfUrl}#toolbar=0&navpanes=0&scrollbar=1&view=FitH`}
+                title={project.prd.documentTitle}
+                className="w-full h-full border-0 select-none"
+                onContextMenu={(e) => { e.preventDefault(); return false; }}
+              />
+            </div>
+
+            {/* Bottom Security Footer */}
+            <div className="px-6 py-2 bg-[#06080F] border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-gray-400 shrink-0">
+              <span>{project.org} · Technical Product Requirements Specification</span>
+              <span>Protected Review Mode</span>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 
@@ -1814,6 +2314,7 @@ export default function App() {
   const [isScrolledPast, setIsScrolledPast] = useState(false);
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
+  const [modalInitialTab, setModalInitialTab] = useState<"overview" | "milestones" | "stack" | "prd">("overview");
 
   const prevIndexRef = useRef<number>(0);
   const currIndex = SECTIONS.indexOf(activeSection);
@@ -2304,6 +2805,7 @@ export default function App() {
                       const proj = PROJECTS.find((p) => p.id === projectId);
                       if (proj) {
                         soundEngine.playCardHover();
+                        setModalInitialTab("overview");
                         setSelectedProject(proj);
                       }
                     }}
@@ -2439,7 +2941,10 @@ export default function App() {
                   <div 
                     role="button"
                     tabIndex={0}
-                    onClick={() => { setSelectedProject(project); }}
+                    onClick={() => { 
+                      setModalInitialTab("overview");
+                      setSelectedProject(project); 
+                    }}
                     className="group glow-border bg-white/[0.03] backdrop-blur-lg rounded-xl p-4 sm:p-5.5 cursor-pointer flex flex-col justify-between min-h-[220px] h-full flex-1 w-full text-left space-y-3 self-stretch"
                   >
                     <div className="space-y-2.5">
@@ -2452,6 +2957,12 @@ export default function App() {
                           <span className="text-[10px] sm:text-[11px] font-mono text-gray-300 px-2 py-0.5 rounded bg-white/5 border border-white/10 shrink-0">
                             {project.year}
                           </span>
+                          {project.prd && (
+                            <span className="text-[10px] sm:text-[11px] font-mono text-purple-300 px-1.5 py-0.5 rounded bg-purple-500/10 border border-purple-500/25 shrink-0 flex items-center gap-1">
+                              <FileText className="w-2.5 h-2.5 text-purple-400" />
+                              <span>PRD</span>
+                            </span>
+                          )}
                         </div>
                         <span className="text-[10px] sm:text-[11px] text-[#00F2FE] font-mono font-semibold shrink-0 ml-auto group-hover:underline">
                           Inspect Details →
@@ -2476,10 +2987,28 @@ export default function App() {
                     </div>
 
                     <div className="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
-                      <span className="text-[#00F2FE] font-semibold flex items-center gap-1 text-[11px] sm:text-xs shrink-0">
-                        <span>View Case Study & Stack</span>
-                        <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
-                      </span>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="text-[#00F2FE] font-semibold flex items-center gap-1 text-[11px] sm:text-xs shrink-0">
+                          <span>Case Study</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
+                        </span>
+                        {project.prd && (
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setModalInitialTab("prd");
+                              setSelectedProject(project);
+                            }}
+                            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#00F2FE]/10 hover:bg-[#00F2FE]/25 text-[#00F2FE] border border-[#00F2FE]/30 text-[10px] font-mono font-medium transition-colors cursor-pointer"
+                            title="Open Official PRD Document (Embed, Read-Only)"
+                          >
+                            <FileText className="w-3 h-3 shrink-0" />
+                            <span>PRD Embed</span>
+                            <Lock className="w-2.5 h-2.5 text-gray-400 shrink-0" />
+                          </button>
+                        )}
+                      </div>
                       <ComplexityMeter level={project.complexity.level} label={project.complexity.label} />
                     </div>
                   </div>
@@ -2667,7 +3196,13 @@ export default function App() {
 
       {/* Modals */}
       <AnimatePresence>
-        {selectedProject && <ProjectDetailModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+        {selectedProject && (
+          <ProjectDetailModal 
+            project={selectedProject} 
+            initialTab={modalInitialTab} 
+            onClose={() => setSelectedProject(null)} 
+          />
+        )}
       </AnimatePresence>
     </div>
   );

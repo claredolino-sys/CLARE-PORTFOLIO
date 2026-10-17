@@ -15,6 +15,21 @@ export interface ProjectStackCategory {
   items: string[];
 }
 
+export interface ProjectPRD {
+  fileName: string;
+  pdfUrl: string;
+  documentTitle: string;
+  version: string;
+  status: string;
+  standard: string;
+  classification: string;
+  pages: number;
+  executiveSummary: string;
+  keyObjectives: string[];
+  coreSpecifications: { section: string; details: string[] }[];
+  complianceNotes: string;
+}
+
 export interface ProjectItem {
   id: number;
   title: string;
@@ -38,6 +53,7 @@ export interface ProjectItem {
   complexity: { level: number; label: string };
   milestones: ProjectMilestone[];
   highlights: string[];
+  prd?: ProjectPRD;
 }
 
 export const PROJECTS: ProjectItem[] = [
