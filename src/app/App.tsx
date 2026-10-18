@@ -543,6 +543,9 @@ export interface SkillItem {
   proofBadge: string;
   projectId?: number;
   projectTag?: string;
+  certUrl?: string;
+  certBadge?: string;
+  certTitle?: string;
 }
 
 export interface SkillCategoryData {
@@ -576,7 +579,15 @@ export const SKILLS: Record<string, SkillCategoryData> = {
     icon: Code2, 
     items: [
       { name: "React & Next.js", proofBadge: "Hands-on Implementation", projectId: 2, projectTag: "TrackMyHours" },
-      { name: "JavaScript & TypeScript", proofBadge: "Production Use", projectId: 1, projectTag: "PIA R8 Finance" },
+      { 
+        name: "JavaScript & TypeScript", 
+        proofBadge: "HackerRank Verified", 
+        projectId: 1, 
+        projectTag: "PIA R8 Finance",
+        certUrl: "https://www.hackerrank.com/certificates/iframe/fab4af630aab",
+        certBadge: "HackerRank Verified",
+        certTitle: "JavaScript (Intermediate)"
+      },
       { name: "HTML5 & CSS3", proofBadge: "Hands-on Implementation", projectId: 1, projectTag: "PIA R8 Finance" },
       { name: "Node.js & Express", proofBadge: "Production Use", projectId: 1, projectTag: "PIA R8 Finance" },
       { name: "Git & REST APIs", proofBadge: "Project Experience", projectId: 1, projectTag: "PIA R8 Finance" },
@@ -803,9 +814,11 @@ function ComplexityMeter({ level, label }: { level: number; label: string }) {
 function SkillItemRow({
   item,
   onSelectProject,
+  onOpenCert,
 }: {
   item: SkillItem;
   onSelectProject: (projectId: number) => void;
+  onOpenCert?: () => void;
 }) {
   const project = item.projectId ? PROJECTS.find((p) => p.id === item.projectId) : undefined;
   const [copied, setCopied] = useState(false);
@@ -856,16 +869,37 @@ function SkillItemRow({
         </div>
       </div>
 
-      {project && item.projectTag && (
-        <button
-          onClick={() => onSelectProject(item.projectId!)}
-          className="self-start inline-flex items-center gap-1 text-[10px] font-mono text-[#00F2FE]/80 hover:text-[#00F2FE] hover:underline transition-colors mt-1 cursor-pointer"
-          title={`View Case Study: ${project.title}`}
-        >
-          <ArrowUpRight className="w-3 h-3 shrink-0" />
-          <span>Verified in: {item.projectTag}</span>
-        </button>
-      )}
+      <div className="flex flex-wrap items-center gap-2 mt-1">
+        {project && item.projectTag && (
+          <button
+            onClick={() => onSelectProject(item.projectId!)}
+            className="inline-flex items-center gap-1 text-[10px] font-mono text-[#00F2FE]/80 hover:text-[#00F2FE] hover:underline transition-colors cursor-pointer"
+            title={`View Case Study: ${project.title}`}
+          >
+            <ArrowUpRight className="w-3 h-3 shrink-0" />
+            <span>Verified in: {item.projectTag}</span>
+          </button>
+        )}
+
+        {item.certUrl && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (onOpenCert) {
+                onOpenCert();
+              } else {
+                window.open(item.certUrl, "_blank");
+              }
+            }}
+            className="inline-flex items-center gap-1 text-[10px] font-mono text-[#00EA64] hover:text-white hover:underline transition-colors cursor-pointer"
+            title={`View Verified HackerRank Certificate (${item.certTitle || "JavaScript Intermediate"})`}
+          >
+            <Award className="w-3 h-3 text-[#00EA64] shrink-0" />
+            <span>{item.certBadge || "HackerRank Verified"} →</span>
+          </button>
+        )}
+      </div>
     </div>
   );
 }
@@ -877,12 +911,14 @@ function SkillCategoryCard({
   categoryIdx,
   isParentActive,
   onSelectProject,
+  onOpenCert,
 }: {
   category: string;
   data: SkillCategoryData;
   categoryIdx: number;
   isParentActive: boolean;
   onSelectProject: (projectId: number) => void;
+  onOpenCert?: () => void;
 }) {
   const [isVisible, setIsVisible] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
@@ -938,7 +974,12 @@ function SkillCategoryCard({
 
         <div className="space-y-2 pt-1">
           {data.items.map((item) => (
-            <SkillItemRow key={item.name} item={item} onSelectProject={onSelectProject} />
+            <SkillItemRow 
+              key={item.name} 
+              item={item} 
+              onSelectProject={onSelectProject} 
+              onOpenCert={onOpenCert}
+            />
           ))}
         </div>
       </div>
@@ -2117,6 +2158,159 @@ class SoundEngine {
 
 const soundEngine = new SoundEngine();
 
+// --- HackerRank Brand Iconography ---
+function HackerRankIcon({ className = "w-4 h-4 shrink-0" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-label="HackerRank">
+      <path d="M12 0L1.6 6v12L12 24l10.4-6V6L12 0zm2.8 15.6h-2.1v-3.2H9.3v3.2H7.2V8.4h2.1v3.1h3.4V8.4h2.1v7.2z" />
+    </svg>
+  );
+}
+
+// --- HackerRank Verified Skill Certificate Modal ---
+function HackerRankCertificateModal({
+  onClose,
+  theme = "deep-space",
+}: {
+  onClose: () => void;
+  theme?: "deep-space" | "cyber-light";
+}) {
+  const isLight = theme === "cyber-light";
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-[120] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-xl"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ scale: 0.95, opacity: 0, y: 16 }}
+        animate={{ scale: 1, opacity: 1, y: 0 }}
+        exit={{ scale: 0.95, opacity: 0, y: 16 }}
+        transition={{ type: "spring", duration: 0.4, bounce: 0 }}
+        onClick={(e) => e.stopPropagation()}
+        className={`w-full max-w-4xl max-h-[92vh] flex flex-col rounded-2xl border shadow-2xl overflow-hidden ${
+          isLight
+            ? "bg-white border-slate-200 text-slate-900 shadow-2xl"
+            : "bg-[#090D16] border-white/10 text-white shadow-[0_0_50px_rgba(0,234,100,0.18)]"
+        }`}
+      >
+        {/* Top Modal Header */}
+        <div className={`p-4 sm:p-5 border-b flex items-center justify-between gap-4 shrink-0 ${
+          isLight ? "border-slate-200 bg-slate-50" : "border-white/10 bg-black/40"
+        }`}>
+          <div className="flex items-center gap-3 min-w-0">
+            <div className="p-2.5 rounded-xl bg-[#00EA64]/15 border border-[#00EA64]/30 text-[#00EA64] shrink-0 shadow-[0_0_12px_rgba(0,234,100,0.25)]">
+              <HackerRankIcon className="w-5 h-5 text-[#00EA64]" />
+            </div>
+            <div className="min-w-0">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-[#00EA64]/15 border border-[#00EA64]/30 text-[#00EA64] font-semibold uppercase tracking-wider">
+                  Verified Skill Assessment
+                </span>
+                <span className="text-[10px] font-mono text-gray-400">
+                  ID: fab4af630aab
+                </span>
+              </div>
+              <h3 className={`text-base sm:text-lg font-bold font-mono tracking-tight mt-0.5 truncate ${
+                isLight ? "text-slate-900" : "text-white"
+              }`}>
+                JavaScript (Intermediate) Certificate
+              </h3>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-2 shrink-0">
+            <a
+              href="https://www.hackerrank.com/certificates/iframe/fab4af630aab"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/15 text-gray-200 border border-white/20 text-xs font-mono font-medium transition-colors cursor-pointer"
+              title="Open Direct HackerRank Certificate Iframe (fab4af630aab)"
+            >
+              <span>Iframe URL</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            <a
+              href="https://www.hackerrank.com/certificates/fab4af630aab"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[#00EA64]/15 hover:bg-[#00EA64]/25 text-[#00EA64] border border-[#00EA64]/30 text-xs font-mono font-medium transition-colors cursor-pointer"
+              title="Open Official Verification Page on HackerRank"
+            >
+              <span>Verify on HackerRank</span>
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+            <button
+              onClick={onClose}
+              className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+                isLight
+                  ? "bg-slate-100 hover:bg-slate-200 border-slate-200 text-slate-600"
+                  : "bg-white/5 hover:bg-white/15 border-white/10 text-gray-300 hover:text-white"
+              }`}
+              title="Close (Esc)"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        {/* Certificate Overview Bar */}
+        <div className={`px-4 sm:px-6 py-2.5 border-b text-xs font-mono flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 shrink-0 ${
+          isLight ? "bg-slate-100/60 border-slate-200 text-slate-600" : "bg-white/[0.02] border-white/5 text-gray-300"
+        }`}>
+          <div className="flex items-center gap-2">
+            <span className="text-gray-400">Recipient:</span>
+            <strong className={isLight ? "text-slate-900" : "text-white"}>Clare Angelie T. Dolino</strong>
+          </div>
+          <div className="flex items-center gap-2 text-[11px] text-gray-400">
+            <span>Core Competencies: Design Patterns · Memory Management · Concurrency Model · Event Loop</span>
+          </div>
+        </div>
+
+        {/* Embedded Responsive Iframe */}
+        <div className="flex-1 w-full min-h-[480px] sm:min-h-[580px] bg-slate-900 relative overflow-hidden">
+          <iframe
+            src="https://www.hackerrank.com/certificates/iframe/fab4af630aab"
+            title="HackerRank Certificate - Clare Angelie T. Dolino"
+            className="w-full h-full min-h-[480px] sm:min-h-[580px] border-0 bg-white"
+          />
+        </div>
+
+        {/* Bottom Verification Footer */}
+        <div className={`p-3 sm:p-4 border-t flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs font-mono shrink-0 ${
+          isLight ? "border-slate-200 bg-slate-50 text-slate-600" : "border-white/10 bg-black/40 text-gray-400"
+        }`}>
+          <div className="flex items-center gap-2 text-[11px]">
+            <CheckCircle2 className="w-4 h-4 text-[#00EA64] shrink-0" />
+            <span>Authenticated by HackerRank · Independent benchmark for software engineering proficiency</span>
+          </div>
+
+          <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+            <a
+              href="https://www.hackerrank.com/certificates/fab4af630aab"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[#00EA64] hover:underline flex items-center gap-1 text-[11px]"
+            >
+              <span>Direct Link: hackerrank.com/certificates/fab4af630aab</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+            <button
+              onClick={onClose}
+              className="px-4 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs cursor-pointer"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
 function ProjectDetailModal({ 
   project, 
   initialTab = "overview", 
@@ -2663,6 +2857,7 @@ export default function App() {
   const [soundEnabled, setSoundEnabled] = useState(true);
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [modalInitialTab, setModalInitialTab] = useState<"overview" | "milestones" | "stack" | "prd">("overview");
+  const [showHackerRankModal, setShowHackerRankModal] = useState(false);
 
   const prevIndexRef = useRef<number>(0);
   const currIndex = SECTIONS.indexOf(activeSection);
@@ -2814,6 +3009,12 @@ export default function App() {
 
       // Escape key closes modal if open
       if (e.key === "Escape") {
+        if (showHackerRankModal) {
+          e.preventDefault();
+          soundEngine.playDismissClick();
+          setShowHackerRankModal(false);
+          return;
+        }
         if (selectedProject) {
           e.preventDefault();
           soundEngine.playDismissClick();
@@ -2823,7 +3024,7 @@ export default function App() {
       }
 
       // If a modal is open, prevent background section navigation
-      if (selectedProject) return;
+      if (selectedProject || showHackerRankModal) return;
 
       // Section Navigation via Arrow Keys (Next: ArrowRight, ArrowDown; Prev: ArrowLeft, ArrowUp)
       if (e.key === "ArrowRight" || e.key === "ArrowDown") {
@@ -2981,6 +3182,19 @@ export default function App() {
                   <Award className="w-3.5 h-3.5 text-[#7F00FF] shrink-0" />
                   <span>PIA Region 8 Proficiency Awardee</span>
                 </span>
+                <button
+                  type="button"
+                  onClick={() => {
+                    soundEngine.playCardHover();
+                    setShowHackerRankModal(true);
+                  }}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00EA64]/10 border border-[#00EA64]/30 text-[#00EA64] font-mono text-[11px] sm:text-xs hover:bg-[#00EA64]/20 transition-all cursor-pointer shadow-[0_0_12px_rgba(0,234,100,0.15)] group"
+                  title="View HackerRank Certified JavaScript (Intermediate) Certificate"
+                >
+                  <HackerRankIcon className="w-3.5 h-3.5 text-[#00EA64] shrink-0" />
+                  <span>HackerRank Certified (JS Intermediate)</span>
+                  <ArrowUpRight className="w-3 h-3 text-[#00EA64] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </button>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[11px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(0,242,254,0.15)]">
                   <Globe className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
                   <span>Open for Relocation &amp; International Opportunities</span>
@@ -3042,6 +3256,19 @@ export default function App() {
                         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#7F00FF]/15 border border-[#7F00FF]/30 text-[#C084FC] font-semibold text-[11px]">
                           <Award className="w-3 h-3 shrink-0" /> PIA R8 Proficiency Awardee
                         </span>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            soundEngine.playCardHover();
+                            setShowHackerRankModal(true);
+                          }}
+                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#00EA64]/15 border border-[#00EA64]/30 text-[#00EA64] font-semibold text-[11px] hover:bg-[#00EA64]/25 transition-all cursor-pointer shadow-[0_0_10px_rgba(0,234,100,0.15)] group"
+                          title="View Verified HackerRank Certificate"
+                        >
+                          <HackerRankIcon className="w-3 h-3 text-[#00EA64] shrink-0" />
+                          <span>HackerRank Certified (JS Intermediate)</span>
+                          <ArrowUpRight className="w-2.5 h-2.5 text-[#00EA64] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        </button>
                         <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold text-[11px]">
                           <Globe className="w-3 h-3 shrink-0" /> Open for Relocation &amp; International Roles
                         </span>
@@ -3070,7 +3297,7 @@ export default function App() {
                 </div>
 
                 {/* Key Education & Milestones Highlights Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3.5 text-xs text-left">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 text-xs text-left">
                   <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5">
                     <div className="flex items-center gap-2 font-mono text-[#00F2FE] font-semibold uppercase text-[11px]">
                       <GraduationCap className="w-4 h-4 shrink-0" />
@@ -3091,7 +3318,7 @@ export default function App() {
                     <p className="text-gray-400 font-mono text-[11px]">3 Production platforms delivered (Jan–Apr 2026)</p>
                   </div>
 
-                  <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5 sm:col-span-2 md:col-span-1">
+                  <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5">
                     <div className="flex items-center gap-2 font-mono text-[#00F2FE] font-semibold uppercase text-[11px]">
                       <ShieldCheck className="w-4 h-4 shrink-0" />
                       <span>Research & Quality</span>
@@ -3099,6 +3326,30 @@ export default function App() {
                     <div className="text-white font-bold">Capstone Project Leader & Author</div>
                     <p className="text-gray-300 font-light">CDMIS — Centralized Document System</p>
                     <p className="text-[#C084FC] font-mono text-[11px]">ISO/IEC 25010 Usability Rating: 4.85 / 5.00</p>
+                  </div>
+
+                  <div 
+                    onClick={() => {
+                      soundEngine.playCardHover();
+                      setShowHackerRankModal(true);
+                    }}
+                    className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#00EA64]/50 transition-all space-y-1.5 cursor-pointer group shadow-sm hover:shadow-[0_0_20px_rgba(0,234,100,0.2)]"
+                    title="Click to view verified HackerRank Certificate embed & details"
+                  >
+                    <div className="flex items-center justify-between font-mono text-[#00EA64] font-semibold uppercase text-[11px]">
+                      <div className="flex items-center gap-1.5">
+                        <HackerRankIcon className="w-3.5 h-3.5 text-[#00EA64] shrink-0" />
+                        <span>Verified Credential</span>
+                      </div>
+                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-500 group-hover:text-[#00EA64] transition-colors" />
+                    </div>
+                    <div className="text-white font-bold group-hover:text-[#00EA64] transition-colors">JavaScript (Intermediate)</div>
+                    <p className="text-gray-300 font-light">HackerRank Certified Skill Assessment</p>
+                    <p className="text-[#00EA64] font-mono text-[11px] flex items-center gap-1">
+                      <span>ID: fab4af630aab</span>
+                      <span className="text-gray-500">·</span>
+                      <span className="underline">View Embed ↗</span>
+                    </p>
                   </div>
                 </div>
 
@@ -3149,6 +3400,10 @@ export default function App() {
                     data={data}
                     categoryIdx={idx}
                     isParentActive={activeSection === '02 // Backstage'}
+                    onOpenCert={() => {
+                      soundEngine.playCardHover();
+                      setShowHackerRankModal(true);
+                    }}
                     onSelectProject={(projectId) => {
                       const proj = PROJECTS.find((p) => p.id === projectId);
                       if (proj) {
@@ -3432,6 +3687,18 @@ export default function App() {
                   >
                     <Linkedin className="w-4 h-4" />
                   </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      soundEngine.playCardHover();
+                      setShowHackerRankModal(true);
+                    }}
+                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:border-[#00EA64]/50 text-gray-400 hover:text-[#00EA64] transition-all cursor-pointer shadow-sm hover:shadow-[0_0_12px_rgba(0,234,100,0.25)]"
+                    title="View HackerRank Certified JavaScript (Intermediate) Certificate Embed"
+                    aria-label="HackerRank Certificate"
+                  >
+                    <HackerRankIcon className="w-4 h-4 text-[#00EA64]" />
+                  </button>
                 </div>
               </div>
             </div>
@@ -3549,6 +3816,12 @@ export default function App() {
             project={selectedProject} 
             initialTab={modalInitialTab} 
             onClose={() => setSelectedProject(null)} 
+          />
+        )}
+        {showHackerRankModal && (
+          <HackerRankCertificateModal
+            theme={theme}
+            onClose={() => setShowHackerRankModal(false)}
           />
         )}
       </AnimatePresence>
