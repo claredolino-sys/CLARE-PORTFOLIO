@@ -151,20 +151,20 @@ const PROJECTS: ProjectItem[] = [
     ],
     complexity: { level: 5, label: "Lvl 5" },
     prd: {
-      fileName: "PRD_PIA_R8_Finance_Monitoring_System.pdf",
-      pdfUrl: "/prds/PRD_PIA_R8_Finance_Monitoring_System.pdf",
-      documentTitle: "Product Requirements Document (PRD): PIA R8 Finance Monitoring System",
-      version: "v2.1.0 (Production Release)",
-      status: "Approved / Active in Production",
-      standard: "Commission on Audit (COA) Accounting Circulars & PH Government Audit Rules",
-      classification: "Official Internal Government / Financial (Sanitized Portfolio Demo)",
-      pages: 6,
-      executiveSummary: "Authoritative Product Requirements Document governing the architectural modernization of the Philippine Information Agency (PIA) Regional Office 8 financial tracking operations. Codifies the dual-layer persistence model, lexical token auto-classification rules, thousand-row chunked batch spreadsheet ingestion, and real-time budget burn rate governance with zero financial reconciliation discrepancies.",
+      fileName: "Finance_Monitoring_System_PRD_e10c6e49.pdf",
+      pdfUrl: "/assets/aistudio/Finance_Monitoring_System_PRD_e10c6e49.pdf",
+      documentTitle: "Product Requirements Document (PRD) — Public Sector Fund & Finance Intelligence System",
+      version: "Version 1.0 (Production GA)",
+      status: "Approved & Shipped to Production",
+      standard: "Public Sector Fund Accounting, ORS, DV, Checks & COA Guidelines",
+      classification: "Production-Grade Web Application Specification (Sanitized Portfolio Demo)",
+      pages: 7,
+      executiveSummary: "Production PRD for GovFinance Intelligence Portal — a resilient, zero-latency financial operations platform designed for regional public sector agencies to automatically ingest unstructured multi-sheet fiscal workbooks, classify statutory fund disbursements in real time, enforce budget ceiling integrity, and generate auditable statutory reports in seconds instead of days.",
       keyObjectives: [
-        "Eliminate multi-day manual spreadsheet reconciliation cycles across ORS and disbursement vouchers",
-        "Enforce zero duplicate voucher disbursements via compound unique relational integrity constraints",
-        "Automate lexical parsing of Personal Services (PS) vs. MOOE line items in under 250ms",
-        "Guarantee strict adherence to Commission on Audit (COA) standardized reporting outputs"
+        "Slashed monthly compilation cycle by >85% (from 3–4 days down to <15 mins)",
+        "Client-side heuristic multi-sheet SheetJS parsing with <2.8s ingestion for >500 rows",
+        "98.4% automated classification accuracy for PS vs MOOE fund tagging",
+        "100% duplicate voucher prevention via SHA-256 and composite key guard"
       ],
       coreSpecifications: [
         {
@@ -264,20 +264,20 @@ const PROJECTS: ProjectItem[] = [
     ],
     complexity: { level: 5, label: "Lvl 5" },
     prd: {
-      fileName: "PRD_TrackMyHours_Biometric_Attendance_System.pdf",
-      pdfUrl: "/prds/PRD_TrackMyHours_Biometric_Attendance_System.pdf",
-      documentTitle: "Product Requirements Document (PRD): TrackMyHours Biometric Attendance Platform",
-      version: "v3.2 (Portfolio Release)",
-      status: "Approved / Production Live",
+      fileName: "TrackMyHours_PRD_b6243116.pdf",
+      pdfUrl: "/assets/aistudio/TrackMyHours_PRD_b6243116.pdf",
+      documentTitle: "Product Requirements Document (PRD) — Regional Internship & Staff (RIS) Portal",
+      version: "Q2 2026 Production Rollout",
+      status: "Approved & Successfully Deployed to Production",
       standard: "Civil Service Form 48 (CSC Form 48 PH Statutory Standard)",
-      classification: "Official Specification (Sanitized Portfolio Demo)",
-      pages: 8,
-      executiveSummary: "Institutional PRD defining an anti-spoofing, zero-trust attendance ecosystem for regional public agencies and immersion personnel. Specifies client-side facial liveness neural detection, multi-tier geofencing and IP subnet policies, offline-first IndexedDB buffer storage, and Google Gemini multimodal tool calling for automated medical slip and travel order validation.",
+      classification: "Automated Daily Time Recording (DTR), Anti-Spoof Geofence & Civil Service Compliance",
+      pages: 6,
+      executiveSummary: "Comprehensive PRD chartered to replace physical attendance logbooks with an automated, tamper-resilient, mobile-responsive digital attendance terminal featuring 150m GPS geofencing, camera anti-spoofing capture, civil service Form 48 DTR calculation engine, and supervisor dispute overrides with zero data loss.",
       keyObjectives: [
-        "Eliminate proxy check-ins ('buddy punching') via client-side 68-point facial mesh neural verification",
-        "Provide 100% attendance resilience in low-connectivity zones via local IndexedDB queuing",
-        "Automate statutory CSC Form 48 daily time record generation and undertime calculations",
-        "Enable autonomous extraction of employee leave slips and travel orders using Gemini multimodal AI"
+        "Achieved -96.3% reduction in monthly DTR audit time (4.5 hrs/user down to <10 seconds)",
+        "100% buddy-punching elimination via 150m geofencing and camera snapshot verification",
+        "Exact second timestamp accuracy for punctuality tracking with 100% dispute auditability",
+        "Automated Civil Service Form 48 DTR generation and quota-bounded LRU cache storage"
       ],
       coreSpecifications: [
         {
@@ -377,20 +377,20 @@ const PROJECTS: ProjectItem[] = [
     ],
     complexity: { level: 5, label: "Lvl 5" },
     prd: {
-      fileName: "PRD_CDMIS_Centralized_Document_Management_System.pdf",
-      pdfUrl: "/prds/PRD_CDMIS_Centralized_Document_Management_System.pdf",
-      documentTitle: "Product Requirements Document (PRD): Centralized Document Management Information System (CDMIS)",
-      version: "v1.0.0 (University Archives Edition / Defended Capstone)",
-      status: "Defended Capstone / Production-Ready Demo",
-      standard: "ISO/IEC 25010 Software Quality Standard & NAP Form 1 Records Inventory",
-      classification: "Institutional Research Specification / Archival System",
-      pages: 4,
-      executiveSummary: "Comprehensive institutional PRD authored for the BiPSU Records & Archives Office. Formulates the complete functional and technical specifications for digitizing campus archives, standardizing National Archives of the Philippines (NAP) Form 1 inventory appraisal workflows, and establishing a 3-tier RBAC clearance hierarchy backed by empirical ISO/IEC 25010 software quality evaluation.",
+      fileName: "CDMIS_PRD_b6fe5bd0.pdf",
+      pdfUrl: "/assets/aistudio/CDMIS_PRD_b6fe5bd0.pdf",
+      documentTitle: "Product Requirements Document (PRD) — Centralized Document Management Information System (CDMIS)",
+      version: "v1.0 Production (QMS Verified)",
+      status: "Approved & Live (ISO/IEC 25010 Mean: 4.85/5.00)",
+      standard: "Statutory Archival Mandate / ISO QMS / ISO/IEC 25010 Software Quality Standard",
+      classification: "Enterprise Records Governance & Workflow Automation (Portfolio Artifact)",
+      pages: 5,
+      executiveSummary: "Authoritative Product Requirements Document governing the transition from decentralized paper-based records custody into a single, high-availability digital records platform. Establishes standardized classification taxonomy, automates multi-tier approval workflows for confidential records, and maintains an immutable audit trail.",
       keyObjectives: [
-        "Slash physical document retrieval latency by ~80% across 12 academic and administrative units",
-        "Attain measurable ISO/IEC 25010 benchmark excellence (achieved 4.85/5.00 across 50 evaluators)",
-        "Implement National Archives of the Philippines (NAP) Form 1 statutory archival records taxonomy",
-        "Ensure complete audit traceability and tamper-proofing via SHA-256 document hashing"
+        "~80% reduction in end-to-end document retrieval and delivery latency (from days to seconds)",
+        "95% speedup in confidential document review and sign-off SLA (from 48–72 hrs to <2.5 hrs)",
+        "0% privilege leakage via multi-tier RBAC boundary isolation (Public, Custodian, Governance)",
+        "Statutory records retention and automated disposition scheduling"
       ],
       coreSpecifications: [
         {
@@ -491,20 +491,20 @@ const PROJECTS: ProjectItem[] = [
     ],
     complexity: { level: 4, label: "Lvl 4" },
     prd: {
-      fileName: "PRD_RIS_Inventory_Management_Portal.pdf",
-      pdfUrl: "/prds/PRD_RIS_Inventory_Management_Portal.pdf",
-      documentTitle: "Product Requirements Document (PRD): RIS Inventory Management Portal",
-      version: "v1.2.0 (Approved / Demo Release)",
-      status: "Approved / Active in Production",
-      standard: "Government Accounting Manual (GAM) Vol. II Appendix 63 & COA Standards",
-      classification: "Official Specification (Sanitized Portfolio Demo)",
-      pages: 6,
-      executiveSummary: "Production PRD governing the end-to-end requisition, stock ledger balance verification, and custodian issuance workflows for regional public sector operations. Details the 4-tier approval matrix, automated 24-hour database disaster recovery snapshot pipeline using pg_cron and Supabase Edge Functions, and GAM Appendix 63 standardized export engines.",
+      fileName: "RIS_Portal_PRD_c871c819.pdf",
+      pdfUrl: "/assets/aistudio/RIS_Portal_PRD_c871c819.pdf",
+      documentTitle: "Product Requirements Document (PRD) — Enterprise Material Requisition & Issuance System (ERIS)",
+      version: "Release v1.0 (Production GA)",
+      status: "Approved & Deployed to Production",
+      standard: "Government Accounting Manual (GAM) Vol. II Appendix 63 & COA Requisition Standards",
+      classification: "Digital Requisition & Inventory Core Platform (Confidential Portfolio Artifact)",
+      pages: 5,
+      executiveSummary: "Production-grade PRD specifying a zero-friction web-based digital portal enabling staff to browse live inventory, compile multi-item slips, obtain automated approvals, and trigger atomic stock deductions with audit-ready vector PDF generation and SQLite ACID transaction safety.",
       keyObjectives: [
-        "Replace paper multi-copy requisition slips with real-time digital supply cart and routing",
-        "Maintain real-time atomic stock ledger balances with zero overselling or inventory drift",
-        "Enforce 4-tier approval chain: Requester -> Recommending -> Approver -> Property Custodian",
-        "Guarantee automated 24-hour disaster recovery and data retention with zero data loss"
+        "88% reduction in requisition turnaround time (compressed from 5 days to <4 hours)",
+        "94% cut in physical-to-record inventory variance (discrepancy lowered to <2% via atomic DB locks)",
+        "80% time saved during quarterly compliance prep through instant vector PDF generation",
+        "Zero-cloud lock-in, deployable on local on-premise servers or air-gapped agency networks"
       ],
       coreSpecifications: [
         {
