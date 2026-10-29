@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import clareProfile from "@/imports/CLARE_PROFILE.jpg";
 import { InsightsSection } from "./components/InsightsSection";
+import { ApproachSection } from "./components/ApproachSection";
+import { EngineeringImpactDossier } from "./components/EngineeringImpactDossier";
 
 // --- Configuration ---
 const SECTIONS = ["01 // Overture", "02 // Backstage", "03 // Approach", "04 // Tracklist", "05 // Encore", "06 // Insights"] as const;
@@ -920,42 +922,26 @@ function SkillCategoryCard({
   onSelectProject: (projectId: number) => void;
   onOpenCert?: () => void;
 }) {
-  const [isVisible, setIsVisible] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = cardRef.current;
-    if (!el) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
   const CategoryIcon = data.icon;
 
   return (
-    <div
-      ref={cardRef}
-      onMouseEnter={() => soundEngine.playCardHover()}
-      style={{
-        transitionDelay: `${categoryIdx * 100}ms`,
+    <motion.div
+      initial={{ opacity: 0, y: 36, scale: 0.95 }}
+      whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      viewport={{ once: false, amount: 0.15 }}
+      transition={{
+        type: "spring",
+        stiffness: 260,
+        damping: 24,
+        delay: categoryIdx * 0.08,
       }}
-      className={`group/skillcard bg-white/[0.015] border border-white/10 hover:border-[#00F2FE] rounded-2xl p-4 sm:p-5 flex flex-col justify-between transition-all duration-300 ease-out transform glow-border h-full hover:scale-[1.025] hover:-translate-y-1.5 hover:shadow-[0_0_20px_rgba(0,242,254,0.4),0_0_40px_rgba(0,242,254,0.15)] hover:bg-white/[0.04] ${
-        isParentActive && isVisible
-          ? "opacity-100 translate-y-0 scale-100"
-          : "opacity-0 translate-y-8 scale-95 pointer-events-none"
-      }`}
+      whileHover={{
+        y: -6,
+        scale: 1.025,
+        transition: { duration: 0.2, ease: "easeOut" }
+      }}
+      onMouseEnter={() => soundEngine.playCardHover()}
+      className="group/skillcard bg-white/[0.015] border border-white/10 hover:border-[#00F2FE] rounded-2xl p-4 sm:p-5 flex flex-col justify-between glow-border h-full hover:shadow-[0_0_25px_rgba(0,242,254,0.35),0_0_50px_rgba(0,242,254,0.12)] hover:bg-white/[0.04] cursor-pointer"
     >
       <div className="space-y-3">
         <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
@@ -983,208 +969,13 @@ function SkillCategoryCard({
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
-// --- GitHub Contribution Activity Data & Component (2025–2026 Verified Data) ---
-const WEEKS_COUNT = 53;
-const DAYS_PER_WEEK = 7;
 
-const MONTH_LABELS = [
-  { name: "Oct", weekIndex: 0 },
-  { name: "Nov", weekIndex: 4 },
-  { name: "Dec", weekIndex: 8 },
-  { name: "Jan", weekIndex: 12 },
-  { name: "Feb", weekIndex: 17 },
-  { name: "Mar", weekIndex: 21 },
-  { name: "Apr", weekIndex: 25 },
-  { name: "May", weekIndex: 30 },
-  { name: "Jun", weekIndex: 34 },
-  { name: "Jul", weekIndex: 38 },
-  { name: "Aug", weekIndex: 43 },
-  { name: "Sep", weekIndex: 47 },
-  { name: "Oct", weekIndex: 51 },
-];
 
-// Exact authentic 2025–2026 GitHub Contributions for Clare Dolino (@claredolino-sys)
-const EXACT_GITHUB_CONTRIBUTIONS: Record<string, { count: number; level: number }> = {
-  // Oct 2025
-  "2025-10-15": { count: 2, level: 1 },
-  "2025-10-21": { count: 4, level: 1 },
-  "2025-10-22": { count: 1, level: 1 },
-  "2025-10-27": { count: 3, level: 1 },
-  "2025-10-28": { count: 17, level: 4 }, // Peak October Milestone
-  "2025-10-29": { count: 2, level: 1 },
 
-  // Dec 2025
-  "2025-12-14": { count: 3, level: 1 },
-  "2025-12-27": { count: 2, level: 1 },
-
-  // Feb 2026
-  "2026-02-25": { count: 5, level: 2 },
-  "2026-02-27": { count: 9, level: 2 },
-  "2026-02-28": { count: 1, level: 1 },
-
-  // Mar 2026 (Major Sprint)
-  "2026-03-01": { count: 1, level: 1 },
-  "2026-03-02": { count: 4, level: 1 },
-  "2026-03-03": { count: 12, level: 3 }, // Core Release
-  "2026-03-05": { count: 1, level: 1 },
-  "2026-03-23": { count: 3, level: 1 },
-  "2026-03-24": { count: 5, level: 2 },
-  "2026-03-25": { count: 1, level: 1 },
-
-  // Apr 2026
-  "2026-04-07": { count: 6, level: 2 },
-
-  // Aug 2026 (High-Velocity Sprint)
-  "2026-08-27": { count: 5, level: 2 },
-  "2026-08-28": { count: 6, level: 2 },
-  "2026-08-29": { count: 19, level: 4 }, // Peak Deployment Day
-  "2026-08-30": { count: 5, level: 2 },
-
-  // Oct 2026 (Active Production Handover)
-  "2026-10-13": { count: 1, level: 1 },
-  "2026-10-15": { count: 2, level: 1 },
-  "2026-10-16": { count: 4, level: 1 },
-  "2026-10-17": { count: 6, level: 2 },
-};
-
-const GENERATED_CONTRIBUTIONS = (() => {
-  const weeks: { date: string; count: number; level: number }[][] = [];
-  // Starts on Sunday, Oct 12, 2025 matching the exact 53-week GitHub contribution grid
-  const startDate = new Date(2025, 9, 12, 12, 0, 0);
-
-  for (let w = 0; w < WEEKS_COUNT; w++) {
-    const weekDays = [];
-    for (let d = 0; d < DAYS_PER_WEEK; d++) {
-      const dayDate = new Date(startDate);
-      dayDate.setDate(startDate.getDate() + (w * 7 + d));
-      
-      const y = dayDate.getFullYear();
-      const m = String(dayDate.getMonth() + 1).padStart(2, "0");
-      const day = String(dayDate.getDate()).padStart(2, "0");
-      const dateKey = `${y}-${m}-${day}`;
-      const entry = EXACT_GITHUB_CONTRIBUTIONS[dateKey] || { count: 0, level: 0 };
-
-      const dateStr = dayDate.toLocaleDateString("en-US", {
-        weekday: "short", month: "short", day: "numeric", year: "numeric"
-      });
-
-      weekDays.push({ date: dateStr, count: entry.count, level: entry.level });
-    }
-    weeks.push(weekDays);
-  }
-  return weeks;
-})();
-
-// --- GitHub Contribution Color Palettes & Milestone Annotations ---
-type ContributionPalette = "emerald" | "cyan" | "violet";
-
-interface PaletteScheme {
-  name: string;
-  dotColor: string;
-  accentHex: string;
-  gradientBar: string;
-  badgeBorder: string;
-  badgeBg: string;
-  badgeText: string;
-  levelClassesDark: {
-    empty: string;
-    1: string;
-    2: string;
-    3: string;
-    4: string;
-  };
-  levelClassesLight: {
-    empty: string;
-    1: string;
-    2: string;
-    3: string;
-    4: string;
-  };
-}
-
-const CONTRIBUTION_PALETTES: Record<ContributionPalette, PaletteScheme> = {
-  emerald: {
-    name: "Neon Emerald",
-    dotColor: "bg-[#39d353]",
-    accentHex: "#39d353",
-    gradientBar: "from-emerald-500 via-[#39d353] to-teal-400",
-    badgeBorder: "border-[#238636]/50",
-    badgeBg: "bg-[#238636]/15",
-    badgeText: "text-[#39d353]",
-    levelClassesDark: {
-      empty: "bg-[#161b22]/90 border-[#30363d]/70 hover:border-gray-500",
-      1: "bg-[#0e4429] border-[#166534] hover:border-[#22c55e]",
-      2: "bg-[#006d32] border-[#15803d] hover:border-[#4ade80] shadow-[0_0_6px_rgba(0,109,50,0.5)]",
-      3: "bg-[#26a641] border-[#4ade80] shadow-[0_0_10px_rgba(38,166,65,0.7)]",
-      4: "bg-[#39d353] border-[#bbf7d0] shadow-[0_0_14px_rgba(57,211,83,0.95)]",
-    },
-    levelClassesLight: {
-      empty: "bg-slate-100 border-slate-200/90 hover:border-slate-400",
-      1: "bg-[#bbf7d0] border-[#86efac] hover:border-[#4ade80]",
-      2: "bg-[#4ade80] border-[#22c55e] hover:border-[#16a34a]",
-      3: "bg-[#16a34a] border-[#15803d] shadow-[0_0_8px_rgba(22,163,74,0.35)]",
-      4: "bg-[#14532d] border-[#052e16] shadow-[0_0_10px_rgba(20,83,45,0.45)]",
-    },
-  },
-  cyan: {
-    name: "Electric Cyan",
-    dotColor: "bg-[#00F2FE]",
-    accentHex: "#00F2FE",
-    gradientBar: "from-[#00F2FE] via-[#38BDF8] to-[#7F00FF]",
-    badgeBorder: "border-[#00F2FE]/40",
-    badgeBg: "bg-[#00F2FE]/15",
-    badgeText: "text-[#00F2FE]",
-    levelClassesDark: {
-      empty: "bg-[#0b1329]/90 border-[#1e293b]/70 hover:border-cyan-700",
-      1: "bg-[#083344] border-[#155e75] hover:border-[#0ea5e9]",
-      2: "bg-[#0891b2] border-[#22d3ee] hover:border-[#67e8f9] shadow-[0_0_6px_rgba(8,145,178,0.5)]",
-      3: "bg-[#06b6d4] border-[#67e8f9] shadow-[0_0_10px_rgba(6,182,212,0.75)]",
-      4: "bg-[#00F2FE] border-white shadow-[0_0_16px_rgba(0,242,254,0.95)]",
-    },
-    levelClassesLight: {
-      empty: "bg-slate-100 border-slate-200/90 hover:border-slate-400",
-      1: "bg-[#bae6fd] border-[#7dd3fc] hover:border-[#38bdf8]",
-      2: "bg-[#38bdf8] border-[#0ea5e9] hover:border-[#0284c7]",
-      3: "bg-[#0284c7] border-[#0369a1] shadow-[0_0_8px_rgba(2,132,199,0.35)]",
-      4: "bg-[#0c4a6e] border-[#082f49] shadow-[0_0_10px_rgba(12,74,110,0.45)]",
-    },
-  },
-  violet: {
-    name: "Cosmic Amethyst",
-    dotColor: "bg-[#C084FC]",
-    accentHex: "#C084FC",
-    gradientBar: "from-[#C084FC] via-[#A855F7] to-[#EC4899]",
-    badgeBorder: "border-[#C084FC]/40",
-    badgeBg: "bg-[#C084FC]/15",
-    badgeText: "text-[#C084FC]",
-    levelClassesDark: {
-      empty: "bg-[#130d22]/90 border-[#2e2048]/70 hover:border-purple-600",
-      1: "bg-[#3b0764] border-[#581c87] hover:border-[#9333ea]",
-      2: "bg-[#7e22ce] border-[#9333ea] hover:border-[#c084fc] shadow-[0_0_6px_rgba(126,34,206,0.5)]",
-      3: "bg-[#a855f7] border-[#c084fc] shadow-[0_0_10px_rgba(168,85,247,0.75)]",
-      4: "bg-[#C084FC] border-white shadow-[0_0_16px_rgba(192,132,252,0.95)]",
-    },
-    levelClassesLight: {
-      empty: "bg-slate-100 border-slate-200/90 hover:border-slate-400",
-      1: "bg-[#e9d5ff] border-[#d8b4fe] hover:border-[#c084fc]",
-      2: "bg-[#c084fc] border-[#a855f7] hover:border-[#9333ea]",
-      3: "bg-[#9333ea] border-[#7e22ce] shadow-[0_0_8px_rgba(147,51,234,0.35)]",
-      4: "bg-[#581c87] border-[#3b0764] shadow-[0_0_10px_rgba(88,28,135,0.45)]",
-    },
-  },
-};
-
-const SPRINT_MILESTONES: Record<string, { label: string; badge: string }> = {
-  "2025-10-28": { label: "Architecture, 3NF Schema & BRD Milestone", badge: "🚀 Architecture Milestone" },
-  "2026-03-03": { label: "Finance Monitoring System Core Delivery Sprint", badge: "⚡ Finance Sprint" },
-  "2026-04-07": { label: "CDMIS Capstone ISO/IEC 25010 Defense Validation", badge: "🎓 Academic Defense" },
-  "2026-08-29": { label: "TrackMyHours Zero-Trust Biometric Handover (19 Commits)", badge: "🔥 Peak Milestone" },
-  "2026-10-17": { label: "Production Release & Live UAT Verification", badge: "🎯 Production Live" },
-};
 
 function GitHubContributions({ 
   className = "", 
@@ -2886,11 +2677,12 @@ export default function App() {
     });
   }, []);
 
+  const isLight = theme === "cyber-light";
+
   useEffect(() => {
-    const isLight = theme === "cyber-light";
     document.body.style.backgroundColor = isLight ? "#F9FAFB" : "#06080F";
     document.documentElement.style.backgroundColor = isLight ? "#F9FAFB" : "#06080F";
-  }, [theme]);
+  }, [isLight]);
 
   const currentIndex = SECTIONS.indexOf(activeSection);
 
@@ -3091,51 +2883,109 @@ export default function App() {
       {/* Three.js Background */}
       <ThreeBackground activeSection={activeSection} theme={theme} />
 
-      {/* Persistent Header */}
-      <header className={`absolute top-0 left-0 w-full h-20 sm:h-24 z-50 flex items-center justify-between px-4 sm:px-8 md:px-16 pointer-events-none transition-transform duration-500 ${showHeader ? "translate-y-0" : "-translate-y-full"}`}>
-        <div className="text-lg sm:text-xl md:text-2xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] font-mono pointer-events-auto shrink-0">
+      {/* Persistent Header - Fully Responsive for Mobile, iPad, Tablet & Desktop */}
+      <header className={`absolute top-0 left-0 w-full h-16 sm:h-20 z-50 flex items-center justify-between px-3 sm:px-5 md:px-6 lg:px-8 xl:px-12 pointer-events-none transition-transform duration-500 max-w-full box-border ${showHeader ? "translate-y-0" : "-translate-y-full"}`}>
+        <div className="text-base sm:text-lg md:text-xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] font-mono pointer-events-auto shrink-0">
           C.DOLINO
         </div>
 
-        {/* Mobile Section Nav Selector */}
-        <div className="flex md:hidden pointer-events-auto items-center gap-2">
+        {/* Mobile Section Nav Selector (visible on small mobile < md) */}
+        <div className="flex md:hidden pointer-events-auto items-center gap-1.5 shrink min-w-0">
           <select
             value={activeSection}
             onChange={(e) => setActiveSection(e.target.value as SectionType)}
-            className="px-2.5 py-1 rounded-full bg-[#06080F]/90 border border-white/20 text-[#00F2FE] font-mono text-[11px] font-semibold uppercase focus:outline-none cursor-pointer shadow-md"
+            className="px-2.5 py-1 rounded-full bg-[#06080F]/90 border border-white/20 text-[#00F2FE] font-mono text-[10px] sm:text-[11px] font-semibold uppercase focus:outline-none cursor-pointer shadow-md truncate max-w-[130px] sm:max-w-[180px]"
           >
             {SECTIONS.map((s) => (
               <option key={s} value={s} className="bg-[#090C15] text-white">
-                {s.split("//")[1]?.trim() || s}
+                {SECTION_METADATA[s]?.shortTitle || s.split("//")[1]?.trim() || s}
               </option>
             ))}
           </select>
         </div>
 
-        <div className="flex items-center gap-3 sm:gap-6 pointer-events-auto">
-          <nav className="hidden md:flex gap-3.5 lg:gap-5 xl:gap-7">
-            {SECTIONS.map((s) => (
-              <button
-                key={s}
-                onClick={() => setActiveSection(s)}
-                onMouseEnter={() => soundEngine.playNavHover()}
-                className={`text-[11px] lg:text-xs tracking-[0.14em] lg:tracking-[0.18em] uppercase font-mono transition-all cursor-pointer ${
-                  activeSection === s ? 'text-[#00F2FE] font-bold' : 'text-gray-400 hover:text-white'
-                }`}
-              >
-                {s}
-              </button>
-            ))}
+        {/* Desktop & Tablet Navigation + Theme Toggle */}
+        <div className="flex items-center gap-2 sm:gap-3 lg:gap-5 pointer-events-auto shrink-0 min-w-0">
+          <nav className="hidden md:flex items-center gap-1.5 lg:gap-2.5 xl:gap-5 shrink min-w-0">
+            {SECTIONS.map((s) => {
+              const shortName = SECTION_METADATA[s]?.shortTitle || s.split("//")[1]?.trim() || s;
+              const isActive = activeSection === s;
+              return (
+                <button
+                  key={s}
+                  onClick={() => setActiveSection(s)}
+                  onMouseEnter={() => soundEngine.playNavHover()}
+                  className={`text-[10px] lg:text-[11px] xl:text-xs tracking-wider xl:tracking-[0.16em] uppercase font-mono transition-all cursor-pointer whitespace-nowrap px-2 py-1 rounded-lg ${
+                    isActive
+                      ? isLight
+                        ? 'text-cyan-700 font-bold bg-cyan-100 border border-cyan-300 shadow-sm'
+                        : 'text-[#00F2FE] font-bold bg-[#00F2FE]/15 border border-[#00F2FE]/35 shadow-[0_0_10px_rgba(0,242,254,0.2)]'
+                      : isLight
+                      ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
+                      : 'text-gray-400 hover:text-white hover:bg-white/5'
+                  }`}
+                  title={`Navigate to ${s}`}
+                >
+                  {/* On tablet / iPad (md to xl), show concise short title so it never overflows */}
+                  <span className="xl:hidden">{shortName}</span>
+                  {/* On full desktop / laptop (xl+), show full title like 01 // Overture */}
+                  <span className="hidden xl:inline">{s}</span>
+                </button>
+              );
+            })}
           </nav>
 
+          {/* Sound / Interactive Audio Toggle Button - Fully responsive across mobile, iPad, tablet & desktop */}
+          <button
+            type="button"
+            onClick={() => {
+              const nextState = !soundEnabled;
+              setSoundEnabled(nextState);
+              soundEngine.enabled = nextState;
+              if (nextState) {
+                soundEngine.unlock();
+                soundEngine.playToggleClick();
+              }
+            }}
+            onMouseEnter={() => soundEngine.playNavHover()}
+            title={soundEnabled ? "Mute interactive audio (Shortcut: 'M')" : "Enable interactive audio (Shortcut: 'M')"}
+            className={`flex items-center gap-1 sm:gap-1.5 px-2 sm:px-2.5 md:px-3 py-1.5 rounded-full border font-mono text-[10px] uppercase cursor-pointer shrink-0 transition-all ${
+              soundEnabled
+                ? isLight
+                  ? 'bg-cyan-50 hover:bg-cyan-100 border-cyan-300 text-cyan-800 shadow-sm'
+                  : 'bg-[#00F2FE]/10 hover:bg-[#00F2FE]/20 border-[#00F2FE]/30 text-[#00F2FE] shadow-[0_0_10px_rgba(0,242,254,0.2)]'
+                : isLight
+                ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-500'
+                : 'bg-white/[0.04] hover:bg-white/10 border-white/10 text-gray-400'
+            }`}
+          >
+            {/* Animated Equalizer Waveform Bars (visible on sm+ when audio enabled) */}
+            <div className="flex items-end gap-[2px] h-3 shrink-0">
+              <div className={`w-[2px] rounded-full transition-all ${soundEnabled ? "bg-current animate-pulse h-3" : "bg-gray-500 h-1.5 opacity-30"}`} />
+              <div className={`w-[2px] rounded-full transition-all ${soundEnabled ? "bg-current animate-pulse h-2 delay-75" : "bg-gray-500 h-1 opacity-30"}`} />
+              <div className={`w-[2px] rounded-full transition-all ${soundEnabled ? "bg-current animate-pulse h-3.5 delay-150" : "bg-gray-500 h-2 opacity-30"}`} />
+            </div>
+
+            {soundEnabled ? (
+              <Volume2 className="w-3.5 h-3.5 shrink-0" />
+            ) : (
+              <VolumeX className="w-3.5 h-3.5 shrink-0" />
+            )}
+          </button>
+
+          {/* Theme Toggle Button - Fits cleanly on all viewports without overflowing */}
           <button
             onClick={toggleTheme}
             onMouseEnter={() => soundEngine.playNavHover()}
             title="Toggle theme (Shortcut: 'T')"
-            className="flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 py-1.5 rounded-full bg-white/[0.04] border border-white/10 text-gray-300 font-mono text-[10px] uppercase cursor-pointer shrink-0"
+            className={`flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-full border font-mono text-[10px] uppercase cursor-pointer shrink-0 transition-all ${
+              isLight
+                ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-800'
+                : 'bg-white/[0.04] hover:bg-white/10 border-white/10 text-gray-300'
+            }`}
           >
             {theme === "deep-space" ? <Moon className="w-3.5 h-3.5 text-[#00F2FE]" /> : <Sun className="w-3.5 h-3.5 text-amber-500" />}
-            <span className="hidden sm:inline">{theme === "deep-space" ? "Deep Space" : "Cyber-Light"}</span>
+            <span className="hidden xl:inline">{theme === "deep-space" ? "Deep Space" : "Cyber-Light"}</span>
           </button>
         </div>
       </header>
@@ -3159,9 +3009,9 @@ export default function App() {
           <TiltWrapper className="my-auto" maxTilt={0.8}>
             <div className="text-center max-w-4xl mx-auto space-y-4 sm:space-y-6">
               {/* Role badge */}
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#7F00FF]/15 border border-[#7F00FF]/30 text-[#00F2FE] font-mono text-[10px] sm:text-xs uppercase tracking-[0.12em] max-w-full">
-                <Sparkles className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
-                <span className="whitespace-normal break-words text-center">Technical Product Builder · Systems Thinker · Software Developer</span>
+              <div className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#7F00FF]/15 border border-[#7F00FF]/30 text-[#00F2FE] font-mono text-[9.5px] sm:text-xs uppercase tracking-[0.08em] sm:tracking-[0.12em] max-w-full shadow-sm">
+                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00F2FE] shrink-0" />
+                <span className="whitespace-normal break-words text-center leading-snug">Technical Product Builder · Systems Thinker · Software Developer</span>
               </div>
 
               {/* Main Headline */}
@@ -3195,9 +3045,9 @@ export default function App() {
                   <span>HackerRank Certified (JS Intermediate)</span>
                   <ArrowUpRight className="w-3 h-3 text-[#00EA64] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
-                <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[11px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(0,242,254,0.15)]">
+                <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[10.5px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(0,242,254,0.15)] transition-all">
                   <Globe className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
-                  <span>Open for Relocation &amp; International Opportunities</span>
+                  <span className="tracking-tight sm:tracking-normal">Open for Relocation &amp; International Roles</span>
                 </span>
               </div>
 
@@ -3240,21 +3090,43 @@ export default function App() {
             <div className="w-full max-w-6xl mx-auto space-y-6">
               
               {/* Profile & Origin Story Header Card */}
-              <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-4 sm:p-6 md:p-8 shadow-xl space-y-6">
+              <div className="bg-white/[0.02] border border-white/10 rounded-2xl p-3.5 sm:p-6 md:p-8 shadow-xl space-y-4 sm:space-y-6 max-w-full">
                 
                 {/* Header Row: Photo, Name, Honors & Contact Chips */}
-                <div className="flex flex-col lg:flex-row justify-between gap-6 items-start lg:items-center pb-6 border-b border-white/10">
-                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-6">
-                    <div className="w-36 h-36 sm:w-44 sm:h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 rounded-full overflow-hidden border-2 sm:border-4 border-[#7F00FF]/70 ring-4 ring-[#00F2FE]/30 shrink-0 shadow-2xl shadow-[#7F00FF]/40 transition-transform duration-300 hover:scale-105">
+                <div className="flex flex-col lg:flex-row justify-between gap-4 sm:gap-6 items-start lg:items-center pb-4 sm:pb-6 border-b border-white/10">
+                  <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3.5 sm:gap-6 w-full sm:w-auto">
+                    <div className="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 rounded-full overflow-hidden border-2 sm:border-4 border-[#7F00FF]/70 ring-4 ring-[#00F2FE]/30 shrink-0 shadow-2xl shadow-[#7F00FF]/40 transition-transform duration-300 hover:scale-105">
                       <img src={clareProfile} alt="Clare Angelie T. Dolino" className="w-full h-full object-cover object-center" />
                     </div>
-                    <div className="space-y-1.5 text-left min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#00F2FE]/15 border border-[#00F2FE]/30 text-[#00F2FE] font-semibold text-[11px]">
-                          <GraduationCap className="w-3 h-3 shrink-0" /> Magna Cum Laude (Rank 1, GWA 1.32)
+                    <div className="flex flex-col space-y-2 sm:space-y-1.5 text-left min-w-0 w-full">
+                      {/* Name - Left-aligned */}
+                      <h2 className="text-lg sm:text-2xl md:text-3xl font-bold text-white tracking-tight break-words text-left">
+                        Clare Angelie T. Dolino
+                      </h2>
+
+                      {/* Professional Role - Left-aligned */}
+                      <p className="text-[11px] sm:text-xs font-mono text-gray-300 text-left leading-relaxed">
+                        Technical Product Builder · Systems Thinker · Software Developer
+                      </p>
+
+                      {/* Contact Info (Location, Email, Phone) - Left-aligned */}
+                      <div className="flex flex-wrap items-center justify-start gap-1.5 sm:gap-3 text-[11px] sm:text-xs font-mono text-gray-400 pt-0.5 text-left">
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00F2FE] shrink-0" /> Biliran, Philippines (Relocation Ready)</span>
+                        <span className="hidden sm:inline">·</span>
+                        <span className="flex items-center gap-1"><Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#7F00FF] shrink-0" /> clareangeliedolino@gmail.com</span>
+                        <span className="hidden sm:inline">·</span>
+                        <span className="flex items-center gap-1"><Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00F2FE] shrink-0" /> +63 964 963 3928</span>
+                      </div>
+
+                      {/* Honors & Relocation Badges - Well-fitted and wrapped on mobile */}
+                      <div className="flex flex-wrap items-center justify-start gap-1.5 sm:gap-2.5 text-xs font-mono pt-2 sm:pt-2.5 max-w-full">
+                        <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#00F2FE]/15 border border-[#00F2FE]/30 text-[#00F2FE] font-semibold text-[10px] sm:text-xs shadow-sm transition-all hover:bg-[#00F2FE]/20">
+                          <GraduationCap className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                          <span className="whitespace-normal sm:whitespace-nowrap leading-tight text-center">Magna Cum Laude (Rank 1, GWA 1.32)</span>
                         </span>
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#7F00FF]/15 border border-[#7F00FF]/30 text-[#C084FC] font-semibold text-[11px]">
-                          <Award className="w-3 h-3 shrink-0" /> PIA R8 Proficiency Awardee
+                        <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#7F00FF]/15 border border-[#7F00FF]/30 text-[#C084FC] font-semibold text-[10px] sm:text-xs shadow-sm transition-all hover:bg-[#7F00FF]/20">
+                          <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                          <span className="whitespace-normal sm:whitespace-nowrap leading-tight text-center">PIA R8 Proficiency Awardee</span>
                         </span>
                         <button
                           type="button"
@@ -3262,95 +3134,103 @@ export default function App() {
                             soundEngine.playCardHover();
                             setShowHackerRankModal(true);
                           }}
-                          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-[#00EA64]/15 border border-[#00EA64]/30 text-[#00EA64] font-semibold text-[11px] hover:bg-[#00EA64]/25 transition-all cursor-pointer shadow-[0_0_10px_rgba(0,234,100,0.15)] group"
+                          className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#00EA64]/15 border border-[#00EA64]/30 text-[#00EA64] font-semibold text-[10px] sm:text-xs hover:bg-[#00EA64]/25 transition-all cursor-pointer shadow-[0_0_10px_rgba(0,234,100,0.15)] group"
                           title="View Verified HackerRank Certificate"
                         >
-                          <HackerRankIcon className="w-3 h-3 text-[#00EA64] shrink-0" />
-                          <span>HackerRank Certified (JS Intermediate)</span>
-                          <ArrowUpRight className="w-2.5 h-2.5 text-[#00EA64] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                          <HackerRankIcon className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00EA64] shrink-0" />
+                          <span className="whitespace-normal sm:whitespace-nowrap leading-tight text-center">HackerRank Certified (JS Intermediate)</span>
+                          <ArrowUpRight className="w-2.5 h-2.5 text-[#00EA64] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform shrink-0" />
                         </button>
-                        <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold text-[11px]">
-                          <Globe className="w-3 h-3 shrink-0" /> Open for Relocation &amp; International Roles
+                        <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold text-[10px] sm:text-xs shadow-sm transition-all hover:bg-emerald-500/20">
+                          <Globe className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
+                          <span className="whitespace-normal sm:whitespace-nowrap leading-tight text-center">Open for Relocation &amp; International Roles</span>
                         </span>
                       </div>
-                      <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-white tracking-tight break-words">Clare Angelie T. Dolino</h2>
-                      <p className="text-xs font-mono text-gray-300">Technical Product Builder · Systems Thinker · Software Developer</p>
-                      <div className="flex flex-wrap items-center gap-2 sm:gap-3 text-xs font-mono text-gray-400 pt-1">
-                        <span className="flex items-center gap-1"><MapPin className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" /> Biliran, Philippines (Relocation Ready)</span>
-                        <span className="hidden sm:inline">·</span>
-                        <span className="flex items-center gap-1"><Mail className="w-3.5 h-3.5 text-[#7F00FF] shrink-0" /> clareangeliedolino@gmail.com</span>
-                        <span className="hidden sm:inline">·</span>
-                        <span className="flex items-center gap-1"><Phone className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" /> +63 964 963 3928</span>
-                      </div>
                     </div>
-                  </div>
-
-                  <div className="flex flex-wrap items-center gap-2 text-xs font-mono self-stretch lg:self-auto justify-start lg:justify-end">
-                    <button
-                      onClick={() => setActiveSection("03 // Approach")}
-                      className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] hover:bg-[#00F2FE]/20 transition-all cursor-pointer font-semibold text-xs"
-                    >
-                      <RefreshCw className="w-3.5 h-3.5 shrink-0" />
-                      <span>View Problem-Solving Approach →</span>
-                    </button>
                   </div>
                 </div>
 
                 {/* Key Education & Milestones Highlights Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 text-xs text-left">
-                  <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5">
-                    <div className="flex items-center gap-2 font-mono text-[#00F2FE] font-semibold uppercase text-[11px]">
-                      <GraduationCap className="w-4 h-4 shrink-0" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-3.5 text-xs text-left">
+                  <motion.div
+                    initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 24, delay: 0 }}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    className="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5 transition-all"
+                  >
+                    <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[#00F2FE] font-semibold uppercase text-[10px] sm:text-[11px]">
+                      <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                       <span>Academic Excellence</span>
                     </div>
-                    <div className="text-white font-bold">BS in Information Systems</div>
-                    <p className="text-gray-300 font-light">Biliran Province State University (BiPSU)</p>
-                    <p className="text-[#00F2FE] font-mono text-[11px]">Magna Cum Laude · Cohort Rank 1 (GWA 1.32)</p>
-                  </div>
+                    <div className="text-white font-bold text-xs sm:text-sm">BS in Information Systems</div>
+                    <p className="text-gray-300 font-light text-[11px] sm:text-xs">Biliran Province State University (BiPSU)</p>
+                    <p className="text-[#00F2FE] font-mono text-[10px] sm:text-[11px]">Magna Cum Laude · Cohort Rank 1 (GWA 1.32)</p>
+                  </motion.div>
 
-                  <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5">
-                    <div className="flex items-center gap-2 font-mono text-[#C084FC] font-semibold uppercase text-[11px]">
-                      <Award className="w-4 h-4 shrink-0" />
+                  <motion.div
+                    initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 24, delay: 0.08 }}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    className="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5 transition-all"
+                  >
+                    <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[#C084FC] font-semibold uppercase text-[10px] sm:text-[11px]">
+                      <Award className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                       <span>Institutional Impact</span>
                     </div>
-                    <div className="text-white font-bold">Proficiency Awardee & Lead Intern</div>
-                    <p className="text-gray-300 font-light">Philippine Information Agency (PIA Region VIII)</p>
-                    <p className="text-gray-400 font-mono text-[11px]">3 Production platforms delivered (Jan–Apr 2026)</p>
-                  </div>
+                    <div className="text-white font-bold text-xs sm:text-sm">Proficiency Awardee &amp; Lead Intern</div>
+                    <p className="text-gray-300 font-light text-[11px] sm:text-xs">Philippine Information Agency (PIA Region VIII)</p>
+                    <p className="text-gray-400 font-mono text-[10px] sm:text-[11px]">3 Production platforms delivered (Jan–Apr 2026)</p>
+                  </motion.div>
 
-                  <div className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5">
-                    <div className="flex items-center gap-2 font-mono text-[#00F2FE] font-semibold uppercase text-[11px]">
-                      <ShieldCheck className="w-4 h-4 shrink-0" />
-                      <span>Research & Quality</span>
+                  <motion.div
+                    initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 24, delay: 0.16 }}
+                    whileHover={{ y: -4, scale: 1.02 }}
+                    className="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5 transition-all"
+                  >
+                    <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[#00F2FE] font-semibold uppercase text-[10px] sm:text-[11px]">
+                      <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
+                      <span>Research &amp; Quality</span>
                     </div>
-                    <div className="text-white font-bold">Capstone Project Leader & Author</div>
-                    <p className="text-gray-300 font-light">CDMIS — Centralized Document System</p>
-                    <p className="text-[#C084FC] font-mono text-[11px]">ISO/IEC 25010 Usability Rating: 4.85 / 5.00</p>
-                  </div>
+                    <div className="text-white font-bold text-xs sm:text-sm">Capstone Project Leader &amp; Author</div>
+                    <p className="text-gray-300 font-light text-[11px] sm:text-xs">CDMIS — Centralized Document System</p>
+                    <p className="text-[#C084FC] font-mono text-[10px] sm:text-[11px]">ISO/IEC 25010 Usability Rating: 4.85 / 5.00</p>
+                  </motion.div>
 
-                  <div 
+                  <motion.div
+                    initial={{ opacity: 0, y: 24, scale: 0.96 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: false, amount: 0.2 }}
+                    transition={{ type: "spring", stiffness: 260, damping: 24, delay: 0.24 }}
+                    whileHover={{ y: -4, scale: 1.02 }}
                     onClick={() => {
                       soundEngine.playCardHover();
                       setShowHackerRankModal(true);
                     }}
-                    className="p-3.5 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#00EA64]/50 transition-all space-y-1.5 cursor-pointer group shadow-sm hover:shadow-[0_0_20px_rgba(0,234,100,0.2)]"
+                    className="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 hover:border-[#00EA64]/50 transition-all space-y-1.5 cursor-pointer group shadow-sm hover:shadow-[0_0_20px_rgba(0,234,100,0.2)]"
                     title="Click to view verified HackerRank Certificate embed & details"
                   >
-                    <div className="flex items-center justify-between font-mono text-[#00EA64] font-semibold uppercase text-[11px]">
+                    <div className="flex items-center justify-between font-mono text-[#00EA64] font-semibold uppercase text-[10px] sm:text-[11px]">
                       <div className="flex items-center gap-1.5">
-                        <HackerRankIcon className="w-3.5 h-3.5 text-[#00EA64] shrink-0" />
+                        <HackerRankIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#00EA64] shrink-0" />
                         <span>Verified Credential</span>
                       </div>
-                      <ArrowUpRight className="w-3.5 h-3.5 text-gray-500 group-hover:text-[#00EA64] transition-colors" />
+                      <ArrowUpRight className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-500 group-hover:text-[#00EA64] transition-colors" />
                     </div>
-                    <div className="text-white font-bold group-hover:text-[#00EA64] transition-colors">JavaScript (Intermediate)</div>
-                    <p className="text-gray-300 font-light">HackerRank Certified Skill Assessment</p>
-                    <p className="text-[#00EA64] font-mono text-[11px] flex items-center gap-1">
+                    <div className="text-white font-bold text-xs sm:text-sm group-hover:text-[#00EA64] transition-colors">JavaScript (Intermediate)</div>
+                    <p className="text-gray-300 font-light text-[11px] sm:text-xs">HackerRank Certified Skill Assessment</p>
+                    <p className="text-[#00EA64] font-mono text-[10px] sm:text-[11px] flex items-center gap-1">
                       <span>ID: fab4af630aab</span>
                       <span className="text-gray-500">·</span>
                       <span className="underline">View Embed ↗</span>
                     </p>
-                  </div>
+                  </motion.div>
                 </div>
 
                 {/* Subtle Animated Horizontal Line Separator */}
@@ -3380,15 +3260,64 @@ export default function App() {
                     I lead the end-to-end systems analysis, problem ideation, requirements evaluation, and solution architecture—leveraging modern AI tooling as a high-velocity engineering accelerator to build, test, and deploy resilient full-stack digital solutions.
                   </p>
 
-                  <div className="flex flex-wrap gap-1.5 shrink-0 max-w-sm">
-                    {["Systems Analysis", "BRD/BPD Authoring", "ISO/IEC 25010", "Full-Stack Dev", "AI Function Calling", "Agile Leadership", "Open for Relocation", "International Opportunities"].map((tag) => (
-                      <span key={tag} className="px-2.5 py-1 rounded-md bg-white/[0.04] border border-white/10 text-gray-300 font-mono text-[10px]">
-                        {tag}
-                      </span>
-                    ))}
+                  <div className="flex flex-wrap gap-1 sm:gap-1.5 shrink-0 max-w-sm">
+                    {["Systems Analysis", "BRD/BPD Authoring", "ISO/IEC 25010", "Full-Stack Dev", "AI Function Calling", "Agile Leadership", "Open for Relocation", "International Roles"].map((tag) => {
+                      const isRelocation = tag.includes("Relocation");
+                      return (
+                        <span
+                          key={tag}
+                          className={`px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-md font-mono text-[9.5px] sm:text-[10px] inline-flex items-center gap-1 transition-all ${
+                            isRelocation
+                              ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold shadow-sm"
+                              : "bg-white/[0.04] border border-white/10 text-gray-300"
+                          }`}
+                        >
+                          {isRelocation && <Globe className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-emerald-400 shrink-0" />}
+                          <span>{tag}</span>
+                        </span>
+                      );
+                    })}
                   </div>
                 </div>
 
+              </div>
+
+              {/* Subtle Animated Horizontal Rule between Profile Header and Skills Grid */}
+              <div className="relative w-full max-w-full my-4 sm:my-6 flex items-center justify-center overflow-hidden px-1 sm:px-3 select-none" aria-hidden="true">
+                {/* Left responsive glowing gradient line */}
+                <div className={`relative flex-1 h-[1px] bg-gradient-to-r from-transparent ${
+                  theme === "cyber-light" ? "to-slate-300" : "to-[#00F2FE]/40"
+                } overflow-hidden min-w-[20px]`}>
+                  <motion.div
+                    animate={{ x: ["-100%", "100%"] }}
+                    transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
+                    className="absolute top-0 bottom-0 w-24 bg-gradient-to-r from-transparent via-[#00F2FE] to-transparent pointer-events-none"
+                  />
+                </div>
+
+                {/* Center Badge Pill: Centered text, auto-adjusting padding & font size, never overflows */}
+                <div className={`mx-2 sm:mx-3 px-3 sm:px-4 py-1 rounded-full border flex items-center justify-center gap-1.5 sm:gap-2 shrink-0 max-w-[85vw] sm:max-w-none transition-all ${
+                  theme === "cyber-light"
+                    ? "bg-white border-slate-200 text-slate-700 shadow-sm"
+                    : "bg-[#06080F]/90 border-white/10 text-gray-300 shadow-[0_0_15px_rgba(0,242,254,0.12)]"
+                }`}>
+                  <div className="w-1.5 h-1.5 rotate-45 bg-[#00F2FE] shadow-[0_0_6px_rgba(0,242,254,0.8)] shrink-0" />
+                  <span className="font-mono text-[9.5px] sm:text-[10.5px] uppercase tracking-[0.14em] sm:tracking-[0.2em] font-semibold text-center whitespace-nowrap">
+                    Core Technical Capabilities
+                  </span>
+                  <div className="w-1.5 h-1.5 rotate-45 bg-[#7F00FF] shadow-[0_0_6px_rgba(127,0,255,0.8)] shrink-0" />
+                </div>
+
+                {/* Right responsive glowing gradient line */}
+                <div className={`relative flex-1 h-[1px] bg-gradient-to-l from-transparent ${
+                  theme === "cyber-light" ? "to-slate-300" : "to-[#7F00FF]/40"
+                } overflow-hidden min-w-[20px]`}>
+                  <motion.div
+                    animate={{ x: ["100%", "-100%"] }}
+                    transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
+                    className="absolute top-0 bottom-0 w-24 bg-gradient-to-r from-transparent via-[#7F00FF] to-transparent pointer-events-none"
+                  />
+                </div>
               </div>
 
               {/* Skills Grid with Intersection Observer Entrance Animations */}
@@ -3416,8 +3345,18 @@ export default function App() {
                 ))}
               </div>
 
-              {/* GitHub Contributions */}
-              <GitHubContributions theme={theme} />
+              {/* Systems Engineering Provenance & Impact Dossier */}
+              <EngineeringImpactDossier
+                theme={theme}
+                onSelectProject={(projectId) => {
+                  const proj = PROJECTS.find((p) => p.id === projectId);
+                  if (proj) {
+                    soundEngine.playCardHover();
+                    setModalInitialTab("overview");
+                    setSelectedProject(proj);
+                  }
+                }}
+              />
             </div>
           </TiltWrapper>
             </motion.section>
@@ -3436,82 +3375,23 @@ export default function App() {
               onScroll={handleScroll}
               className="absolute inset-0 w-full h-full pt-24 sm:pt-28 pb-28 sm:pb-36 px-3 sm:px-6 md:px-8 overflow-y-auto no-scrollbar flex flex-col pointer-events-auto"
             >
-          <TiltWrapper className="my-auto py-4" maxTilt={0.8}>
-            <div className="w-full max-w-6xl mx-auto space-y-6 sm:space-y-8 text-center md:text-left">
-              <div>
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em] mb-3">
-                  <RefreshCw className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
-                  <span>Methodology & Problem-Solving Blueprint</span>
-                </div>
-                <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight">
-                  How I Work: A Structured 6-Step Framework
-                </h2>
-                <p className="text-gray-300 text-xs sm:text-sm font-light max-w-2xl leading-relaxed mt-2">
-                  A disciplined methodology for deconstructing operational friction, designing normalized data models, and delivering resilient, user-friendly digital products.
-                </p>
+              <div className="my-auto py-2">
+                <ApproachSection
+                  theme={theme}
+                  onSelectProject={(projectId) => {
+                    const proj = PROJECTS.find((p) => p.id === projectId);
+                    if (proj) {
+                      soundEngine.playCardHover();
+                      setModalInitialTab("overview");
+                      setSelectedProject(proj);
+                    }
+                  }}
+                  onExploreCaseStudies={() => {
+                    soundEngine.playNavClick();
+                    setActiveSection("04 // Tracklist");
+                  }}
+                />
               </div>
-
-              {/* 6 Step Cards Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-                {APPROACH_STEPS.map((step) => {
-                  const IconComponent = step.icon;
-                  return (
-                    <div
-                      key={step.num}
-                      className="bg-white/[0.02] border border-white/10 hover:border-[#00F2FE]/50 rounded-2xl p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between group shadow-xl text-left"
-                    >
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <div className="p-2.5 rounded-xl bg-white/5 border border-white/10 text-[#00F2FE] group-hover:bg-[#00F2FE]/10 transition-colors">
-                            <IconComponent className="w-5 h-5 shrink-0" />
-                          </div>
-                          <span className="font-mono text-xs font-bold text-[#00F2FE] tracking-widest">
-                            STEP {step.num}
-                          </span>
-                        </div>
-
-                        <h3 className="text-lg sm:text-xl font-bold text-white tracking-tight group-hover:text-[#00F2FE] transition-colors">
-                          {step.title}
-                        </h3>
-
-                        <p className="text-xs font-medium text-gray-200 leading-relaxed">
-                          {step.summary}
-                        </p>
-
-                        <p className="text-xs text-gray-400 font-light leading-relaxed">
-                          {step.detail}
-                        </p>
-                      </div>
-
-                      <div className="pt-3 border-t border-white/10 mt-4">
-                        <span className="text-[10px] font-mono text-[#C084FC] uppercase tracking-wider block mb-1">
-                          Real Project Application:
-                        </span>
-                        <p className="text-[11px] text-gray-300 italic font-light leading-snug">
-                          "{step.example}"
-                        </p>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-
-              {/* Bottom Nav Callout */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4 p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/10 text-xs font-mono">
-                <div className="flex items-center gap-2 text-gray-300 text-left">
-                  <Sparkles className="w-4 h-4 text-[#00F2FE] shrink-0" />
-                  <span>See how this framework was applied across real regional government platforms and university research:</span>
-                </div>
-                <button
-                  onClick={() => setActiveSection("04 // Tracklist")}
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] text-black font-semibold text-xs font-mono uppercase tracking-wider hover:opacity-95 transition-all shadow-md shrink-0 cursor-pointer"
-                >
-                  <span>Explore Case Studies</span>
-                  <ArrowUpRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          </TiltWrapper>
             </motion.section>
           )}
 
@@ -3653,7 +3533,7 @@ export default function App() {
                 <span className="hidden sm:inline">·</span>
                 <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" /> Biliran, Philippines</span>
                 <span className="hidden sm:inline">·</span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold text-[11px]">
+                <span className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-1.5 px-2.5 py-1 sm:py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold text-[11px]">
                   <Globe className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Open for Relocation &amp; International Roles
                 </span>
               </div>
@@ -3757,8 +3637,8 @@ export default function App() {
           </button>
         </div>
 
-        {/* Desktop Controls */}
-        <div className="hidden md:flex items-center gap-3 text-gray-500 font-mono text-xs uppercase pointer-events-auto">
+        {/* Desktop Controls - Hidden on laptop, tablet, and iPad */}
+        <div className="hidden items-center gap-3 text-gray-500 font-mono text-xs uppercase pointer-events-auto">
           <button 
             onClick={handlePrev} 
             className="px-2.5 py-1 border border-gray-700/80 rounded text-[10px] hover:text-[#00F2FE] hover:border-[#00F2FE]/50 transition-colors flex items-center gap-1 cursor-pointer" 
@@ -3780,7 +3660,8 @@ export default function App() {
           </button>
         </div>
 
-        <div className="hidden md:flex items-center gap-3 bg-[#06080F]/80 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 shadow-lg pointer-events-auto">
+        {/* Footer audio dock moved to header - kept hidden for DOM preservation */}
+        <div className="hidden items-center gap-3 bg-[#06080F]/80 backdrop-blur-md border border-white/10 rounded-full px-5 py-2 shadow-lg pointer-events-auto">
           <div className="flex items-end gap-[3px] h-4">
             <div className={`eq-bar eq-1 ${!soundEnabled ? "!animate-none !h-1 opacity-30" : ""}`} />
             <div className={`eq-bar eq-2 ${!soundEnabled ? "!animate-none !h-1 opacity-30" : ""}`} />

@@ -285,6 +285,21 @@
   border-color: #0284C7 !important;
 }
 
+/* Tactile Glow Border Cards */
+.glow-border {
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.25s ease, 
+              background-color 0.25s ease !important;
+}
+
+.glow-border:hover {
+  border-color: #00F2FE !important;
+  box-shadow: 0 0 25px rgba(0, 242, 254, 0.3), 
+              0 0 50px rgba(0, 242, 254, 0.12), 
+              inset 0 0 15px rgba(0, 242, 254, 0.05) !important;
+}
+
 .cyber-light .glow-border {
   background-color: #FFFFFF !important;
   border-color: #E2E8F0 !important;
@@ -293,7 +308,8 @@
 
 .cyber-light .glow-border:hover {
   border-color: #0284C7 !important;
-  box-shadow: 0 12px 30px -5px rgba(2, 132, 199, 0.18) !important;
+  box-shadow: 0 12px 32px -4px rgba(2, 132, 199, 0.25), 
+              0 0 20px rgba(2, 132, 199, 0.15) !important;
 }
 
 /* Badges, Chips & Highlights */
