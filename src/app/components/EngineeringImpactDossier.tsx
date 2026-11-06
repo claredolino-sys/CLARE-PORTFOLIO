@@ -209,13 +209,13 @@ export function EngineeringImpactDossier({
       } p-5 sm:p-7 md:p-8 ${className}`}
     >
       {/* Top Radiant Gradient Bar */}
-      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[#00F2FE] via-[#7F00FF] to-[#00EA64]" />
+      <div className="absolute top-0 left-0 right-0 h-[2.5px] bg-gradient-to-r from-[color:var(--w-a)] via-[color:var(--w-b)] to-[#00EA64]" />
 
       {/* Header Row: Title, Subtitle & Interactive Navigation Tabs */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-white/10">
         <div className="space-y-1.5 text-left">
           <div className="flex items-center gap-2 flex-wrap text-xs font-mono">
-            <span className="text-[#00F2FE] font-bold tracking-widest uppercase">
+            <span className="text-[color:var(--w-a)] font-bold tracking-widest uppercase">
               Systems Engineering Provenance
             </span>
             <span className="text-gray-500">/</span>
@@ -249,7 +249,7 @@ export function EngineeringImpactDossier({
               activeTab === "telemetry"
                 ? isLight
                   ? "bg-white text-slate-900 shadow-sm font-bold border border-slate-200"
-                  : "bg-[#00F2FE]/20 text-[#00F2FE] shadow-sm font-bold border border-[#00F2FE]/30"
+                  : "bg-[color:var(--w-a)]/20 text-[color:var(--w-a)] shadow-sm font-bold border border-[color:var(--w-a)]/30"
                 : isLight
                 ? "text-slate-600 hover:text-slate-900"
                 : "text-gray-400 hover:text-white"
@@ -312,8 +312,8 @@ export function EngineeringImpactDossier({
                   className={`p-4 sm:p-5 rounded-2xl border transition-all duration-200 cursor-pointer flex flex-col justify-between group ${
                     isSelected
                       ? isLight
-                        ? "bg-white border-[#00F2FE] shadow-[0_0_20px_rgba(0,242,254,0.18)] ring-1 ring-[#00F2FE]"
-                        : "bg-white/[0.06] border-[#00F2FE]/50 shadow-[0_0_25px_rgba(0,242,254,0.18)] ring-1 ring-[#00F2FE]/40"
+                        ? "bg-white border-[color:var(--w-a)] shadow-[0_0_20px_rgba(var(--w-a-rgb),0.18)] ring-1 ring-[color:var(--w-a)]"
+                        : "bg-white/[0.06] border-[color:var(--w-a)]/50 shadow-[0_0_25px_rgba(var(--w-a-rgb),0.18)] ring-1 ring-[color:var(--w-a)]/40"
                       : isLight
                       ? "bg-slate-50 border-slate-200 hover:border-slate-300"
                       : "bg-white/[0.02] border-white/10 hover:border-white/20"
@@ -321,13 +321,13 @@ export function EngineeringImpactDossier({
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between text-[11px] font-mono">
-                      <span className="text-[#00F2FE] font-bold uppercase">{item.category}</span>
-                      <span className={isSelected ? "text-[#00F2FE]" : "text-gray-500 group-hover:text-gray-300"}>
+                      <span className="text-[color:var(--w-a)] font-bold uppercase">{item.category}</span>
+                      <span className={isSelected ? "text-[color:var(--w-a)]" : "text-gray-500 group-hover:text-gray-300"}>
                         Inspect →
                       </span>
                     </div>
 
-                    <div className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-white group-hover:text-[#00F2FE] transition-colors">
+                    <div className="text-2xl sm:text-3xl font-black font-mono tracking-tight text-white group-hover:text-[color:var(--w-a)] transition-colors">
                       {item.metric}
                     </div>
 
@@ -352,7 +352,7 @@ export function EngineeringImpactDossier({
               {/* Left Column: Metric Overview & Technical Mechanism */}
               <div className="lg:col-span-2 space-y-4">
                 <div className="flex items-center gap-2 text-xs font-mono">
-                  <span className="px-2 py-0.5 rounded-md bg-[#00F2FE]/15 border border-[#00F2FE]/30 text-[#00F2FE] font-semibold">
+                  <span className="px-2 py-0.5 rounded-md bg-[color:var(--w-a)]/15 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)] font-semibold">
                     {activeMetric.category} Focus
                   </span>
                   <span className="text-gray-500">·</span>
@@ -408,8 +408,8 @@ export function EngineeringImpactDossier({
                 isLight ? "bg-white border-slate-200 shadow-sm" : "bg-[#090D16] border-white/10"
               }`}>
                 <div className="space-y-3">
-                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-[#00F2FE] flex items-center gap-1.5">
-                    <Sparkles className="w-3.5 h-3.5 text-[#00F2FE]" />
+                  <span className="text-xs font-mono font-bold uppercase tracking-wider text-[color:var(--w-a)] flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-[color:var(--w-a)]" />
                     <span>Key Verification Points</span>
                   </span>
 
@@ -429,7 +429,7 @@ export function EngineeringImpactDossier({
                   <button
                     type="button"
                     onClick={() => onSelectProject(activeMetric.projectId)}
-                    className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] text-black font-bold text-[11px] sm:text-xs font-mono uppercase tracking-wide hover:opacity-95 hover:shadow-[0_0_15px_rgba(0,242,254,0.3)] active:scale-[0.98] transition-all shadow-md cursor-pointer mt-3 sm:mt-4"
+                    className="w-full inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-[color:var(--w-a)] to-[color:var(--w-b)] text-black font-bold text-[11px] sm:text-xs font-mono uppercase tracking-wide hover:opacity-95 hover:shadow-[0_0_15px_rgba(var(--w-a-rgb),0.3)] active:scale-[0.98] transition-all shadow-md cursor-pointer mt-3 sm:mt-4"
                   >
                     <span className="whitespace-nowrap">Inspect Case Study &amp; PRD</span>
                     <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
@@ -466,7 +466,7 @@ export function EngineeringImpactDossier({
                     {pillar.name}
                   </h4>
 
-                  <div className="text-[11px] font-mono text-[#00F2FE]">
+                  <div className="text-[11px] font-mono text-[color:var(--w-a)]">
                     Role: {pillar.role}
                   </div>
 
@@ -515,7 +515,7 @@ export function EngineeringImpactDossier({
             <div className={`p-5 rounded-2xl border space-y-3 ${
               isLight ? "bg-slate-50 border-slate-200" : "bg-white/[0.02] border-white/10"
             }`}>
-              <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-[#00F2FE] w-fit">
+              <div className="p-2.5 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-[color:var(--w-a)] w-fit">
                 <Database className="w-5 h-5" />
               </div>
               <h4 className={`text-base font-bold tracking-tight ${isLight ? "text-slate-900" : "text-white"}`}>
@@ -524,7 +524,7 @@ export function EngineeringImpactDossier({
               <p className={`text-xs font-light leading-relaxed ${isLight ? "text-slate-600" : "text-gray-300"}`}>
                 Primary Supabase PostgreSQL paired with in-memory transaction queuing for frequent provincial network dropouts. Guarantees deterministic synchronization with zero lost vouchers upon reconnection.
               </p>
-              <div className="pt-2 text-[10px] font-mono text-[#00F2FE]">
+              <div className="pt-2 text-[10px] font-mono text-[color:var(--w-a)]">
                 Production: PIA R8 Finance System
               </div>
             </div>

@@ -90,7 +90,7 @@ select:focus:not(:focus-visible),
 button:hover,
 a[role="button"]:hover,
 .cursor-pointer:hover {
-  box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+  box-shadow: 0 0 12px rgba(var(--w-a-rgb), 0.2);
 }
 
 button:active,
@@ -115,14 +115,14 @@ input[type="submit"]:active,
   0% {
     transform: translate(-50%, -50%) scale(0.2);
     opacity: 0.9;
-    border-color: #00F2FE;
-    box-shadow: 0 0 10px rgba(0, 242, 254, 0.8);
+    border-color: var(--w-a);
+    box-shadow: 0 0 10px rgba(var(--w-a-rgb), 0.8);
   }
   100% {
     transform: translate(-50%, -50%) scale(2.2);
     opacity: 0;
-    border-color: #00F2FE;
-    box-shadow: 0 0 20px rgba(0, 242, 254, 0);
+    border-color: var(--w-a);
+    box-shadow: 0 0 20px rgba(var(--w-a-rgb), 0);
   }
 }
 

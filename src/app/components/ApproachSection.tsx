@@ -43,11 +43,11 @@ export const STRUCTURED_STEPS: ApproachStepData[] = [
     title: "Understand",
     phaseTag: "Discovery & User Context",
     icon: Search,
-    color: "text-[#00F2FE]",
+    color: "text-[color:var(--w-a)]",
     accentHex: "#00F2FE",
-    gradient: "from-[#00F2FE] via-[#38BDF8] to-blue-500",
-    badgeBg: "bg-[#00F2FE]/10",
-    badgeBorder: "border-[#00F2FE]/30",
+    gradient: "from-[color:var(--w-a)] via-[#38BDF8] to-blue-500",
+    badgeBg: "bg-[color:var(--w-a)]/10",
+    badgeBorder: "border-[color:var(--w-a)]/30",
     glowColor: "rgba(0, 242, 254, 0.25)",
     summary: "Investigate context, intended users, and root operational friction.",
     detail: "Conduct operational interviews with end-users and review existing paper/spreadsheet workflows before proposing technical solutions. Focus on observing where time is lost, where manual data entry duplicates effort, and where compliance vulnerabilities originate.",
@@ -344,7 +344,7 @@ export function ApproachSection({
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 pb-2 border-b border-white/10">
         <div className="space-y-2">
           <div className="flex items-center gap-2 flex-wrap">
-            <span className="text-xs font-mono text-[#00F2FE] tracking-[0.16em] uppercase font-semibold">
+            <span className="text-xs font-mono text-[color:var(--w-a)] tracking-[0.16em] uppercase font-semibold">
               03 // Approach
             </span>
             <span className="text-gray-500 font-mono text-xs">/</span>
@@ -373,14 +373,14 @@ export function ApproachSection({
             <div 
               className={`hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-full border text-[11px] font-mono transition-all duration-300 ${
                 isTouchpadActive
-                  ? "bg-[#00F2FE]/15 border-[#00F2FE]/40 text-[#00F2FE] shadow-[0_0_15px_rgba(0,242,254,0.2)]"
+                  ? "bg-[color:var(--w-a)]/15 border-[color:var(--w-a)]/40 text-[color:var(--w-a)] shadow-[0_0_15px_rgba(var(--w-a-rgb),0.2)]"
                   : isLight
                   ? "bg-slate-100 border-slate-200 text-slate-700"
                   : "bg-white/[0.04] border-white/10 text-gray-300"
               }`}
               title="Move two fingers horizontally (left to right / right to left) on your laptop touchpad to reveal steps"
             >
-              <ArrowLeftRight className="w-3.5 h-3.5 text-[#00F2FE] animate-pulse" />
+              <ArrowLeftRight className="w-3.5 h-3.5 text-[color:var(--w-a)] animate-pulse" />
               <span>Swipe touchpad left ⇄ right to reveal</span>
               <span className="text-[10px] text-gray-400">({activeStepIndex + 1}/6)</span>
             </div>
@@ -397,7 +397,7 @@ export function ApproachSection({
                 viewMode === "scroll-flow"
                   ? isLight
                     ? "bg-white text-slate-900 shadow-sm font-bold border border-slate-200"
-                    : "bg-[#00F2FE]/20 text-[#00F2FE] shadow-sm font-bold border border-[#00F2FE]/30"
+                    : "bg-[color:var(--w-a)]/20 text-[color:var(--w-a)] shadow-sm font-bold border border-[color:var(--w-a)]/30"
                   : isLight
                   ? "text-slate-600 hover:text-slate-900"
                   : "text-gray-400 hover:text-white"
@@ -437,7 +437,7 @@ export function ApproachSection({
             {/* Top Micro Header: Progress Counter & Phase Highlight */}
             <div className="flex items-center justify-between text-xs font-mono mb-3">
               <div className="flex items-center gap-2">
-                <span className="text-[#00F2FE] font-bold">STEP {activeStep.num} OF 06</span>
+                <span className="text-[color:var(--w-a)] font-bold">STEP {activeStep.num} OF 06</span>
                 <span className="text-gray-500">·</span>
                 <span className={isLight ? "text-slate-700 font-semibold" : "text-white font-semibold"}>
                   {activeStep.title}
@@ -476,7 +476,7 @@ export function ApproachSection({
                       isActive
                         ? isLight
                           ? "bg-slate-100 border-slate-300 shadow-sm"
-                          : "bg-white/10 border-white/20 shadow-[0_0_14px_rgba(0,242,254,0.18)]"
+                          : "bg-white/10 border-white/20 shadow-[0_0_14px_rgba(var(--w-a-rgb),0.18)]"
                         : isPassed
                         ? isLight
                           ? "bg-slate-50 border-slate-200 text-slate-700"
@@ -567,7 +567,7 @@ export function ApproachSection({
                       </div>
                       <div>
                         <div className="flex items-center gap-2 text-xs font-mono">
-                          <span className="font-bold tracking-widest text-[#00F2FE]">
+                          <span className="font-bold tracking-widest text-[color:var(--w-a)]">
                             STEP {activeStep.num}
                           </span>
                           <span className="text-gray-500">/</span>
@@ -625,12 +625,12 @@ export function ApproachSection({
 
                     {/* Column 2: Real Production Project Application */}
                     <div className={`p-4 sm:p-5 rounded-2xl border space-y-3 flex flex-col justify-between ${
-                      isLight ? "bg-cyan-50/60 border-cyan-200" : "bg-[#00F2FE]/[0.03] border-[#00F2FE]/20"
+                      isLight ? "bg-cyan-50/60 border-cyan-200" : "bg-[color:var(--w-a)]/[0.03] border-[color:var(--w-a)]/20"
                     }`}>
                       <div className="space-y-2">
                         <div className="flex items-center justify-between text-xs font-mono">
-                          <span className="text-[#00F2FE] font-semibold uppercase tracking-wider flex items-center gap-1.5">
-                            <Sparkles className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
+                          <span className="text-[color:var(--w-a)] font-semibold uppercase tracking-wider flex items-center gap-1.5">
+                            <Sparkles className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0" />
                             <span>Verified Production Application</span>
                           </span>
                           <span className={`text-[10px] px-2 py-0.5 rounded-full border ${activeStep.badgeBg} ${activeStep.badgeBorder} ${activeStep.color}`}>
@@ -648,7 +648,7 @@ export function ApproachSection({
                         <button
                           type="button"
                           onClick={() => onSelectProject(activeStep.projectId!)}
-                          className="inline-flex items-center gap-1.5 text-xs font-mono text-[#00F2FE] hover:underline cursor-pointer pt-2 group self-start"
+                          className="inline-flex items-center gap-1.5 text-xs font-mono text-[color:var(--w-a)] hover:underline cursor-pointer pt-2 group self-start"
                         >
                           <span>Inspect Project Case Study & PRD</span>
                           <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
@@ -677,8 +677,8 @@ export function ApproachSection({
                 }}
                 className={`rounded-2xl border p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between group shadow-xl text-left cursor-pointer ${
                   isLight
-                    ? "bg-white border-slate-200 hover:border-[#00F2FE] hover:shadow-lg"
-                    : "bg-white/[0.02] border-white/10 hover:border-[#00F2FE]/50"
+                    ? "bg-white border-slate-200 hover:border-[color:var(--w-a)] hover:shadow-lg"
+                    : "bg-white/[0.02] border-white/10 hover:border-[color:var(--w-a)]/50"
                 }`}
               >
                 <div className="space-y-3">
@@ -686,12 +686,12 @@ export function ApproachSection({
                     <div className={`p-2.5 rounded-xl border ${step.badgeBg} ${step.badgeBorder} ${step.color}`}>
                       <StepIcon className="w-5 h-5 shrink-0" />
                     </div>
-                    <span className="font-mono text-xs font-bold text-[#00F2FE] tracking-widest">
+                    <span className="font-mono text-xs font-bold text-[color:var(--w-a)] tracking-widest">
                       STEP {step.num}
                     </span>
                   </div>
 
-                  <h3 className={`text-lg sm:text-xl font-bold tracking-tight group-hover:text-[#00F2FE] transition-colors ${
+                  <h3 className={`text-lg sm:text-xl font-bold tracking-tight group-hover:text-[color:var(--w-a)] transition-colors ${
                     isLight ? "text-slate-900" : "text-white"
                   }`}>
                     {step.title}
@@ -731,14 +731,14 @@ export function ApproachSection({
         isLight ? "bg-slate-50 border-slate-200 text-slate-700" : "bg-white/[0.02] border-white/10 text-gray-300"
       }`}>
         <div className="flex items-center gap-2 text-left">
-          <Sparkles className="w-4 h-4 text-[#00F2FE] shrink-0" />
+          <Sparkles className="w-4 h-4 text-[color:var(--w-a)] shrink-0" />
           <span>See how this 6-step framework was deployed across live regional public platforms and university research:</span>
         </div>
         {onExploreCaseStudies && (
           <button
             type="button"
             onClick={onExploreCaseStudies}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] text-black font-semibold text-xs font-mono uppercase tracking-wider hover:opacity-95 transition-all shadow-md shrink-0 cursor-pointer"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-[color:var(--w-a)] to-[color:var(--w-b)] text-black font-semibold text-xs font-mono uppercase tracking-wider hover:opacity-95 transition-all shadow-md shrink-0 cursor-pointer"
           >
             <span>Explore Case Studies</span>
             <ArrowUpRight className="w-4 h-4" />

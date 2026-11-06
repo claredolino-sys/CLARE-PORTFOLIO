@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import * as THREE from "three";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ChevronRight, ChevronLeft, Github, Mail, Linkedin, Code2, Database, 
@@ -16,6 +15,10 @@ import clareProfile from "@/imports/CLARE_PROFILE.jpg";
 import { InsightsSection } from "./components/InsightsSection";
 import { ApproachSection } from "./components/ApproachSection";
 import { EngineeringImpactDossier } from "./components/EngineeringImpactDossier";
+import confetti from "canvas-confetti";
+import { ButterflyWorld, type WorldFocus, type CatchInfo } from "./world/ButterflyWorld";
+import { WorldHud, ButterflyGlyph, type CatchPopup } from "./world/WorldHud";
+import { WORLDS, PROJECT_PALETTES, hexToRgbString } from "./world/worlds";
 
 // --- Configuration ---
 const SECTIONS = ["01 // Overture", "02 // Backstage", "03 // Approach", "04 // Tracklist", "05 // Encore", "06 // Insights"] as const;
@@ -728,14 +731,14 @@ function SkillIcon({ name, className = "w-3.5 h-3.5 shrink-0" }: { name: string;
         </svg>
       );
     case "Customer Research":
-      return <Users className={`${className} text-[#00F2FE]`} />;
+      return <Users className={`${className} text-[color:var(--w-a)]`} />;
     case "Data Analysis":
       return <BarChart3 className={`${className} text-[#38BDF8]`} />;
     case "Product Execution":
       return <Kanban className={`${className} text-[#C084FC]`} />;
     case "Functional Specifications":
     case "Functional Specs & UAT Testing":
-      return <FileText className={`${className} text-[#00F2FE]`} />;
+      return <FileText className={`${className} text-[color:var(--w-a)]`} />;
     case "Feature Prioritization":
       return <CheckSquare className={`${className} text-[#4ADE80]`} />;
     case "User Stories":
@@ -744,15 +747,15 @@ function SkillIcon({ name, className = "w-3.5 h-3.5 shrink-0" }: { name: string;
     case "Process Mapping & Workflow Design":
       return <GitBranch className={`${className} text-[#38BDF8]`} />;
     case "Requirements Gathering & Analysis":
-      return <FileText className={`${className} text-[#00F2FE]`} />;
+      return <FileText className={`${className} text-[color:var(--w-a)]`} />;
     case "Systems Analysis & Design":
-      return <Layout className={`${className} text-[#00F2FE]`} />;
+      return <Layout className={`${className} text-[color:var(--w-a)]`} />;
     case "Agile / Scrum & Team Coordination":
       return <Kanban className={`${className} text-[#C084FC]`} />;
     case "Git & REST APIs":
       return <GitCommit className={`${className} text-[#F87171]`} />;
     case "SQL & Relational Database Design":
-      return <Database className={`${className} text-[#00F2FE]`} />;
+      return <Database className={`${className} text-[color:var(--w-a)]`} />;
     case "Cloud Deployment":
       return <Globe className={`${className} text-[#38BDF8]`} />;
     case "Data Processing & Reporting Automation":
@@ -760,13 +763,13 @@ function SkillIcon({ name, className = "w-3.5 h-3.5 shrink-0" }: { name: string;
       return <BarChart3 className={`${className} text-[#22C55E]`} />;
     case "AI-Assisted Software Development":
     case "AI-Assisted Development":
-      return <Sparkles className={`${className} text-[#00F2FE]`} />;
+      return <Sparkles className={`${className} text-[color:var(--w-a)]`} />;
     case "LLM API Integration":
       return <Cpu className={`${className} text-[#C084FC]`} />;
     case "Prompt Engineering & Prototyping":
       return <Terminal className={`${className} text-[#38BDF8]`} />;
     case "AI Function Calling":
-      return <Zap className={`${className} text-[#00F2FE]`} />;
+      return <Zap className={`${className} text-[color:var(--w-a)]`} />;
     case "AI Feature Evaluation & Iteration":
       return <RefreshCw className={`${className} text-[#4ADE80]`} />;
     default:
@@ -778,10 +781,10 @@ function SkillIcon({ name, className = "w-3.5 h-3.5 shrink-0" }: { name: string;
 function ComplexityMeter({ level, label }: { level: number; label: string }) {
   return (
     <div 
-      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/[0.04] border border-white/10 group-hover:border-[#00F2FE]/40 transition-all font-mono shadow-sm"
+      className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded bg-white/[0.04] border border-white/10 group-hover:border-[color:var(--w-a)]/40 transition-all font-mono shadow-sm"
       title={`Engineering Complexity: ${label} (${level}/5)`}
     >
-      <svg viewBox="0 0 16 16" fill="none" className="w-3 h-3 text-[#00F2FE] shrink-0" aria-hidden="true">
+      <svg viewBox="0 0 16 16" fill="none" className="w-3 h-3 text-[color:var(--w-a)] shrink-0" aria-hidden="true">
         <path d="M2.5 11.5A6.5 6.5 0 0 1 13.5 11.5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
         <path d="M8 8l2.5-3" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
         <circle cx="8" cy="8" r="1.2" fill="currentColor" />
@@ -797,8 +800,8 @@ function ComplexityMeter({ level, label }: { level: number; label: string }) {
               className={`w-[2px] rounded-t-[1px] transition-all duration-300 ${
                 isFilled
                   ? bar >= 4
-                    ? "bg-[#7F00FF] shadow-[0_0_4px_rgba(127,0,255,0.8)]"
-                    : "bg-[#00F2FE] shadow-[0_0_4px_rgba(0,242,254,0.8)]"
+                    ? "bg-[color:var(--w-b)] shadow-[0_0_4px_rgba(var(--w-b-rgb),0.8)]"
+                    : "bg-[color:var(--w-a)] shadow-[0_0_4px_rgba(var(--w-a-rgb),0.8)]"
                   : "bg-white/15"
               }`}
             />
@@ -840,27 +843,27 @@ function SkillItemRow({
   return (
     <div className={`group/skill flex flex-col p-2.5 rounded-xl border transition-all text-left relative ${
       copied 
-        ? "bg-[#00F2FE]/10 border-[#00F2FE] shadow-[0_0_15px_rgba(0,242,254,0.3)]" 
-        : "bg-white/[0.02] border-white/5 hover:border-[#00F2FE]/40"
+        ? "bg-[color:var(--w-a)]/10 border-[color:var(--w-a)] shadow-[0_0_15px_rgba(var(--w-a-rgb),0.3)]" 
+        : "bg-white/[0.02] border-white/5 hover:border-[color:var(--w-a)]/40"
     }`}>
       <div className="flex flex-wrap items-start justify-between gap-x-2 gap-y-1.5 mb-1.5 min-w-0">
         <div 
           onClick={handleCopySkill}
-          className="flex items-start gap-1.5 min-w-0 cursor-pointer group/copy hover:text-[#00F2FE] flex-1 basis-36"
+          className="flex items-start gap-1.5 min-w-0 cursor-pointer group/copy hover:text-[color:var(--w-a)] flex-1 basis-36"
           title="Click to copy skill name to clipboard"
         >
-          <SkillIcon name={item.name} className="w-4 h-4 shrink-0 text-[#00F2FE] group-hover/skill:scale-110 transition-transform mt-0.5" />
-          <span className="text-xs font-semibold text-white group-hover/skill:text-[#00F2FE] transition-colors leading-snug break-words">
+          <SkillIcon name={item.name} className="w-4 h-4 shrink-0 text-[color:var(--w-a)] group-hover/skill:scale-110 transition-transform mt-0.5" />
+          <span className="text-xs font-semibold text-white group-hover/skill:text-[color:var(--w-a)] transition-colors leading-snug break-words">
             {item.name}
           </span>
-          <span className="opacity-0 group-hover/skill:opacity-100 transition-opacity p-0.5 text-gray-400 hover:text-[#00F2FE] shrink-0 mt-0.5">
-            {copied ? <Check className="w-3 h-3 text-[#00F2FE]" /> : <Copy className="w-3 h-3" />}
+          <span className="opacity-0 group-hover/skill:opacity-100 transition-opacity p-0.5 text-gray-400 hover:text-[color:var(--w-a)] shrink-0 mt-0.5">
+            {copied ? <Check className="w-3 h-3 text-[color:var(--w-a)]" /> : <Copy className="w-3 h-3" />}
           </span>
         </div>
 
         <div className="flex items-center gap-1 shrink-0 ml-auto">
           {copied ? (
-            <span className="px-2 py-0.5 rounded bg-[#00F2FE]/20 border border-[#00F2FE]/50 text-[9px] font-mono text-[#00F2FE] font-bold uppercase animate-pulse">
+            <span className="px-2 py-0.5 rounded bg-[color:var(--w-a)]/20 border border-[color:var(--w-a)]/50 text-[9px] font-mono text-[color:var(--w-a)] font-bold uppercase animate-pulse">
               ✓ Copied!
             </span>
           ) : (
@@ -875,7 +878,7 @@ function SkillItemRow({
         {project && item.projectTag && (
           <button
             onClick={() => onSelectProject(item.projectId!)}
-            className="inline-flex items-center gap-1 text-[10px] font-mono text-[#00F2FE]/80 hover:text-[#00F2FE] hover:underline transition-colors cursor-pointer"
+            className="inline-flex items-center gap-1 text-[10px] font-mono text-[color:var(--w-a)]/80 hover:text-[color:var(--w-a)] hover:underline transition-colors cursor-pointer"
             title={`View Case Study: ${project.title}`}
           >
             <ArrowUpRight className="w-3 h-3 shrink-0" />
@@ -941,15 +944,15 @@ function SkillCategoryCard({
         transition: { duration: 0.2, ease: "easeOut" }
       }}
       onMouseEnter={() => soundEngine.playCardHover()}
-      className="group/skillcard bg-white/[0.015] border border-white/10 hover:border-[#00F2FE] rounded-2xl p-4 sm:p-5 flex flex-col justify-between glow-border h-full hover:shadow-[0_0_25px_rgba(0,242,254,0.35),0_0_50px_rgba(0,242,254,0.12)] hover:bg-white/[0.04] cursor-pointer"
+      className="group/skillcard bg-white/[0.015] border border-white/10 hover:border-[color:var(--w-a)] rounded-2xl p-4 sm:p-5 flex flex-col justify-between glow-border h-full hover:shadow-[0_0_25px_rgba(var(--w-a-rgb),0.35),0_0_50px_rgba(var(--w-a-rgb),0.12)] hover:bg-white/[0.04] cursor-pointer"
     >
       <div className="space-y-3">
         <div className="flex items-center justify-between border-b border-white/5 pb-2.5">
           <div className="flex items-center gap-2 min-w-0">
-            <div className="p-2 rounded-xl bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] shrink-0 group-hover/skillcard:border-[#00F2FE]/60 group-hover/skillcard:bg-[#00F2FE]/20 group-hover/skillcard:scale-110 transition-all duration-300">
+            <div className="p-2 rounded-xl bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)] shrink-0 group-hover/skillcard:border-[color:var(--w-a)]/60 group-hover/skillcard:bg-[color:var(--w-a)]/20 group-hover/skillcard:scale-110 transition-all duration-300">
               <CategoryIcon className="w-4 h-4 shrink-0" />
             </div>
-            <h3 className="font-bold text-xs sm:text-sm text-white tracking-tight leading-snug break-words group-hover/skillcard:text-[#00F2FE] transition-colors duration-300">{data.title}</h3>
+            <h3 className="font-bold text-xs sm:text-sm text-white tracking-tight leading-snug break-words group-hover/skillcard:text-[color:var(--w-a)] transition-colors duration-300">{data.title}</h3>
           </div>
           <span className="font-mono text-[10px] text-gray-500 uppercase tracking-widest hidden sm:inline shrink-0 group-hover/skillcard:text-gray-300 transition-colors">0{categoryIdx + 1}</span>
         </div>
@@ -1061,7 +1064,7 @@ function GitHubContributions({
             className={`p-2.5 rounded-xl border transition-all duration-200 shrink-0 group ${
               isLight 
                 ? "bg-slate-100 border-slate-200 text-slate-800 hover:border-slate-400 shadow-sm"
-                : "bg-white/[0.04] border-white/10 text-white hover:border-[#00F2FE]/50 shadow-sm"
+                : "bg-white/[0.04] border-white/10 text-white hover:border-[color:var(--w-a)]/50 shadow-sm"
             }`}
             title="Open Clare Dolino's GitHub Profile (@claredolino-sys)"
           >
@@ -1107,7 +1110,7 @@ function GitHubContributions({
             </div>
             <span className="text-gray-500">|</span>
             <div className="flex items-center gap-1">
-              <Activity className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
+              <Activity className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0" />
               <span className={`font-bold ${isLight ? "text-slate-900" : "text-white"}`}>{activeDaysCount}</span>
               <span className="text-[10px] text-gray-400">Sprint Days</span>
             </div>
@@ -1329,7 +1332,7 @@ function GitHubContributions({
             href="https://github.com/claredolino-sys" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="ml-2 pl-2 border-l border-white/10 text-gray-400 hover:text-[#00F2FE] transition-colors flex items-center gap-1"
+            className="ml-2 pl-2 border-l border-white/10 text-gray-400 hover:text-[color:var(--w-a)] transition-colors flex items-center gap-1"
             title="Inspect Clare Dolino's profile on GitHub"
           >
             <span>GitHub Profile</span>
@@ -1342,188 +1345,6 @@ function GitHubContributions({
 }
 
 // --- Three.js Cosmos Background with Circular Star Balls & Orbital Constellation Rings ---
-function ThreeBackground({ activeSection, theme }: { activeSection: SectionType; theme: "deep-space" | "cyber-light" }) {
-  const mountRef = useRef<HTMLDivElement>(null);
-  const targetSpeed = useRef(1);
-  const currentSpeed = useRef(1);
-  const mouse = useRef({ x: 0, y: 0 });
-
-  useEffect(() => {
-    targetSpeed.current = 20;
-    const t = setTimeout(() => { targetSpeed.current = 1; }, 700);
-    return () => clearTimeout(t);
-  }, [activeSection]);
-
-  useEffect(() => {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const scene = new THREE.Scene();
-    const isLight = theme === "cyber-light";
-    scene.fog = new THREE.Fog(isLight ? 0xF9FAFB : 0x06080F, 650, 2400);
-
-    const camera = new THREE.PerspectiveCamera(75, w / h, 1, 2400);
-    camera.position.z = 800;
-
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(w, h);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    if (mountRef.current) mountRef.current.appendChild(renderer.domElement);
-
-    // Canvas circular star ball sprite generator
-    const createCircleStarTexture = () => {
-      const canvas = document.createElement('canvas');
-      canvas.width = 64;
-      canvas.height = 64;
-      const ctx = canvas.getContext('2d');
-      if (ctx) {
-        const gradient = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
-        gradient.addColorStop(0, 'rgba(255, 255, 255, 1)');
-        gradient.addColorStop(0.25, 'rgba(255, 255, 255, 0.9)');
-        gradient.addColorStop(0.55, 'rgba(255, 255, 255, 0.4)');
-        gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(32, 32, 32, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      return new THREE.CanvasTexture(canvas);
-    };
-
-    const starTexture = createCircleStarTexture();
-
-    // Helper for celestial star palette
-    const getStarColors = (count: number) => {
-      const colors = new Float32Array(count * 3);
-      const colorA = isLight ? new THREE.Color(0x0284C7) : new THREE.Color(0x00F2FE);
-      const colorB = isLight ? new THREE.Color(0x6D28D9) : new THREE.Color(0x7F00FF);
-      const colorC = isLight ? new THREE.Color(0x0D9488) : new THREE.Color(0x38BDF8);
-      const colorD = isLight ? new THREE.Color(0xD97706) : new THREE.Color(0xFFD700);
-
-      for (let i = 0; i < count; i++) {
-        const rand = Math.random();
-        let starColor = new THREE.Color(0xFFFFFF);
-        if (rand < 0.35) starColor = colorA.clone().lerp(colorB, Math.random());
-        else if (rand < 0.65) starColor = colorB.clone().lerp(colorC, Math.random());
-        else if (rand < 0.82) starColor = colorD.clone();
-
-        colors[i * 3] = starColor.r;
-        colors[i * 3 + 1] = starColor.g;
-        colors[i * 3 + 2] = starColor.b;
-      }
-      return colors;
-    };
-
-    const count = 3000;
-    const geometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(count * 3);
-
-    for (let i = 0; i < count; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 2200;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 2200;
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 2200;
-    }
-
-    const colors = getStarColors(count);
-    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-
-    const material = new THREE.PointsMaterial({
-      size: isLight ? 5.8 : 4.2,
-      map: starTexture,
-      vertexColors: true,
-      transparent: true,
-      opacity: isLight ? 0.95 : 0.88,
-      blending: isLight ? THREE.NormalBlending : THREE.AdditiveBlending,
-      depthWrite: false,
-    });
-
-    const particles = new THREE.Points(geometry, material);
-    scene.add(particles);
-
-    // 3D Orbital Constellation Ring 1
-    const r1Points: THREE.Vector3[] = [];
-    for (let i = 0; i <= 90; i++) {
-      const theta = (i / 90) * Math.PI * 2;
-      r1Points.push(new THREE.Vector3(Math.cos(theta) * 650, Math.sin(theta) * 380, Math.sin(theta) * 220));
-    }
-    const r1Geo = new THREE.BufferGeometry().setFromPoints(r1Points);
-    const r1Mat = new THREE.LineBasicMaterial({
-      color: isLight ? 0x0284C7 : 0x00F2FE,
-      transparent: true,
-      opacity: isLight ? 0.45 : 0.28,
-    });
-    const r1 = new THREE.Line(r1Geo, r1Mat);
-    r1.rotation.x = Math.PI / 3.5;
-    r1.rotation.y = Math.PI / 5;
-    scene.add(r1);
-
-    // 3D Orbital Constellation Ring 2
-    const r2Points: THREE.Vector3[] = [];
-    for (let i = 0; i <= 90; i++) {
-      const theta = (i / 90) * Math.PI * 2;
-      r2Points.push(new THREE.Vector3(Math.cos(theta) * 880, Math.cos(theta) * 240, Math.sin(theta) * 600));
-    }
-    const r2Geo = new THREE.BufferGeometry().setFromPoints(r2Points);
-    const r2Mat = new THREE.LineBasicMaterial({
-      color: isLight ? 0x6D28D9 : 0x7F00FF,
-      transparent: true,
-      opacity: isLight ? 0.4 : 0.22,
-    });
-    const r2 = new THREE.Line(r2Geo, r2Mat);
-    r2.rotation.z = Math.PI / 2.8;
-    r2.rotation.x = -Math.PI / 6;
-    scene.add(r2);
-
-    const onMouseMove = (e: MouseEvent) => {
-      mouse.current.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouse.current.y = -(e.clientY / window.innerHeight) * 2 + 1;
-    };
-    window.addEventListener('mousemove', onMouseMove);
-
-    let frameId: number;
-    const render = () => {
-      currentSpeed.current += (targetSpeed.current - currentSpeed.current) * 0.05;
-      particles.rotation.y += 0.0006 * currentSpeed.current;
-      particles.rotation.x += 0.00025 * currentSpeed.current;
-      r1.rotation.z += 0.0004 * currentSpeed.current;
-      r2.rotation.y += 0.0003 * currentSpeed.current;
-      // Gentle, organic lerp camera motion
-      camera.position.x += (mouse.current.x * 20 - camera.position.x) * 0.018;
-      camera.position.y += (mouse.current.y * 20 - camera.position.y) * 0.018;
-      camera.lookAt(scene.position);
-      renderer.render(scene, camera);
-      frameId = requestAnimationFrame(render);
-    };
-    render();
-
-    const onResize = () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    };
-    window.addEventListener('resize', onResize);
-
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('resize', onResize);
-      cancelAnimationFrame(frameId);
-      if (mountRef.current) mountRef.current.removeChild(renderer.domElement);
-      geometry.dispose();
-      material.dispose();
-      r1Geo.dispose();
-      r1Mat.dispose();
-      r2Geo.dispose();
-      r2Mat.dispose();
-      starTexture.dispose();
-      renderer.dispose();
-    };
-  }, [theme]);
-
-  return (
-    <div ref={mountRef} className="absolute inset-0 z-0 pointer-events-none" />
-  );
-}
-
 // --- Organic Lerp Physics Tilt Wrapper ---
 function TiltWrapper({
   children,
@@ -1632,11 +1453,11 @@ function ContactMeForm() {
 
   if (status === "success") {
     return (
-      <div className="bg-[#00F2FE]/5 border border-[#00F2FE]/30 rounded-2xl p-6 text-center my-4">
-        <CheckCircle2 className="w-8 h-8 text-[#00F2FE] mx-auto mb-2" />
+      <div className="bg-[color:var(--w-a)]/5 border border-[color:var(--w-a)]/30 rounded-2xl p-6 text-center my-4">
+        <CheckCircle2 className="w-8 h-8 text-[color:var(--w-a)] mx-auto mb-2" />
         <h3 className="text-lg font-bold text-white mb-1">Transmission Transmitted</h3>
         <p className="text-xs text-gray-300">Thank you! Your message was sent directly to Clare's inbox.</p>
-        <button onClick={() => setStatus("idle")} className="mt-4 px-4 py-2 rounded-full bg-white/10 text-xs font-mono text-[#00F2FE]">
+        <button onClick={() => setStatus("idle")} className="mt-4 px-4 py-2 rounded-full bg-white/10 text-xs font-mono text-[color:var(--w-a)]">
           Send Another Message
         </button>
       </div>
@@ -1654,7 +1475,7 @@ function ContactMeForm() {
             value={formData.name}
             onChange={(e) => setFormData({ ...formData, name: e.target.value })}
             placeholder="Jane Doe"
-            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#00F2FE]"
+            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[color:var(--w-a)]"
           />
         </div>
         <div>
@@ -1665,7 +1486,7 @@ function ContactMeForm() {
             value={formData.email}
             onChange={(e) => setFormData({ ...formData, email: e.target.value })}
             placeholder="jane@example.com"
-            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#00F2FE]"
+            className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[color:var(--w-a)]"
           />
         </div>
       </div>
@@ -1677,13 +1498,13 @@ function ContactMeForm() {
           value={formData.message}
           onChange={(e) => setFormData({ ...formData, message: e.target.value })}
           placeholder="Hi Clare, I came across your portfolio and would like to speak regarding an opportunity..."
-          className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[#00F2FE] resize-none"
+          className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-4 py-2.5 text-xs text-white placeholder-gray-600 focus:outline-none focus:border-[color:var(--w-a)] resize-none"
         />
       </div>
       <button
         type="submit"
         disabled={status === "sending"}
-        className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] text-black font-semibold text-xs font-mono uppercase tracking-wider hover:opacity-95 transition-all shadow-[0_0_15px_rgba(0,242,254,0.3)] cursor-pointer disabled:opacity-50"
+        className="w-full sm:w-auto flex items-center justify-center gap-2 px-8 py-3 rounded-full bg-gradient-to-r from-[color:var(--w-a)] to-[color:var(--w-b)] text-black font-semibold text-xs font-mono uppercase tracking-wider hover:opacity-95 transition-all shadow-[0_0_15px_rgba(var(--w-a-rgb),0.3)] cursor-pointer disabled:opacity-50"
       >
         {status === "sending" ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
         <span>Send Message</span>
@@ -2156,7 +1977,7 @@ function ProjectDetailModal({
             <div className="space-y-1.5 min-w-0 w-full sm:w-auto">
               {/* Clean Badges */}
               <div className="flex flex-wrap items-center gap-1.5 text-[10px] sm:text-xs font-mono">
-                <span className="px-2 py-0.5 rounded bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-semibold uppercase">{project.type}</span>
+                <span className="px-2 py-0.5 rounded bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)] font-semibold uppercase">{project.type}</span>
                 <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10 text-gray-300 font-medium">{project.year}</span>
                 <ComplexityMeter level={project.complexity.level} label={project.complexity.label} />
                 <span className="px-2 py-0.5 rounded bg-purple-500/10 border border-purple-500/30 text-[#C084FC] font-semibold flex items-center gap-1">
@@ -2169,7 +1990,7 @@ function ProjectDetailModal({
             </div>
 
             <div className="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto shrink-0 pt-2 sm:pt-0 border-t sm:border-t-0 border-white/5">
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] text-black font-semibold text-xs font-mono uppercase shadow-md flex-1 sm:flex-initial">
+              <a href={project.link} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-xl bg-gradient-to-r from-[color:var(--w-a)] to-[color:var(--w-b)] text-black font-semibold text-xs font-mono uppercase shadow-md flex-1 sm:flex-initial">
                 <span>Live Demo</span>
                 <ExternalLink className="w-3.5 h-3.5 shrink-0" />
               </a>
@@ -2182,22 +2003,22 @@ function ProjectDetailModal({
 
           {/* Modal Nav Tabs */}
           <div className="flex items-center gap-1.5 sm:gap-2 px-3 sm:px-6 pt-2.5 pb-2 border-b border-white/5 font-mono text-[11px] sm:text-xs overflow-x-auto no-scrollbar shrink-0">
-            <button onClick={() => setActiveTab("overview")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "overview" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
+            <button onClick={() => setActiveTab("overview")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "overview" ? "bg-[color:var(--w-a)]/15 text-[color:var(--w-a)] border border-[color:var(--w-a)]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
               01. Architecture & Impact
             </button>
-            <button onClick={() => setActiveTab("milestones")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "milestones" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
+            <button onClick={() => setActiveTab("milestones")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "milestones" ? "bg-[color:var(--w-a)]/15 text-[color:var(--w-a)] border border-[color:var(--w-a)]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
               02. SDLC Milestones ({project.milestones.length})
             </button>
-            <button onClick={() => setActiveTab("stack")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "stack" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
+            <button onClick={() => setActiveTab("stack")} className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer ${activeTab === "stack" ? "bg-[color:var(--w-a)]/15 text-[color:var(--w-a)] border border-[color:var(--w-a)]/30 font-semibold" : "text-gray-400 hover:text-white"}`}>
               03. Tech Stack Breakdown
             </button>
             <button 
               onClick={() => setActiveTab("prd")} 
-              className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "prd" ? "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30 font-semibold shadow-[0_0_12px_rgba(0,242,254,0.2)]" : "text-gray-400 hover:text-white"}`}
+              className={`px-2.5 sm:px-3 py-1.5 rounded-lg whitespace-nowrap shrink-0 transition-all cursor-pointer flex items-center gap-1.5 ${activeTab === "prd" ? "bg-[color:var(--w-a)]/15 text-[color:var(--w-a)] border border-[color:var(--w-a)]/30 font-semibold shadow-[0_0_12px_rgba(var(--w-a-rgb),0.2)]" : "text-gray-400 hover:text-white"}`}
             >
-              <FileText className="w-3.5 h-3.5 text-[#00F2FE]" />
+              <FileText className="w-3.5 h-3.5 text-[color:var(--w-a)]" />
               <span>04. Product Requirements Doc (PRD)</span>
-              <span className="px-1.5 py-0.2 text-[9px] rounded bg-[#00F2FE]/20 text-[#00F2FE] font-bold uppercase tracking-wider">
+              <span className="px-1.5 py-0.2 text-[9px] rounded bg-[color:var(--w-a)]/20 text-[color:var(--w-a)] font-bold uppercase tracking-wider">
                 PDF Embed
               </span>
             </button>
@@ -2211,14 +2032,14 @@ function ProjectDetailModal({
                   {project.keyMetrics.map((km, idx) => (
                     <div key={idx} className="p-3 sm:p-4 rounded-xl bg-white/[0.03] border border-white/10">
                       <div className="text-[10px] font-mono text-gray-400 uppercase">{km.label}</div>
-                      <div className="text-base sm:text-xl font-bold font-mono text-[#00F2FE] mt-0.5">{km.value}</div>
+                      <div className="text-base sm:text-xl font-bold font-mono text-[color:var(--w-a)] mt-0.5">{km.value}</div>
                       <div className="text-xs text-gray-300 font-light mt-0.5 leading-relaxed">{km.detail}</div>
                     </div>
                   ))}
                 </div>
 
                 <div className="p-3.5 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/5 space-y-2">
-                  <h4 className="text-xs font-mono uppercase tracking-widest text-[#00F2FE] font-semibold">Executive Overview</h4>
+                  <h4 className="text-xs font-mono uppercase tracking-widest text-[color:var(--w-a)] font-semibold">Executive Overview</h4>
                   <p className="text-xs sm:text-sm text-gray-200 leading-relaxed font-light">{project.fullDesc.overview}</p>
                 </div>
 
@@ -2227,8 +2048,8 @@ function ProjectDetailModal({
                     <h4 className="text-xs font-mono uppercase tracking-widest text-rose-400 font-semibold">Operational Challenge</h4>
                     <p className="text-xs text-gray-300 leading-relaxed font-light">{project.fullDesc.challenge}</p>
                   </div>
-                  <div className="p-3.5 sm:p-5 rounded-2xl bg-[#00F2FE]/[0.03] border border-[#00F2FE]/20 space-y-2">
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-[#00F2FE] font-semibold">Engineered Solution</h4>
+                  <div className="p-3.5 sm:p-5 rounded-2xl bg-[color:var(--w-a)]/[0.03] border border-[color:var(--w-a)]/20 space-y-2">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-[color:var(--w-a)] font-semibold">Engineered Solution</h4>
                     <p className="text-xs text-gray-300 leading-relaxed font-light">{project.fullDesc.solution}</p>
                   </div>
                 </div>
@@ -2238,7 +2059,7 @@ function ProjectDetailModal({
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                     {project.highlights.map((h, i) => (
                       <div key={i} className="flex items-start gap-2 text-gray-300 font-light leading-relaxed">
-                        <CheckCircle2 className="w-4 h-4 text-[#00F2FE] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-4 h-4 text-[color:var(--w-a)] shrink-0 mt-0.5" />
                         <span className="break-words">{h}</span>
                       </div>
                     ))}
@@ -2247,9 +2068,9 @@ function ProjectDetailModal({
 
                 {/* Quick PRD Jump Card */}
                 {project.prd && (
-                  <div className="p-4 rounded-2xl bg-gradient-to-r from-[#00F2FE]/5 to-[#7F00FF]/5 border border-[#00F2FE]/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+                  <div className="p-4 rounded-2xl bg-gradient-to-r from-[color:var(--w-a)]/5 to-[color:var(--w-b)]/5 border border-[color:var(--w-a)]/20 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
                     <div className="flex items-start gap-3">
-                      <div className="p-2 rounded-xl bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] shrink-0">
+                      <div className="p-2 rounded-xl bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)] shrink-0">
                         <FileText className="w-5 h-5" />
                       </div>
                       <div>
@@ -2267,7 +2088,7 @@ function ProjectDetailModal({
                     <button
                       type="button"
                       onClick={() => setActiveTab("prd")}
-                      className="px-3.5 py-1.5 rounded-xl bg-[#00F2FE]/15 hover:bg-[#00F2FE]/25 text-[#00F2FE] border border-[#00F2FE]/30 text-xs font-mono font-medium transition-colors cursor-pointer shrink-0"
+                      className="px-3.5 py-1.5 rounded-xl bg-[color:var(--w-a)]/15 hover:bg-[color:var(--w-a)]/25 text-[color:var(--w-a)] border border-[color:var(--w-a)]/30 text-xs font-mono font-medium transition-colors cursor-pointer shrink-0"
                     >
                       Open PRD Viewer →
                     </button>
@@ -2281,10 +2102,10 @@ function ProjectDetailModal({
                 {project.milestones.map((m, idx) => (
                   <div key={idx} className="p-3.5 sm:p-5 rounded-xl bg-white/[0.025] border border-white/10 space-y-2">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 text-xs font-mono">
-                      <span className="text-[#00F2FE] font-semibold break-words">{m.phase}</span>
+                      <span className="text-[color:var(--w-a)] font-semibold break-words">{m.phase}</span>
                       <div className="flex items-center gap-2 text-[10px] sm:text-[11px] text-gray-400 shrink-0">
                         <span className="px-2 py-0.5 rounded bg-white/5 border border-white/10">{m.date}</span>
-                        <span className="px-2 py-0.5 rounded bg-[#00F2FE]/10 text-[#00F2FE] border border-[#00F2FE]/20 font-medium">{m.status}</span>
+                        <span className="px-2 py-0.5 rounded bg-[color:var(--w-a)]/10 text-[color:var(--w-a)] border border-[color:var(--w-a)]/20 font-medium">{m.status}</span>
                       </div>
                     </div>
                     <h4 className="text-sm sm:text-base font-bold text-white break-words">{m.title}</h4>
@@ -2343,7 +2164,7 @@ function ProjectDetailModal({
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white font-mono text-xs transition-colors cursor-pointer shrink-0"
                     title="Open in Distraction-Free Fullscreen Reader"
                   >
-                    <Maximize2 className="w-3.5 h-3.5 text-[#00F2FE]" />
+                    <Maximize2 className="w-3.5 h-3.5 text-[color:var(--w-a)]" />
                     <span>Expand Reader</span>
                   </button>
                 </div>
@@ -2352,7 +2173,7 @@ function ProjectDetailModal({
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 sm:gap-3">
                   <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.025] border border-white/10 space-y-1">
                     <div className="text-[10px] font-mono text-gray-400 uppercase">Document Version</div>
-                    <div className="text-xs sm:text-sm font-bold font-mono text-[#00F2FE] truncate">{project.prd.version}</div>
+                    <div className="text-xs sm:text-sm font-bold font-mono text-[color:var(--w-a)] truncate">{project.prd.version}</div>
                     <div className="text-[10px] text-emerald-400 font-mono">● {project.prd.status}</div>
                   </div>
                   <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.025] border border-white/10 space-y-1">
@@ -2370,7 +2191,7 @@ function ProjectDetailModal({
                   <div className="p-3 sm:p-3.5 rounded-xl bg-white/[0.025] border border-white/10 space-y-1">
                     <div className="text-[10px] font-mono text-gray-400 uppercase">Document Scale</div>
                     <div className="text-xs sm:text-sm font-bold font-mono text-white">{project.prd.pages} Pages</div>
-                    <div className="text-[10px] text-[#00F2FE] font-mono">Full-Stack Specification</div>
+                    <div className="text-[10px] text-[color:var(--w-a)] font-mono">Full-Stack Specification</div>
                   </div>
                 </div>
 
@@ -2383,7 +2204,7 @@ function ProjectDetailModal({
                   {/* Viewport Top Header */}
                   <div className="flex items-center justify-between px-3.5 sm:px-4 py-2.5 bg-black/60 border-b border-white/10 font-mono text-xs">
                     <div className="flex items-center gap-2 min-w-0">
-                      <span className="w-2 h-2 rounded-full bg-[#00F2FE] animate-pulse shrink-0"></span>
+                      <span className="w-2 h-2 rounded-full bg-[color:var(--w-a)] animate-pulse shrink-0"></span>
                       <span className="text-white font-medium truncate text-[11px] sm:text-xs">
                         {project.prd.fileName}
                       </span>
@@ -2399,7 +2220,7 @@ function ProjectDetailModal({
                       <button
                         type="button"
                         onClick={() => setIsFullscreenPrd(true)}
-                        className="p-1 sm:px-2.5 sm:py-1 rounded-md bg-[#00F2FE]/15 hover:bg-[#00F2FE]/25 text-[#00F2FE] text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
+                        className="p-1 sm:px-2.5 sm:py-1 rounded-md bg-[color:var(--w-a)]/15 hover:bg-[color:var(--w-a)]/25 text-[color:var(--w-a)] text-[11px] font-mono flex items-center gap-1 cursor-pointer transition-colors"
                         title="Expand Reader"
                       >
                         <Maximize2 className="w-3.5 h-3.5" />
@@ -2434,7 +2255,7 @@ function ProjectDetailModal({
                 {/* PRD Document Overview & Executive Specifications */}
                 <div className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/10 space-y-4">
                   <div className="space-y-1">
-                    <h4 className="text-xs font-mono uppercase tracking-widest text-[#00F2FE] font-semibold">
+                    <h4 className="text-xs font-mono uppercase tracking-widest text-[color:var(--w-a)] font-semibold">
                       Document Executive Overview & Context
                     </h4>
                     <p className="text-xs text-gray-200 leading-relaxed font-light">
@@ -2450,7 +2271,7 @@ function ProjectDetailModal({
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                       {project.prd.keyObjectives.map((obj, oIdx) => (
                         <div key={oIdx} className="flex items-start gap-2 text-gray-300 font-light leading-relaxed">
-                          <Check className="w-3.5 h-3.5 text-[#00F2FE] shrink-0 mt-0.5" />
+                          <Check className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0 mt-0.5" />
                           <span>{obj}</span>
                         </div>
                       ))}
@@ -2465,7 +2286,7 @@ function ProjectDetailModal({
                     <div className="grid grid-cols-1 gap-2.5">
                       {project.prd.coreSpecifications.map((spec, sIdx) => (
                         <div key={sIdx} className="p-3 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5">
-                          <div className="text-xs font-mono font-semibold text-[#00F2FE]">
+                          <div className="text-xs font-mono font-semibold text-[color:var(--w-a)]">
                             § {spec.section}
                           </div>
                           <ul className="space-y-1 text-[11px] text-gray-300 font-light">
@@ -2494,7 +2315,7 @@ function ProjectDetailModal({
           <div className="p-3 sm:p-4 border-t border-white/10 bg-white/[0.02] flex items-center justify-between shrink-0">
             {project.prd && (
               <div className="text-[11px] font-mono text-gray-400 flex items-center gap-1.5">
-                <FileText className="w-3.5 h-3.5 text-[#00F2FE]" />
+                <FileText className="w-3.5 h-3.5 text-[color:var(--w-a)]" />
                 <span className="hidden sm:inline">Official Document:</span>
                 <span className="text-white truncate max-w-[180px] sm:max-w-xs">{project.prd.fileName}</span>
               </div>
@@ -2520,7 +2341,7 @@ function ProjectDetailModal({
             {/* Top Reader Navigation Bar */}
             <div className="flex items-center justify-between px-4 sm:px-6 py-3 border-b border-white/10 bg-[#06080F]/90 shrink-0">
               <div className="flex items-center gap-3 min-w-0">
-                <div className="p-1.5 rounded-lg bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE]">
+                <div className="p-1.5 rounded-lg bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)]">
                   <FileText className="w-4 h-4" />
                 </div>
                 <div className="min-w-0">
@@ -2649,6 +2470,82 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState<ProjectItem | null>(null);
   const [modalInitialTab, setModalInitialTab] = useState<"overview" | "milestones" | "stack" | "prd">("overview");
   const [showHackerRankModal, setShowHackerRankModal] = useState(false);
+
+  // --- Butterfly game state (persisted per browser) ---
+  const [caught, setCaught] = useState<number>(() => {
+    try { return Number(localStorage.getItem("portfolio_caught")) || 0; } catch { return 0; }
+  });
+  const [visited, setVisited] = useState<SectionType[]>(() => {
+    try {
+      const raw = JSON.parse(localStorage.getItem("portfolio_visited") || "[]");
+      return Array.isArray(raw) ? raw.filter((x: string): x is SectionType => (SECTIONS as readonly string[]).includes(x)) : [];
+    } catch { return []; }
+  });
+  const [popups, setPopups] = useState<CatchPopup[]>([]);
+  const [focus, setFocus] = useState<WorldFocus | null>(null);
+  const [chrysalis, setChrysalis] = useState(false);
+  const popupId = useRef(0);
+
+  // Each section is its own world: publish its colours as CSS tokens (cross-faded by @property).
+  useEffect(() => {
+    const w = WORLDS[activeSection];
+    const root = document.documentElement.style;
+    root.setProperty("--w-a", w.a);
+    root.setProperty("--w-b", w.b);
+    root.setProperty("--w-c", w.c);
+    root.setProperty("--w-bg", w.bg);
+    root.setProperty("--w-a-rgb", hexToRgbString(w.a));
+    root.setProperty("--w-b-rgb", hexToRgbString(w.b));
+    root.setProperty("--w-c-rgb", hexToRgbString(w.c));
+    setFocus(null);
+    setVisited((prev) => {
+      if (prev.includes(activeSection)) return prev;
+      const next = [...prev, activeSection];
+      try { localStorage.setItem("portfolio_visited", JSON.stringify(next)); } catch { /* ignore */ }
+      return next;
+    });
+  }, [activeSection]);
+
+  useEffect(() => {
+    if (visited.length < SECTIONS.length) return;
+    let seen = false;
+    try { seen = localStorage.getItem("portfolio_chrysalis") === "1"; } catch { /* ignore */ }
+    if (seen) return;
+    try { localStorage.setItem("portfolio_chrysalis", "1"); } catch { /* ignore */ }
+    setChrysalis(true);
+  }, [visited]);
+
+  useEffect(() => {
+    if (!chrysalis) return;
+    const t = setTimeout(() => setChrysalis(false), 4500);
+    return () => clearTimeout(t);
+  }, [chrysalis]);
+
+  const handleCatch = React.useCallback((info: CatchInfo) => {
+    soundEngine.unlock();
+    soundEngine.playCardHover();
+    setCaught((c) => {
+      const n = c + 1;
+      try { localStorage.setItem("portfolio_caught", String(n)); } catch { /* ignore */ }
+      return n;
+    });
+    const id = ++popupId.current;
+    setPopups((p) => [...p, { id, x: info.x, y: info.y - 10, color: info.colors[0] }]);
+    setTimeout(() => setPopups((p) => p.filter((x) => x.id !== id)), 1100);
+    try {
+      confetti({
+        particleCount: 26,
+        spread: 75,
+        startVelocity: 20,
+        scalar: 0.7,
+        gravity: 0.9,
+        ticks: 70,
+        origin: { x: info.x / window.innerWidth, y: info.y / window.innerHeight },
+        colors: info.colors,
+        disableForReducedMotion: true,
+      });
+    } catch { /* confetti is decoration only */ }
+  }, []);
 
   const prevIndexRef = useRef<number>(0);
   const currIndex = SECTIONS.indexOf(activeSection);
@@ -2881,11 +2778,18 @@ export default function App() {
       <ClickHighlightOverlay />
       
       {/* Three.js Background */}
-      <ThreeBackground activeSection={activeSection} theme={theme} />
+      <ButterflyWorld
+        section={activeSection}
+        theme={theme}
+        focus={focus}
+        projectIds={PROJECTS.map((p) => p.id)}
+        interactive={!selectedProject && !showHackerRankModal}
+        onCatch={handleCatch}
+      />
 
       {/* Persistent Header - Fully Responsive for Mobile, iPad, Tablet & Desktop */}
       <header className={`absolute top-0 left-0 w-full h-16 sm:h-20 z-50 flex items-center justify-between px-3 sm:px-5 md:px-6 lg:px-8 xl:px-12 pointer-events-none transition-transform duration-500 max-w-full box-border ${showHeader ? "translate-y-0" : "-translate-y-full"}`}>
-        <div className="text-base sm:text-lg md:text-xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] font-mono pointer-events-auto shrink-0">
+        <div className="text-base sm:text-lg md:text-xl font-bold tracking-widest text-transparent bg-clip-text bg-gradient-to-r from-[color:var(--w-a)] to-[color:var(--w-b)] font-mono pointer-events-auto shrink-0">
           C.DOLINO
         </div>
 
@@ -2894,7 +2798,7 @@ export default function App() {
           <select
             value={activeSection}
             onChange={(e) => setActiveSection(e.target.value as SectionType)}
-            className="px-2.5 py-1 rounded-full bg-[#06080F]/90 border border-white/20 text-[#00F2FE] font-mono text-[10px] sm:text-[11px] font-semibold uppercase focus:outline-none cursor-pointer shadow-md truncate max-w-[130px] sm:max-w-[180px]"
+            className="px-2.5 py-1 rounded-full bg-[#06080F]/90 border border-white/20 text-[color:var(--w-a)] font-mono text-[10px] sm:text-[11px] font-semibold uppercase focus:outline-none cursor-pointer shadow-md truncate max-w-[130px] sm:max-w-[180px]"
           >
             {SECTIONS.map((s) => (
               <option key={s} value={s} className="bg-[#090C15] text-white">
@@ -2919,7 +2823,7 @@ export default function App() {
                     isActive
                       ? isLight
                         ? 'text-cyan-700 font-bold bg-cyan-100 border border-cyan-300 shadow-sm'
-                        : 'text-[#00F2FE] font-bold bg-[#00F2FE]/15 border border-[#00F2FE]/35 shadow-[0_0_10px_rgba(0,242,254,0.2)]'
+                        : 'text-[color:var(--w-a)] font-bold bg-[color:var(--w-a)]/15 border border-[color:var(--w-a)]/35 shadow-[0_0_10px_rgba(var(--w-a-rgb),0.2)]'
                       : isLight
                       ? 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                       : 'text-gray-400 hover:text-white hover:bg-white/5'
@@ -2953,7 +2857,7 @@ export default function App() {
               soundEnabled
                 ? isLight
                   ? 'bg-cyan-50 hover:bg-cyan-100 border-cyan-300 text-cyan-800 shadow-sm'
-                  : 'bg-[#00F2FE]/10 hover:bg-[#00F2FE]/20 border-[#00F2FE]/30 text-[#00F2FE] shadow-[0_0_10px_rgba(0,242,254,0.2)]'
+                  : 'bg-[color:var(--w-a)]/10 hover:bg-[color:var(--w-a)]/20 border-[color:var(--w-a)]/30 text-[color:var(--w-a)] shadow-[0_0_10px_rgba(var(--w-a-rgb),0.2)]'
                 : isLight
                 ? 'bg-slate-100 hover:bg-slate-200 border-slate-300 text-slate-500'
                 : 'bg-white/[0.04] hover:bg-white/10 border-white/10 text-gray-400'
@@ -2984,7 +2888,7 @@ export default function App() {
                 : 'bg-white/[0.04] hover:bg-white/10 border-white/10 text-gray-300'
             }`}
           >
-            {theme === "deep-space" ? <Moon className="w-3.5 h-3.5 text-[#00F2FE]" /> : <Sun className="w-3.5 h-3.5 text-amber-500" />}
+            {theme === "deep-space" ? <Moon className="w-3.5 h-3.5 text-[color:var(--w-a)]" /> : <Sun className="w-3.5 h-3.5 text-amber-500" />}
             <span className="hidden xl:inline">{theme === "deep-space" ? "Deep Space" : "Cyber-Light"}</span>
           </button>
         </div>
@@ -3009,15 +2913,15 @@ export default function App() {
           <TiltWrapper className="my-auto" maxTilt={0.8}>
             <div className="text-center max-w-4xl mx-auto space-y-4 sm:space-y-6">
               {/* Role badge */}
-              <div className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[#7F00FF]/15 border border-[#7F00FF]/30 text-[#00F2FE] font-mono text-[9.5px] sm:text-xs uppercase tracking-[0.08em] sm:tracking-[0.12em] max-w-full shadow-sm">
-                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00F2FE] shrink-0" />
+              <div className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full bg-[color:var(--w-b)]/15 border border-[color:var(--w-b)]/30 text-[color:var(--w-a)] font-mono text-[9.5px] sm:text-xs uppercase tracking-[0.08em] sm:tracking-[0.12em] max-w-full shadow-sm">
+                <Sparkles className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[color:var(--w-a)] shrink-0" />
                 <span className="whitespace-normal break-words text-center leading-snug">Technical Product Builder · Systems Thinker · Software Developer</span>
               </div>
 
               {/* Main Headline */}
               <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.18] sm:leading-[1.16] tracking-tight break-words px-2">
                 I turn complex problems into<br className="hidden sm:inline" />{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] inline-block">
+                <span className="iridescent-text inline-block">
                   practical digital solutions.
                 </span>
               </h1>
@@ -3025,11 +2929,11 @@ export default function App() {
               {/* Honor & Relocation Badges */}
               <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-2.5 max-w-3xl mx-auto px-1">
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-gray-200 font-mono text-[11px] sm:text-xs">
-                  <GraduationCap className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
+                  <GraduationCap className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0" />
                   <span>Magna Cum Laude (Rank 1, GWA 1.32)</span>
                 </span>
                 <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/[0.05] border border-white/10 text-gray-200 font-mono text-[11px] sm:text-xs">
-                  <Award className="w-3.5 h-3.5 text-[#7F00FF] shrink-0" />
+                  <Award className="w-3.5 h-3.5 text-[color:var(--w-b)] shrink-0" />
                   <span>PIA Region 8 Proficiency Awardee</span>
                 </span>
                 <button
@@ -3045,8 +2949,8 @@ export default function App() {
                   <span>HackerRank Certified (JS Intermediate)</span>
                   <ArrowUpRight className="w-3 h-3 text-[#00EA64] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
                 </button>
-                <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[10.5px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(0,242,254,0.15)] transition-all">
-                  <Globe className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
+                <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)] font-mono text-[10.5px] sm:text-xs font-semibold shadow-[0_0_12px_rgba(var(--w-a-rgb),0.15)] transition-all">
+                  <Globe className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0" />
                   <span className="tracking-tight sm:tracking-normal">Open for Relocation &amp; International Roles</span>
                 </span>
               </div>
@@ -3057,14 +2961,14 @@ export default function App() {
               </p>
 
               <div className="flex flex-col sm:flex-row flex-wrap items-center justify-center gap-2.5 sm:gap-3 pt-2">
-                <button onClick={() => setActiveSection("04 // Tracklist")} className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-[#00F2FE] to-[#7F00FF] text-black font-semibold text-xs font-mono uppercase tracking-wider shadow-[0_0_20px_rgba(0,242,254,0.3)] cursor-pointer">
+                <button onClick={() => setActiveSection("04 // Tracklist")} className="w-full sm:w-auto flex items-center justify-center gap-2 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full bg-gradient-to-r from-[color:var(--w-a)] to-[color:var(--w-b)] text-black font-semibold text-xs font-mono uppercase tracking-wider shadow-[0_0_20px_rgba(var(--w-a-rgb),0.3)] cursor-pointer">
                   <span>Explore Projects & Case Studies</span>
                   <ArrowUpRight className="w-4 h-4" />
                 </button>
                 <button onClick={() => setActiveSection("02 // Backstage")} className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase text-gray-300 hover:text-white cursor-pointer">
                   <span>View Backstage & Skills</span>
                 </button>
-                <button onClick={() => setActiveSection("06 // Insights")} className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase text-gray-300 hover:text-[#00F2FE] hover:border-[#00F2FE]/40 cursor-pointer">
+                <button onClick={() => setActiveSection("06 // Insights")} className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-5 sm:px-6 py-3 sm:py-3.5 rounded-full bg-white/5 border border-white/10 text-xs font-mono uppercase text-gray-300 hover:text-[color:var(--w-a)] hover:border-[color:var(--w-a)]/40 cursor-pointer">
                   <span>Read Insights & Essays</span>
                 </button>
               </div>
@@ -3095,7 +2999,7 @@ export default function App() {
                 {/* Header Row: Photo, Name, Honors & Contact Chips */}
                 <div className="flex flex-col lg:flex-row justify-between gap-4 sm:gap-6 items-start lg:items-center pb-4 sm:pb-6 border-b border-white/10">
                   <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3.5 sm:gap-6 w-full sm:w-auto">
-                    <div className="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 rounded-full overflow-hidden border-2 sm:border-4 border-[#7F00FF]/70 ring-4 ring-[#00F2FE]/30 shrink-0 shadow-2xl shadow-[#7F00FF]/40 transition-transform duration-300 hover:scale-105">
+                    <div className="w-28 h-28 sm:w-44 sm:h-44 md:w-52 md:h-52 lg:w-60 lg:h-60 rounded-full overflow-hidden border-2 sm:border-4 border-[color:var(--w-b)]/70 ring-4 ring-[color:var(--w-a)]/30 shrink-0 shadow-2xl shadow-[color:var(--w-b)]/40 transition-transform duration-300 hover:scale-105">
                       <img src={clareProfile} alt="Clare Angelie T. Dolino" className="w-full h-full object-cover object-center" />
                     </div>
                     <div className="flex flex-col space-y-2 sm:space-y-1.5 text-left min-w-0 w-full">
@@ -3111,20 +3015,20 @@ export default function App() {
 
                       {/* Contact Info (Location, Email, Phone) - Left-aligned */}
                       <div className="flex flex-wrap items-center justify-start gap-1.5 sm:gap-3 text-[11px] sm:text-xs font-mono text-gray-400 pt-0.5 text-left">
-                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00F2FE] shrink-0" /> Biliran, Philippines (Relocation Ready)</span>
+                        <span className="flex items-center gap-1"><MapPin className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[color:var(--w-a)] shrink-0" /> Biliran, Philippines (Relocation Ready)</span>
                         <span className="hidden sm:inline">·</span>
-                        <span className="flex items-center gap-1"><Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#7F00FF] shrink-0" /> clareangeliedolino@gmail.com</span>
+                        <span className="flex items-center gap-1"><Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[color:var(--w-b)] shrink-0" /> clareangeliedolino@gmail.com</span>
                         <span className="hidden sm:inline">·</span>
-                        <span className="flex items-center gap-1"><Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#00F2FE] shrink-0" /> +63 964 963 3928</span>
+                        <span className="flex items-center gap-1"><Phone className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[color:var(--w-a)] shrink-0" /> +63 964 963 3928</span>
                       </div>
 
                       {/* Honors & Relocation Badges - Well-fitted and wrapped on mobile */}
                       <div className="flex flex-wrap items-center justify-start gap-1.5 sm:gap-2.5 text-xs font-mono pt-2 sm:pt-2.5 max-w-full">
-                        <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#00F2FE]/15 border border-[#00F2FE]/30 text-[#00F2FE] font-semibold text-[10px] sm:text-xs shadow-sm transition-all hover:bg-[#00F2FE]/20">
+                        <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[color:var(--w-a)]/15 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)] font-semibold text-[10px] sm:text-xs shadow-sm transition-all hover:bg-[color:var(--w-a)]/20">
                           <GraduationCap className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
                           <span className="whitespace-normal sm:whitespace-nowrap leading-tight text-center">Magna Cum Laude (Rank 1, GWA 1.32)</span>
                         </span>
-                        <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[#7F00FF]/15 border border-[#7F00FF]/30 text-[#C084FC] font-semibold text-[10px] sm:text-xs shadow-sm transition-all hover:bg-[#7F00FF]/20">
+                        <span className="inline-flex items-center justify-center text-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full bg-[color:var(--w-b)]/15 border border-[color:var(--w-b)]/30 text-[#C084FC] font-semibold text-[10px] sm:text-xs shadow-sm transition-all hover:bg-[color:var(--w-b)]/20">
                           <Award className="w-3 h-3 sm:w-3.5 sm:h-3.5 shrink-0" />
                           <span className="whitespace-normal sm:whitespace-nowrap leading-tight text-center">PIA R8 Proficiency Awardee</span>
                         </span>
@@ -3160,13 +3064,13 @@ export default function App() {
                     whileHover={{ y: -4, scale: 1.02 }}
                     className="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5 transition-all"
                   >
-                    <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[#00F2FE] font-semibold uppercase text-[10px] sm:text-[11px]">
+                    <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[color:var(--w-a)] font-semibold uppercase text-[10px] sm:text-[11px]">
                       <GraduationCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                       <span>Academic Excellence</span>
                     </div>
                     <div className="text-white font-bold text-xs sm:text-sm">BS in Information Systems</div>
                     <p className="text-gray-300 font-light text-[11px] sm:text-xs">Biliran Province State University (BiPSU)</p>
-                    <p className="text-[#00F2FE] font-mono text-[10px] sm:text-[11px]">Magna Cum Laude · Cohort Rank 1 (GWA 1.32)</p>
+                    <p className="text-[color:var(--w-a)] font-mono text-[10px] sm:text-[11px]">Magna Cum Laude · Cohort Rank 1 (GWA 1.32)</p>
                   </motion.div>
 
                   <motion.div
@@ -3194,7 +3098,7 @@ export default function App() {
                     whileHover={{ y: -4, scale: 1.02 }}
                     className="p-3 sm:p-4 rounded-xl bg-white/[0.02] border border-white/5 space-y-1.5 transition-all"
                   >
-                    <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[#00F2FE] font-semibold uppercase text-[10px] sm:text-[11px]">
+                    <div className="flex items-center gap-1.5 sm:gap-2 font-mono text-[color:var(--w-a)] font-semibold uppercase text-[10px] sm:text-[11px]">
                       <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4 shrink-0" />
                       <span>Research &amp; Quality</span>
                     </div>
@@ -3249,9 +3153,9 @@ export default function App() {
                       ease: "easeInOut",
                       repeatDelay: 1,
                     }}
-                    className="absolute top-1/2 -translate-y-1/2 w-56 sm:w-72 h-[1.5px] bg-gradient-to-r from-transparent via-[#00F2FE] to-transparent shadow-[0_0_10px_rgba(0,242,254,0.7)] pointer-events-none"
+                    className="absolute top-1/2 -translate-y-1/2 w-56 sm:w-72 h-[1.5px] bg-gradient-to-r from-transparent via-[color:var(--w-a)] to-transparent shadow-[0_0_10px_rgba(var(--w-a-rgb),0.7)] pointer-events-none"
                   />
-                  <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45 bg-[#00F2FE]/30 border border-[#00F2FE]/70 shadow-[0_0_6px_rgba(0,242,254,0.5)]" />
+                  <div className="absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 w-2 h-2 rotate-45 bg-[color:var(--w-a)]/30 border border-[color:var(--w-a)]/70 shadow-[0_0_6px_rgba(var(--w-a-rgb),0.5)]" />
                 </div>
 
                 {/* Narrative Summary & Core Principles */}
@@ -3286,12 +3190,12 @@ export default function App() {
               <div className="relative w-full max-w-full my-4 sm:my-6 flex items-center justify-center overflow-hidden px-1 sm:px-3 select-none" aria-hidden="true">
                 {/* Left responsive glowing gradient line */}
                 <div className={`relative flex-1 h-[1px] bg-gradient-to-r from-transparent ${
-                  theme === "cyber-light" ? "to-slate-300" : "to-[#00F2FE]/40"
+                  theme === "cyber-light" ? "to-slate-300" : "to-[color:var(--w-a)]/40"
                 } overflow-hidden min-w-[20px]`}>
                   <motion.div
                     animate={{ x: ["-100%", "100%"] }}
                     transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
-                    className="absolute top-0 bottom-0 w-24 bg-gradient-to-r from-transparent via-[#00F2FE] to-transparent pointer-events-none"
+                    className="absolute top-0 bottom-0 w-24 bg-gradient-to-r from-transparent via-[color:var(--w-a)] to-transparent pointer-events-none"
                   />
                 </div>
 
@@ -3299,23 +3203,23 @@ export default function App() {
                 <div className={`mx-2 sm:mx-3 px-3 sm:px-4 py-1 rounded-full border flex items-center justify-center gap-1.5 sm:gap-2 shrink-0 max-w-[85vw] sm:max-w-none transition-all ${
                   theme === "cyber-light"
                     ? "bg-white border-slate-200 text-slate-700 shadow-sm"
-                    : "bg-[#06080F]/90 border-white/10 text-gray-300 shadow-[0_0_15px_rgba(0,242,254,0.12)]"
+                    : "bg-[#06080F]/90 border-white/10 text-gray-300 shadow-[0_0_15px_rgba(var(--w-a-rgb),0.12)]"
                 }`}>
-                  <div className="w-1.5 h-1.5 rotate-45 bg-[#00F2FE] shadow-[0_0_6px_rgba(0,242,254,0.8)] shrink-0" />
+                  <div className="w-1.5 h-1.5 rotate-45 bg-[color:var(--w-a)] shadow-[0_0_6px_rgba(var(--w-a-rgb),0.8)] shrink-0" />
                   <span className="font-mono text-[9.5px] sm:text-[10.5px] uppercase tracking-[0.14em] sm:tracking-[0.2em] font-semibold text-center whitespace-nowrap">
                     Core Technical Capabilities
                   </span>
-                  <div className="w-1.5 h-1.5 rotate-45 bg-[#7F00FF] shadow-[0_0_6px_rgba(127,0,255,0.8)] shrink-0" />
+                  <div className="w-1.5 h-1.5 rotate-45 bg-[color:var(--w-b)] shadow-[0_0_6px_rgba(var(--w-b-rgb),0.8)] shrink-0" />
                 </div>
 
                 {/* Right responsive glowing gradient line */}
                 <div className={`relative flex-1 h-[1px] bg-gradient-to-l from-transparent ${
-                  theme === "cyber-light" ? "to-slate-300" : "to-[#7F00FF]/40"
+                  theme === "cyber-light" ? "to-slate-300" : "to-[color:var(--w-b)]/40"
                 } overflow-hidden min-w-[20px]`}>
                   <motion.div
                     animate={{ x: ["100%", "-100%"] }}
                     transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
-                    className="absolute top-0 bottom-0 w-24 bg-gradient-to-r from-transparent via-[#7F00FF] to-transparent pointer-events-none"
+                    className="absolute top-0 bottom-0 w-24 bg-gradient-to-r from-transparent via-[color:var(--w-b)] to-transparent pointer-events-none"
                   />
                 </div>
               </div>
@@ -3413,28 +3317,54 @@ export default function App() {
               <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-400 mb-1">
                 The Discography
               </h2>
-              <p className="text-[#00F2FE] font-mono text-xs tracking-[0.15em] uppercase">
+              <p className="text-[color:var(--w-a)] font-mono text-xs tracking-[0.15em] uppercase">
                 Featured Case Studies & Production Releases
               </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 w-full items-stretch auto-rows-fr">
-              {PROJECTS.map((project) => (
-                <TiltWrapper key={project.id} className="h-full min-h-full flex flex-col self-stretch">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-x-8 md:gap-y-6 w-full items-start pb-6">
+              {PROJECTS.map((project, pi) => {
+                const pal = PROJECT_PALETTES[project.id] ?? PROJECT_PALETTES[1];
+                // The project's butterfly perches at the card's top-right corner while it is hovered or focused.
+                const aim = (e: React.SyntheticEvent<HTMLElement>) => {
+                  const r = e.currentTarget.getBoundingClientRect();
+                  setFocus({
+                    id: project.id,
+                    x: ((r.right - 44) / window.innerWidth) * 2 - 1,
+                    y: -(((r.top - 10) / window.innerHeight) * 2 - 1),
+                  });
+                };
+                const open = () => {
+                  setModalInitialTab("overview");
+                  setSelectedProject(project);
+                };
+                return (
+                <TiltWrapper key={project.id} className={`flex flex-col ${pi % 2 === 1 ? "sm:mt-12" : ""}`}>
                   <div 
                     role="button"
                     tabIndex={0}
-                    onClick={() => { 
-                      setModalInitialTab("overview");
-                      setSelectedProject(project); 
+                    onClick={open}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        open();
+                      }
                     }}
-                    className="group glow-border bg-white/[0.03] backdrop-blur-lg rounded-xl p-4 sm:p-5.5 cursor-pointer flex flex-col justify-between min-h-[220px] h-full flex-1 w-full text-left space-y-3 self-stretch"
+                    onMouseEnter={aim}
+                    onFocus={aim}
+                    onMouseLeave={() => setFocus(null)}
+                    onBlur={() => setFocus(null)}
+                    className="group glow-border film-card bg-white/[0.03] backdrop-blur-lg rounded-xl p-4 sm:p-5.5 cursor-pointer flex flex-col justify-between min-h-[220px] w-full text-left space-y-3"
                   >
                     <div className="space-y-2.5">
                       {/* Unboxed Header Metadata */}
                       <div className="flex flex-wrap items-center justify-between gap-1.5 text-xs font-mono">
-                        <div className="flex flex-wrap items-center gap-1.5 text-[#00F2FE] font-medium min-w-0">
-                          <span className="uppercase text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded bg-[#00F2FE]/10 border border-[#00F2FE]/25 shrink-0">
+                        <div className="flex flex-wrap items-center gap-1.5 text-[color:var(--w-a)] font-medium min-w-0">
+                          <span className={`inline-flex items-center gap-1 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-wider ${isLight ? "text-slate-800 border-slate-300 bg-white/85" : "text-white border-white/20 bg-black/30"} px-2 py-0.5 rounded-full border shrink-0`}>
+                            <ButterflyGlyph colors={pal} size={16} />
+                            <span>LV {pi + 1}</span>
+                          </span>
+                          <span className="uppercase text-[10px] sm:text-[11px] font-semibold px-2 py-0.5 rounded bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/25 shrink-0">
                             {project.type}
                           </span>
                           <span className="text-[10px] sm:text-[11px] font-mono text-gray-300 px-2 py-0.5 rounded bg-white/5 border border-white/10 shrink-0">
@@ -3447,12 +3377,12 @@ export default function App() {
                             </span>
                           )}
                         </div>
-                        <span className="text-[10px] sm:text-[11px] text-[#00F2FE] font-mono font-semibold shrink-0 ml-auto group-hover:underline">
+                        <span className="text-[10px] sm:text-[11px] text-[color:var(--w-a)] font-mono font-semibold shrink-0 ml-auto group-hover:underline">
                           Inspect Details →
                         </span>
                       </div>
 
-                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-white leading-snug break-words group-hover:text-[#00F2FE] transition-colors">
+                      <h3 className="text-base sm:text-lg md:text-xl font-bold text-white leading-snug break-words group-hover:text-[color:var(--w-a)] transition-colors">
                         {project.title}
                       </h3>
                       
@@ -3461,8 +3391,8 @@ export default function App() {
                         <div className="text-gray-400 text-[10px] sm:text-[11px] break-words">{project.org}</div>
                       </div>
 
-                      <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[#00F2FE]/10 border border-[#00F2FE]/25 text-[#00F2FE] font-mono text-[10px] sm:text-[11px] w-full min-w-0 overflow-hidden">
-                        <Flame className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
+                      <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/25 text-[color:var(--w-a)] font-mono text-[10px] sm:text-[11px] w-full min-w-0 overflow-hidden">
+                        <Flame className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0" />
                         <span className="truncate min-w-0 flex-1">{project.metric}</span>
                       </div>
 
@@ -3471,7 +3401,7 @@ export default function App() {
 
                     <div className="pt-3 border-t border-white/10 flex flex-wrap items-center justify-between gap-2 text-xs font-mono">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[#00F2FE] font-semibold flex items-center gap-1 text-[11px] sm:text-xs shrink-0">
+                        <span className="text-[color:var(--w-a)] font-semibold flex items-center gap-1 text-[11px] sm:text-xs shrink-0">
                           <span>Case Study</span>
                           <ArrowUpRight className="w-3.5 h-3.5 shrink-0" />
                         </span>
@@ -3483,7 +3413,7 @@ export default function App() {
                               setModalInitialTab("prd");
                               setSelectedProject(project);
                             }}
-                            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#00F2FE]/10 hover:bg-[#00F2FE]/25 text-[#00F2FE] border border-[#00F2FE]/30 text-[10px] font-mono font-medium transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[color:var(--w-a)]/10 hover:bg-[color:var(--w-a)]/25 text-[color:var(--w-a)] border border-[color:var(--w-a)]/30 text-[10px] font-mono font-medium transition-colors cursor-pointer"
                             title="Open Official PRD Document (Embed, Read-Only)"
                           >
                             <FileText className="w-3 h-3 shrink-0" />
@@ -3496,7 +3426,8 @@ export default function App() {
                     </div>
                   </div>
                 </TiltWrapper>
-              ))}
+                );
+              })}
             </div>
           </div>
             </motion.section>
@@ -3518,7 +3449,7 @@ export default function App() {
           <TiltWrapper className="my-auto py-4" maxTilt={0.8}>
             <div className="bg-white/[0.02] backdrop-blur-2xl border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 md:p-10 shadow-2xl max-w-3xl w-full mx-auto text-center space-y-6">
               <div>
-                <p className="text-[#00F2FE] font-mono text-xs tracking-[0.2em] uppercase mb-2">Final Track // Contact</p>
+                <p className="text-[color:var(--w-a)] font-mono text-xs tracking-[0.2em] uppercase mb-2">Final Track // Contact</p>
                 <h2 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-2">Have a problem worth solving? Let's talk.</h2>
                 <p className="text-gray-300 font-light text-xs md:text-sm max-w-xl mx-auto leading-relaxed">
                   I'm interested in opportunities where analytical thinking, technology, and thoughtful execution come together to create useful products and better systems.
@@ -3527,11 +3458,11 @@ export default function App() {
 
               {/* Direct Info Chips */}
               <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 text-xs font-mono text-gray-300">
-                <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" /> clareangeliedolino@gmail.com</span>
+                <span className="flex items-center gap-1.5"><Mail className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0" /> clareangeliedolino@gmail.com</span>
                 <span className="hidden sm:inline">·</span>
-                <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-[#7F00FF] shrink-0" /> +63 964 963 3928</span>
+                <span className="flex items-center gap-1.5"><Phone className="w-3.5 h-3.5 text-[color:var(--w-b)] shrink-0" /> +63 964 963 3928</span>
                 <span className="hidden sm:inline">·</span>
-                <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" /> Biliran, Philippines</span>
+                <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0" /> Biliran, Philippines</span>
                 <span className="hidden sm:inline">·</span>
                 <span className="w-full sm:w-auto inline-flex items-center justify-center text-center gap-1.5 px-2.5 py-1 sm:py-0.5 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 font-semibold text-[11px]">
                   <Globe className="w-3.5 h-3.5 text-emerald-400 shrink-0" /> Open for Relocation &amp; International Roles
@@ -3542,7 +3473,7 @@ export default function App() {
 
               <div className="pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="flex items-center justify-center sm:justify-start gap-2 text-xs font-mono text-gray-400 text-center sm:text-left">
-                  <Sparkles className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
+                  <Sparkles className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0" />
                   <span className="text-center sm:text-left">Available for Full-Stack, Systems Analysis &amp; AI Engineering · Open for Relocation &amp; Worldwide Remote</span>
                 </div>
 
@@ -3551,7 +3482,7 @@ export default function App() {
                     href="https://github.com/claredolino-sys" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:border-[#00F2FE]/50 text-gray-400 hover:text-white transition-colors"
+                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:border-[color:var(--w-a)]/50 text-gray-400 hover:text-white transition-colors"
                     title="GitHub Profile (claredolino-sys)"
                     aria-label="GitHub Profile"
                   >
@@ -3561,7 +3492,7 @@ export default function App() {
                     href="https://www.linkedin.com/in/clare-angelie-taringting-dolino-4180823a3" 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:border-[#7F00FF]/50 text-gray-400 hover:text-white transition-colors"
+                    className="p-2.5 rounded-full bg-white/5 border border-white/10 hover:border-[color:var(--w-b)]/50 text-gray-400 hover:text-white transition-colors"
                     title="LinkedIn Profile"
                     aria-label="LinkedIn Profile"
                   >
@@ -3607,32 +3538,31 @@ export default function App() {
         </AnimatePresence>
       </main>
 
-      {/* Right Scroll Indicator (Desktop Only) */}
-      <aside id="section-scroll-progress" className="hidden lg:flex fixed right-3 xl:right-6 top-1/2 -translate-y-1/2 z-40 flex-col items-center select-none">
-        <div className="font-mono text-[10px] text-[#00F2FE] mb-2 font-bold">0{currentIndex + 1}</div>
-        <div className="relative flex flex-col items-center gap-4 py-2">
-          <div className="absolute top-2 bottom-2 w-[2px] bg-white/10 left-1/2 -translate-x-1/2 rounded-full" />
-          {SECTIONS.map((sec) => (
-            <button key={sec} onClick={() => setActiveSection(sec)} className="group relative p-1 cursor-pointer">
-              <div className={`w-2 h-2 rounded-full transition-all ${activeSection === sec ? "bg-[#00F2FE] ring-4 ring-[#00F2FE]/30 scale-125" : "bg-gray-600"}`} />
-            </button>
-          ))}
-        </div>
-        <div className="font-mono text-[10px] text-gray-500 mt-2">0{SECTIONS.length}</div>
-      </aside>
+      {/* Game HUD: world title card, world map, catch counter */}
+      <WorldHud
+        section={activeSection}
+        sections={SECTIONS}
+        onSelect={(sec) => { soundEngine.playNavClick(); setActiveSection(sec); }}
+        caught={caught}
+        visited={visited}
+        popups={popups}
+        showHint={caught === 0 && !selectedProject}
+        chrysalis={chrysalis}
+        isLight={isLight}
+      />
 
       {/* Persistent Footer Equalizer Dock */}
-      <footer className="fixed bottom-0 left-0 w-full h-16 sm:h-20 z-50 flex items-center justify-between px-3 sm:px-8 md:px-16 pointer-events-none bg-gradient-to-t from-[#06080F] via-[#06080F]/90 to-transparent">
+      <footer className="fixed bottom-0 left-0 w-full h-16 sm:h-20 z-50 flex items-center justify-between px-3 sm:px-8 md:px-16 pointer-events-none bg-gradient-to-t from-[color:var(--w-bg)] via-[color:var(--w-bg)]/90 to-transparent">
         
         {/* Mobile Navigation Controls */}
         <div className="flex md:hidden items-center justify-between w-full pointer-events-auto px-1">
-          <button onClick={handlePrev} className="px-3 py-1.5 bg-[#06080F]/90 border border-white/20 rounded-full text-xs font-mono text-[#00F2FE] active:scale-95 cursor-pointer">
+          <button onClick={handlePrev} className="px-3 py-1.5 bg-[#06080F]/90 border border-white/20 rounded-full text-xs font-mono text-[color:var(--w-a)] active:scale-95 cursor-pointer">
             ← Prev
           </button>
           <span className="text-[10px] font-mono text-gray-300 uppercase">
             {SECTION_METADATA[activeSection]?.shortTitle} ({currentIndex + 1}/{SECTIONS.length})
           </span>
-          <button onClick={handleNext} className="px-3 py-1.5 bg-[#06080F]/90 border border-white/20 rounded-full text-xs font-mono text-[#00F2FE] active:scale-95 cursor-pointer">
+          <button onClick={handleNext} className="px-3 py-1.5 bg-[#06080F]/90 border border-white/20 rounded-full text-xs font-mono text-[color:var(--w-a)] active:scale-95 cursor-pointer">
             Next →
           </button>
         </div>
@@ -3641,7 +3571,7 @@ export default function App() {
         <div className="hidden items-center gap-3 text-gray-500 font-mono text-xs uppercase pointer-events-auto">
           <button 
             onClick={handlePrev} 
-            className="px-2.5 py-1 border border-gray-700/80 rounded text-[10px] hover:text-[#00F2FE] hover:border-[#00F2FE]/50 transition-colors flex items-center gap-1 cursor-pointer" 
+            className="px-2.5 py-1 border border-gray-700/80 rounded text-[10px] hover:text-[color:var(--w-a)] hover:border-[color:var(--w-a)]/50 transition-colors flex items-center gap-1 cursor-pointer" 
             title="Previous Section (Shortcut: ← or ↑)"
           >
             <kbd className="text-[9px] font-mono text-gray-400">←</kbd>
@@ -3652,7 +3582,7 @@ export default function App() {
           </span>
           <button 
             onClick={handleNext} 
-            className="px-2.5 py-1 border border-gray-700/80 rounded text-[10px] hover:text-[#00F2FE] hover:border-[#00F2FE]/50 transition-colors flex items-center gap-1 cursor-pointer" 
+            className="px-2.5 py-1 border border-gray-700/80 rounded text-[10px] hover:text-[color:var(--w-a)] hover:border-[color:var(--w-a)]/50 transition-colors flex items-center gap-1 cursor-pointer" 
             title="Next Section (Shortcut: → or ↓)"
           >
             <span>Next</span>
@@ -3669,7 +3599,7 @@ export default function App() {
             <div className={`eq-bar eq-4 ${!soundEnabled ? "!animate-none !h-1 opacity-30" : ""}`} />
           </div>
           <div className="flex flex-col text-left">
-            <span className="text-[9px] text-[#00F2FE] font-mono leading-tight">Now Playing</span>
+            <span className="text-[9px] text-[color:var(--w-a)] font-mono leading-tight">Now Playing</span>
             <span className="text-xs font-bold text-white">CLARE.DEV</span>
           </div>
           <button
@@ -3685,7 +3615,7 @@ export default function App() {
             className="ml-1 p-1 rounded-full text-gray-400 hover:text-white cursor-pointer"
             title={soundEnabled ? "Mute audio (Shortcut: 'M')" : "Enable audio (Shortcut: 'M')"}
           >
-            {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-[#00F2FE]" /> : <VolumeX className="w-3.5 h-3.5 text-gray-500" />}
+            {soundEnabled ? <Volume2 className="w-3.5 h-3.5 text-[color:var(--w-a)]" /> : <VolumeX className="w-3.5 h-3.5 text-gray-500" />}
           </button>
         </div>
       </footer>
