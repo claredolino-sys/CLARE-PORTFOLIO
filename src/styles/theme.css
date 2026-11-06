@@ -219,11 +219,11 @@
 }
 
 /* Accents with High-Contrast Light Mode Alternatives */
-.cyber-light .text-\[\#00F2FE\] {
+.cyber-light .text-\[color\:var\(--w-a\)\] {
   color: #0284C7 !important; /* Deep Sky Blue for high contrast on white */
 }
 
-.cyber-light .text-\[\#7F00FF\] {
+.cyber-light .text-\[color\:var\(--w-b\)\] {
   color: #6D28D9 !important; /* Rich Royal Violet */
 }
 
@@ -281,7 +281,7 @@
   box-shadow: 0 4px 15px -1px rgba(15, 23, 42, 0.06);
 }
 
-.cyber-light .hover\:border-\[\#00F2FE\]\/50:hover {
+.cyber-light .hover\:border-\[color\:var\(--w-a\)\]\/50:hover {
   border-color: #0284C7 !important;
 }
 
@@ -294,10 +294,10 @@
 }
 
 .glow-border:hover {
-  border-color: #00F2FE !important;
-  box-shadow: 0 0 25px rgba(0, 242, 254, 0.3), 
-              0 0 50px rgba(0, 242, 254, 0.12), 
-              inset 0 0 15px rgba(0, 242, 254, 0.05) !important;
+  border-color: var(--w-a) !important;
+  box-shadow: 0 0 25px rgba(var(--w-a-rgb), 0.3), 
+              0 0 50px rgba(var(--w-a-rgb), 0.12), 
+              inset 0 0 15px rgba(var(--w-a-rgb), 0.05) !important;
 }
 
 .cyber-light .glow-border {
@@ -313,20 +313,20 @@
 }
 
 /* Badges, Chips & Highlights */
-.cyber-light .bg-\[\#00F2FE\]\/5,
-.cyber-light .bg-\[\#00F2FE\]\/10,
-.cyber-light .bg-\[\#00F2FE\]\/15,
-.cyber-light .bg-\[\#00F2FE\]\/20,
-.cyber-light .bg-\[\#00F2FE\]\/25 {
+.cyber-light .bg-\[color\:var\(--w-a\)\]\/5,
+.cyber-light .bg-\[color\:var\(--w-a\)\]\/10,
+.cyber-light .bg-\[color\:var\(--w-a\)\]\/15,
+.cyber-light .bg-\[color\:var\(--w-a\)\]\/20,
+.cyber-light .bg-\[color\:var\(--w-a\)\]\/25 {
   background-color: rgba(2, 132, 199, 0.08) !important;
   border-color: rgba(2, 132, 199, 0.3) !important;
   color: #0369A1 !important;
 }
 
-.cyber-light .bg-\[\#7F00FF\]\/10,
-.cyber-light .bg-\[\#7F00FF\]\/15,
-.cyber-light .bg-\[\#7F00FF\]\/20,
-.cyber-light .bg-\[\#7F00FF\]\/30 {
+.cyber-light .bg-\[color\:var\(--w-b\)\]\/10,
+.cyber-light .bg-\[color\:var\(--w-b\)\]\/15,
+.cyber-light .bg-\[color\:var\(--w-b\)\]\/20,
+.cyber-light .bg-\[color\:var\(--w-b\)\]\/30 {
   background-color: rgba(109, 40, 217, 0.08) !important;
   border-color: rgba(109, 40, 217, 0.3) !important;
   color: #6D28D9 !important;

@@ -1,0 +1,80 @@
+/* Butterfly Nebula Worlds: per-world colour tokens (see DESIGN.md).
+   The world component writes --w-* on :root when the section changes;
+   @property lets the browser cross-fade them. */
+@property --w-a { syntax: '<color>'; inherits: true; initial-value: #00F2FE; }
+@property --w-b { syntax: '<color>'; inherits: true; initial-value: #7F00FF; }
+@property --w-c { syntax: '<color>'; inherits: true; initial-value: #FF5FD2; }
+@property --w-bg { syntax: '<color>'; inherits: true; initial-value: #06080F; }
+
+:root {
+  --w-a: #00F2FE;
+  --w-b: #7F00FF;
+  --w-c: #FF5FD2;
+  --w-bg: #06080F;
+  --w-a-rgb: 0, 242, 254;
+  --w-b-rgb: 127, 0, 255;
+  --w-c-rgb: 255, 95, 210;
+  transition: --w-a 1.2s ease, --w-b 1.2s ease, --w-c 1.2s ease, --w-bg 1.2s ease;
+}
+
+/* Iridescent headline: a slow thin-film sweep through the world's three colours. */
+.iridescent-text {
+  background-image: linear-gradient(100deg, var(--w-a), var(--w-b), var(--w-c), var(--w-a));
+  background-size: 260% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+  animation: iridescent-sweep 9s linear infinite;
+}
+
+@keyframes iridescent-sweep {
+  to { background-position: 260% 0; }
+}
+
+/* Project cards: a shimmering film edge that wakes up on hover. */
+.film-card {
+  position: relative;
+  isolation: isolate;
+}
+.film-card::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--film-angle, 0deg), var(--w-a), var(--w-b), var(--w-c), var(--w-a));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.35;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: -1;
+  animation: film-spin 8s linear infinite;
+}
+.film-card:hover::before,
+.film-card:focus-visible::before {
+  opacity: 1;
+}
+
+@property --film-angle { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes film-spin {
+  to { --film-angle: 360deg; }
+}
+
+/* Visible keyboard focus in every world. */
+:focus-visible {
+  outline: 2px solid var(--w-a);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .iridescent-text,
+  .film-card::before {
+    animation: none;
+  }
+  :root {
+    transition: none;
+  }
+}

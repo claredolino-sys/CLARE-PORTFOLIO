@@ -407,7 +407,7 @@ function RenderMarkdownBody({
               <div className={`px-2.5 py-1 rounded-md font-mono text-xs font-bold uppercase tracking-wider shrink-0 ${
                 isLight 
                   ? "bg-cyan-50 border border-cyan-200 text-cyan-800" 
-                  : "bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE]"
+                  : "bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)]"
               }`}>
                 § 0{secIdx + 1}
               </div>
@@ -445,7 +445,7 @@ function RenderMarkdownBody({
                             : "bg-white/[0.06] border-white/10 text-gray-300"
                         }`}>
                           <div className="flex items-center gap-2">
-                            <Terminal className={`w-4 h-4 ${isLight ? "text-cyan-400" : "text-[#00F2FE]"}`} />
+                            <Terminal className={`w-4 h-4 ${isLight ? "text-cyan-400" : "text-[color:var(--w-a)]"}`} />
                             <span className={`font-semibold uppercase tracking-wider text-[11px] ${
                               isLight ? "!text-white" : "text-white"
                             }`}>
@@ -464,8 +464,8 @@ function RenderMarkdownBody({
                           >
                             {isCopied ? (
                               <>
-                                <Check className={`w-3.5 h-3.5 ${isLight ? "text-cyan-400" : "text-[#00F2FE]"}`} />
-                                <span className={`${isLight ? "!text-cyan-400 font-bold" : "text-[#00F2FE] font-bold"}`}>Copied!</span>
+                                <Check className={`w-3.5 h-3.5 ${isLight ? "text-cyan-400" : "text-[color:var(--w-a)]"}`} />
+                                <span className={`${isLight ? "!text-cyan-400 font-bold" : "text-[color:var(--w-a)] font-bold"}`}>Copied!</span>
                               </>
                             ) : (
                               <>
@@ -518,7 +518,7 @@ function RenderMarkdownBody({
                               <span className={`shrink-0 px-2.5 py-1 rounded-lg font-mono text-xs font-bold ${
                                 isLight 
                                   ? "bg-cyan-100/70 border border-cyan-300 text-cyan-900" 
-                                  : "bg-[#00F2FE]/15 border border-[#00F2FE]/40 text-[#00F2FE]"
+                                  : "bg-[color:var(--w-a)]/15 border border-[color:var(--w-a)]/40 text-[color:var(--w-a)]"
                               }`}>
                                 {num.padStart(2, "0")}
                               </span>
@@ -542,7 +542,7 @@ function RenderMarkdownBody({
                           return (
                             <li key={itIdx} className="flex items-start gap-3 leading-relaxed">
                               <span className={`w-2 h-2 rounded-full mt-2.5 shrink-0 ${
-                                isLight ? "bg-cyan-600 ring-2 ring-cyan-200" : "bg-[#00F2FE] shadow-[0_0_8px_#00F2FE]"
+                                isLight ? "bg-cyan-600 ring-2 ring-cyan-200" : "bg-[color:var(--w-a)] shadow-[0_0_8px_#00F2FE]"
                               }`} />
                               <div className="flex-1">
                                 <FormattedInlineText text={bulletContent} isLight={isLight} />
@@ -712,7 +712,7 @@ function EssayReaderModal({
         {/* Top Glowing Reading Progress Bar */}
         <div className="absolute top-0 left-0 right-0 h-1 bg-white/5 z-30 overflow-hidden">
           <motion.div
-            className="h-full bg-gradient-to-r from-[#00F2FE] via-[#7F00FF] to-[#00F2FE] shadow-[0_0_12px_#00F2FE]"
+            className="h-full bg-gradient-to-r from-[color:var(--w-a)] via-[color:var(--w-b)] to-[color:var(--w-a)] shadow-[0_0_12px_#00F2FE]"
             style={{ width: `${scrollProgress}%` }}
           />
         </div>
@@ -729,7 +729,7 @@ function EssayReaderModal({
                 showOutline
                   ? isLight
                     ? "bg-cyan-50 border-cyan-300 text-cyan-800 font-semibold"
-                    : "bg-[#00F2FE]/15 border-[#00F2FE]/40 text-[#00F2FE] font-semibold"
+                    : "bg-[color:var(--w-a)]/15 border-[color:var(--w-a)]/40 text-[color:var(--w-a)] font-semibold"
                   : isLight
                     ? "bg-white border-slate-200 text-slate-600 hover:text-slate-900"
                     : "bg-white/5 border-white/10 text-gray-300 hover:text-white"
@@ -745,12 +745,12 @@ function EssayReaderModal({
               <span className={`px-2.5 py-0.5 rounded-full text-[11px] font-semibold uppercase ${
                 isLight 
                   ? "bg-cyan-100 text-cyan-900 border border-cyan-200" 
-                  : "bg-[#00F2FE]/15 text-[#00F2FE] border border-[#00F2FE]/30"
+                  : "bg-[color:var(--w-a)]/15 text-[color:var(--w-a)] border border-[color:var(--w-a)]/30"
               }`}>
                 {post.category}
               </span>
               <span className="text-gray-400 flex items-center gap-1 text-[11px]">
-                <Clock className="w-3 h-3 text-[#00F2FE]" />
+                <Clock className="w-3 h-3 text-[color:var(--w-a)]" />
                 {post.readTime}
               </span>
             </div>
@@ -785,7 +785,7 @@ function EssayReaderModal({
                 onClick={() => { if (onPlaySound) onPlaySound(); setFontSize("large"); }}
                 className={`px-2 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer ${
                   fontSize === "large"
-                    ? isLight ? "bg-slate-200 text-slate-900 font-bold" : "bg-[#00F2FE]/25 text-[#00F2FE] font-bold"
+                    ? isLight ? "bg-slate-200 text-slate-900 font-bold" : "bg-[color:var(--w-a)]/25 text-[color:var(--w-a)] font-bold"
                     : "text-gray-400 hover:text-white"
                 }`}
                 title="Large Font Size (18px) - Recommended"
@@ -797,7 +797,7 @@ function EssayReaderModal({
                 onClick={() => { if (onPlaySound) onPlaySound(); setFontSize("xl"); }}
                 className={`px-2 py-1 rounded-lg text-xs font-mono transition-all cursor-pointer ${
                   fontSize === "xl"
-                    ? isLight ? "bg-slate-200 text-slate-900 font-bold" : "bg-[#00F2FE] text-black font-extrabold shadow-sm"
+                    ? isLight ? "bg-slate-200 text-slate-900 font-bold" : "bg-[color:var(--w-a)] text-black font-extrabold shadow-sm"
                     : "text-gray-400 hover:text-white"
                 }`}
                 title="Extra Large Font Size (21px) - Maximum Legibility"
@@ -820,7 +820,7 @@ function EssayReaderModal({
               }`}
               title="Copy Essay Deep Link"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-[#00F2FE]" /> : <Share2 className="w-3.5 h-3.5" />}
+              {copied ? <Check className="w-3.5 h-3.5 text-[color:var(--w-a)]" /> : <Share2 className="w-3.5 h-3.5" />}
               <span className="hidden lg:inline">{copied ? "Copied" : "Share"}</span>
             </button>
 
@@ -859,8 +859,8 @@ function EssayReaderModal({
               >
                 <div className="p-4 sm:p-5 space-y-4">
                   <div className="flex items-center justify-between border-b pb-2.5 border-white/5">
-                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[#00F2FE] flex items-center gap-1.5">
-                      <Hash className="w-3 h-3 text-[#00F2FE]" />
+                    <span className="text-[10px] font-mono font-bold tracking-widest uppercase text-[color:var(--w-a)] flex items-center gap-1.5">
+                      <Hash className="w-3 h-3 text-[color:var(--w-a)]" />
                       Table of Contents
                     </span>
                     <span className="text-[10px] font-mono text-gray-400">
@@ -879,13 +879,13 @@ function EssayReaderModal({
                             isActive
                               ? isLight
                                 ? "bg-cyan-100 text-cyan-900 font-bold border border-cyan-300"
-                                : "bg-[#00F2FE]/15 text-[#00F2FE] font-bold border border-[#00F2FE]/30 shadow-sm"
+                                : "bg-[color:var(--w-a)]/15 text-[color:var(--w-a)] font-bold border border-[color:var(--w-a)]/30 shadow-sm"
                               : isLight
                                 ? "text-slate-600 hover:bg-slate-100 hover:text-slate-900"
                                 : "text-gray-400 hover:bg-white/5 hover:text-white"
                           }`}
                         >
-                          <span className={`text-[10px] shrink-0 mt-0.5 ${isActive ? "text-[#00F2FE]" : "text-gray-500"}`}>
+                          <span className={`text-[10px] shrink-0 mt-0.5 ${isActive ? "text-[color:var(--w-a)]" : "text-gray-500"}`}>
                             0{idx + 1}
                           </span>
                           <span className="leading-snug line-clamp-2">
@@ -926,7 +926,7 @@ function EssayReaderModal({
                         : "bg-white/5 hover:bg-white/10 border-white/10 text-gray-300"
                     }`}
                   >
-                    <ArrowUp className="w-3 h-3 text-[#00F2FE]" />
+                    <ArrowUp className="w-3 h-3 text-[color:var(--w-a)]" />
                     <span>Scroll to Top</span>
                   </button>
                 </div>
@@ -952,20 +952,20 @@ function EssayReaderModal({
                   <span className={`px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wider ${
                     isLight 
                       ? "bg-cyan-100 text-cyan-900 border border-cyan-200" 
-                      : "bg-[#00F2FE]/15 border border-[#00F2FE]/30 text-[#00F2FE]"
+                      : "bg-[color:var(--w-a)]/15 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)]"
                   }`}>
                     {post.category}
                   </span>
                   <span className="flex items-center gap-1.5 text-gray-400">
-                    <Calendar className="w-3.5 h-3.5 text-[#00F2FE]" />
+                    <Calendar className="w-3.5 h-3.5 text-[color:var(--w-a)]" />
                     {post.date}
                   </span>
                   <span className="flex items-center gap-1.5 text-gray-400">
-                    <Clock className="w-3.5 h-3.5 text-[#00F2FE]" />
+                    <Clock className="w-3.5 h-3.5 text-[color:var(--w-a)]" />
                     {post.readTime}
                   </span>
                   <span className="flex items-center gap-1.5 text-gray-400">
-                    <Sparkles className="w-3.5 h-3.5 text-[#7F00FF]" />
+                    <Sparkles className="w-3.5 h-3.5 text-[color:var(--w-b)]" />
                     Systems Thinking Essay
                   </span>
                 </div>
@@ -978,7 +978,7 @@ function EssayReaderModal({
 
                 {/* Author byline */}
                 <div className="flex items-center gap-3 pt-1 text-xs font-mono text-gray-400">
-                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[#00F2FE] to-[#7F00FF] flex items-center justify-center text-black font-bold text-xs">
+                  <div className="w-7 h-7 rounded-full bg-gradient-to-tr from-[color:var(--w-a)] to-[color:var(--w-b)] flex items-center justify-center text-black font-bold text-xs">
                     CD
                   </div>
                   <div>
@@ -1010,10 +1010,10 @@ function EssayReaderModal({
               <div className={`p-5 sm:p-7 rounded-2xl border-l-4 shadow-xl transition-all ${
                 isLight 
                   ? "bg-cyan-50/70 border-l-cyan-600 border border-cyan-100 text-slate-800" 
-                  : "bg-gradient-to-r from-[#00F2FE]/10 via-[#00F2FE]/5 to-transparent border-l-[#00F2FE] border border-white/10 text-gray-100"
+                  : "bg-gradient-to-r from-[color:var(--w-a)]/10 via-[color:var(--w-a)]/5 to-transparent border-l-[color:var(--w-a)] border border-white/10 text-gray-100"
               }`}>
-                <div className="flex items-center gap-2 mb-2 text-xs font-mono uppercase tracking-wider font-bold text-[#00F2FE]">
-                  <Sparkles className="w-4 h-4 text-[#00F2FE]" />
+                <div className="flex items-center gap-2 mb-2 text-xs font-mono uppercase tracking-wider font-bold text-[color:var(--w-a)]">
+                  <Sparkles className="w-4 h-4 text-[color:var(--w-a)]" />
                   <span>Executive Summary // Architectural Takeaway</span>
                 </div>
                 <blockquote className={`text-base sm:text-lg md:text-xl italic font-serif leading-relaxed ${
@@ -1034,12 +1034,12 @@ function EssayReaderModal({
               <div className="pt-8 border-t border-white/10 space-y-6">
                 <div className="flex items-center justify-between text-xs font-mono text-gray-400">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-[#00F2FE]" />
+                    <Sparkles className="w-4 h-4 text-[color:var(--w-a)]" />
                     <span>Authored by Clare Angelie T. Dolino</span>
                   </div>
                   <button
                     onClick={handleScrollToTop}
-                    className="flex items-center gap-1.5 text-[#00F2FE] hover:underline cursor-pointer"
+                    className="flex items-center gap-1.5 text-[color:var(--w-a)] hover:underline cursor-pointer"
                   >
                     <span>Back to Top</span>
                     <ArrowUp className="w-3.5 h-3.5" />
@@ -1083,14 +1083,14 @@ function EssayReaderModal({
                       className={`p-4 rounded-xl border text-left flex flex-col justify-between transition-all cursor-pointer group ${
                         isLight 
                           ? "bg-white border-slate-200 hover:border-cyan-500 shadow-sm" 
-                          : "bg-white/[0.02] border-white/10 hover:border-[#00F2FE]/50"
+                          : "bg-white/[0.02] border-white/10 hover:border-[color:var(--w-a)]/50"
                       }`}
                     >
                       <div className="flex items-center gap-1.5 text-xs font-mono text-gray-400 mb-1">
-                        <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform text-[#00F2FE]" />
+                        <ArrowLeft className="w-3.5 h-3.5 group-hover:-translate-x-1 transition-transform text-[color:var(--w-a)]" />
                         <span>Previous Essay</span>
                       </div>
-                      <span className={`text-sm font-bold line-clamp-1 group-hover:text-[#00F2FE] transition-colors ${
+                      <span className={`text-sm font-bold line-clamp-1 group-hover:text-[color:var(--w-a)] transition-colors ${
                         isLight ? "text-slate-900" : "text-white"
                       }`}>
                         {prevPost.title}
@@ -1108,14 +1108,14 @@ function EssayReaderModal({
                       className={`p-4 rounded-xl border text-right flex flex-col justify-between transition-all cursor-pointer group sm:ml-auto w-full ${
                         isLight 
                           ? "bg-white border-slate-200 hover:border-cyan-500 shadow-sm" 
-                          : "bg-white/[0.02] border-white/10 hover:border-[#00F2FE]/50"
+                          : "bg-white/[0.02] border-white/10 hover:border-[color:var(--w-a)]/50"
                       }`}
                     >
                       <div className="flex items-center justify-end gap-1.5 text-xs font-mono text-gray-400 mb-1">
                         <span>Next Essay</span>
-                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-[#00F2FE]" />
+                        <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform text-[color:var(--w-a)]" />
                       </div>
-                      <span className={`text-sm font-bold line-clamp-1 group-hover:text-[#00F2FE] transition-colors ${
+                      <span className={`text-sm font-bold line-clamp-1 group-hover:text-[color:var(--w-a)] transition-colors ${
                         isLight ? "text-slate-900" : "text-white"
                       }`}>
                         {nextPost.title}
@@ -1134,7 +1134,7 @@ function EssayReaderModal({
           isLight ? "bg-slate-100 border-slate-200 text-slate-600" : "bg-black/60 border-white/10 text-gray-400"
         }`}>
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#00F2FE] animate-pulse" />
+            <span className="w-2 h-2 rounded-full bg-[color:var(--w-a)] animate-pulse" />
             <span>Reading: {post.title.slice(0, 36)}...</span>
           </div>
 
@@ -1142,7 +1142,7 @@ function EssayReaderModal({
             <span>{Math.round(scrollProgress)}% completed</span>
             <button
               onClick={onClose}
-              className="text-[#00F2FE] hover:underline cursor-pointer"
+              className="text-[color:var(--w-a)] hover:underline cursor-pointer"
             >
               Exit View
             </button>
@@ -1228,8 +1228,8 @@ export function InsightsSection({
       {/* Header Banner */}
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 text-center md:text-left">
         <div className="space-y-2">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em]">
-            <BookOpen className="w-3.5 h-3.5 text-[#00F2FE] shrink-0" />
+          <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)] font-mono text-[11px] sm:text-xs uppercase tracking-[0.15em]">
+            <BookOpen className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0" />
             <span>Section 06 // Systems & Architecture Essays</span>
           </div>
           <h2 className={`text-2xl sm:text-4xl md:text-5xl font-bold tracking-tight ${
@@ -1254,7 +1254,7 @@ export function InsightsSection({
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Search topics, tags..."
-            className={`w-full rounded-full pl-9 pr-8 py-2 text-xs font-mono transition-colors focus:outline-none focus:border-[#00F2FE] ${
+            className={`w-full rounded-full pl-9 pr-8 py-2 text-xs font-mono transition-colors focus:outline-none focus:border-[color:var(--w-a)] ${
               isLight
                 ? "bg-white border border-slate-300 text-slate-900 placeholder-slate-400 shadow-sm"
                 : "bg-white/[0.03] border border-white/10 text-white placeholder-gray-500"
@@ -1284,7 +1284,7 @@ export function InsightsSection({
               selectedCategory === cat
                 ? isLight
                   ? "bg-cyan-100 border border-cyan-400 text-cyan-900 font-bold shadow-sm"
-                  : "bg-[#00F2FE]/20 border border-[#00F2FE] text-[#00F2FE] font-semibold shadow-[0_0_12px_rgba(0,242,254,0.3)]"
+                  : "bg-[color:var(--w-a)]/20 border border-[color:var(--w-a)] text-[color:var(--w-a)] font-semibold shadow-[0_0_12px_rgba(var(--w-a-rgb),0.3)]"
                 : isLight
                   ? "bg-slate-100 border border-slate-200 text-slate-600 hover:bg-slate-200"
                   : "bg-white/[0.02] border border-white/5 text-gray-400 hover:text-white hover:border-white/20"
@@ -1301,7 +1301,7 @@ export function InsightsSection({
           role="button"
           tabIndex={0}
           onClick={() => handleOpenPost(featuredPost)}
-          className={`group relative border hover:border-[#00F2FE] rounded-2xl p-5 sm:p-7 transition-all duration-300 cursor-pointer shadow-xl glow-border text-left ${
+          className={`group relative border hover:border-[color:var(--w-a)] rounded-2xl p-5 sm:p-7 transition-all duration-300 cursor-pointer shadow-xl glow-border text-left ${
             isLight
               ? "bg-white border-slate-200 shadow-sm hover:shadow-md"
               : "bg-gradient-to-br from-white/[0.04] to-white/[0.01] border-white/10"
@@ -1310,20 +1310,20 @@ export function InsightsSection({
           <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
             <div className="space-y-2.5 max-w-3xl">
               <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-                <span className="px-2.5 py-0.5 rounded-full bg-[#7F00FF]/20 border border-[#7F00FF]/40 text-[#C084FC] font-semibold text-[10px] uppercase">
+                <span className="px-2.5 py-0.5 rounded-full bg-[color:var(--w-b)]/20 border border-[color:var(--w-b)]/40 text-[#C084FC] font-semibold text-[10px] uppercase">
                   Featured Deep Dive
                 </span>
                 <span className="text-gray-400 text-[11px] flex items-center gap-1">
-                  <Calendar className="w-3 h-3 text-[#00F2FE]" />
+                  <Calendar className="w-3 h-3 text-[color:var(--w-a)]" />
                   {featuredPost.date}
                 </span>
                 <span className="text-gray-400 text-[11px] flex items-center gap-1">
-                  <Clock className="w-3 h-3 text-[#00F2FE]" />
+                  <Clock className="w-3 h-3 text-[color:var(--w-a)]" />
                   {featuredPost.readTime}
                 </span>
               </div>
 
-              <h3 className={`text-lg sm:text-2xl font-bold group-hover:text-[#00F2FE] transition-colors tracking-tight leading-snug ${
+              <h3 className={`text-lg sm:text-2xl font-bold group-hover:text-[color:var(--w-a)] transition-colors tracking-tight leading-snug ${
                 isLight ? "text-slate-900" : "text-white"
               }`}>
                 {featuredPost.title}
@@ -1352,7 +1352,7 @@ export function InsightsSection({
             </div>
 
             <div className="shrink-0 self-start lg:self-center">
-              <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[#00F2FE]/10 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-xs font-semibold uppercase group-hover:bg-[#00F2FE] group-hover:text-black transition-all shadow-md">
+              <span className="inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)] font-mono text-xs font-semibold uppercase group-hover:bg-[color:var(--w-a)] group-hover:text-black transition-all shadow-md">
                 <span>Read Full Essay</span>
                 <ArrowUpRight className="w-4 h-4" />
               </span>
@@ -1369,7 +1369,7 @@ export function InsightsSection({
             role="button"
             tabIndex={0}
             onClick={() => handleOpenPost(post)}
-            className={`group glow-border border hover:border-[#00F2FE]/60 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-lg space-y-4 ${
+            className={`group glow-border border hover:border-[color:var(--w-a)]/60 rounded-2xl p-5 flex flex-col justify-between transition-all duration-300 cursor-pointer shadow-lg space-y-4 ${
               isLight
                 ? "bg-white border-slate-200 hover:bg-slate-50/80 shadow-sm"
                 : "bg-white/[0.02] hover:bg-white/[0.04] border-white/10"
@@ -1380,7 +1380,7 @@ export function InsightsSection({
                 <span className={`px-2 py-0.5 rounded text-[10px] font-semibold uppercase ${
                   isLight 
                     ? "bg-cyan-50 border border-cyan-200 text-cyan-800" 
-                    : "bg-white/5 border border-white/10 text-[#00F2FE]"
+                    : "bg-white/5 border border-white/10 text-[color:var(--w-a)]"
                 }`}>
                   {post.category}
                 </span>
@@ -1390,7 +1390,7 @@ export function InsightsSection({
                 </span>
               </div>
 
-              <h4 className={`text-base sm:text-lg font-bold group-hover:text-[#00F2FE] transition-colors leading-snug ${
+              <h4 className={`text-base sm:text-lg font-bold group-hover:text-[color:var(--w-a)] transition-colors leading-snug ${
                 isLight ? "text-slate-900" : "text-white"
               }`}>
                 {post.title}
@@ -1411,7 +1411,7 @@ export function InsightsSection({
                   </span>
                 ))}
               </div>
-              <span className="text-[#00F2FE] group-hover:underline flex items-center gap-1 text-[11px] font-semibold shrink-0">
+              <span className="text-[color:var(--w-a)] group-hover:underline flex items-center gap-1 text-[11px] font-semibold shrink-0">
                 <span>Read Essay</span>
                 <ArrowUpRight className="w-3 h-3" />
               </span>
@@ -1426,7 +1426,7 @@ export function InsightsSection({
           <p className="text-sm text-gray-300 font-mono">No essays found matching "{searchQuery}"</p>
           <button
             onClick={() => { setSearchQuery(""); setSelectedCategory("All"); }}
-            className="text-xs text-[#00F2FE] underline font-mono cursor-pointer"
+            className="text-xs text-[color:var(--w-a)] underline font-mono cursor-pointer"
           >
             Clear filters
           </button>

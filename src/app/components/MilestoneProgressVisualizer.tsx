@@ -315,13 +315,13 @@ export function MilestoneProgressVisualizer({ theme = "deep-space", onSoundBlip 
       {/* Header bar with controls and live progress index */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-white/10">
         <div className="flex items-center gap-2.5">
-          <div className="w-8 h-8 rounded-lg bg-[#00F2FE]/10 border border-[#00F2FE]/30 flex items-center justify-center text-[#00F2FE]">
+          <div className="w-8 h-8 rounded-lg bg-[color:var(--w-a)]/10 border border-[color:var(--w-a)]/30 flex items-center justify-center text-[color:var(--w-a)]">
             <TrendingUp className="w-4 h-4" />
           </div>
           <div>
             <div className="flex items-center gap-2">
               <h3 className="text-sm md:text-base font-bold text-white tracking-tight">Milestone Progress Trajectory</h3>
-              <span className="px-2 py-0.5 rounded-full bg-[#00F2FE]/15 border border-[#00F2FE]/30 text-[#00F2FE] font-mono text-[10px] font-semibold">
+              <span className="px-2 py-0.5 rounded-full bg-[color:var(--w-a)]/15 border border-[color:var(--w-a)]/30 text-[color:var(--w-a)] font-mono text-[10px] font-semibold">
                 D3 Visualizer
               </span>
             </div>
@@ -334,7 +334,7 @@ export function MilestoneProgressVisualizer({ theme = "deep-space", onSoundBlip 
           <button
             type="button"
             onClick={handlePrev}
-            className="p-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-[#00F2FE]/40 text-gray-300 hover:text-white transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-[color:var(--w-a)]/40 text-gray-300 hover:text-white transition-colors cursor-pointer"
             title="Previous Milestone"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -344,7 +344,7 @@ export function MilestoneProgressVisualizer({ theme = "deep-space", onSoundBlip 
             onClick={() => setIsPlaying(!isPlaying)}
             className={`px-2.5 py-1.5 rounded-lg border flex items-center gap-1.5 transition-all cursor-pointer ${
               isPlaying 
-                ? "bg-[#00F2FE]/20 border-[#00F2FE]/50 text-[#00F2FE]" 
+                ? "bg-[color:var(--w-a)]/20 border-[color:var(--w-a)]/50 text-[color:var(--w-a)]" 
                 : "bg-white/5 border-white/10 text-gray-300 hover:text-white"
             }`}
             title={isPlaying ? "Pause auto-progression" : "Play auto-progression"}
@@ -355,7 +355,7 @@ export function MilestoneProgressVisualizer({ theme = "deep-space", onSoundBlip 
           <button
             type="button"
             onClick={handleNext}
-            className="p-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-[#00F2FE]/40 text-gray-300 hover:text-white transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg bg-white/5 border border-white/10 hover:border-[color:var(--w-a)]/40 text-gray-300 hover:text-white transition-colors cursor-pointer"
             title="Next Milestone"
           >
             <ChevronRight className="w-4 h-4" />
@@ -406,8 +406,8 @@ export function MilestoneProgressVisualizer({ theme = "deep-space", onSoundBlip 
 
           <div>
             <h4 className="text-base sm:text-lg font-bold text-white tracking-tight flex items-center gap-2">
-              {activeMilestone.icon === "grad" && <GraduationCap className="w-5 h-5 text-[#00F2FE]" />}
-              {activeMilestone.icon === "award" && <Award className="w-5 h-5 text-[#7F00FF]" />}
+              {activeMilestone.icon === "grad" && <GraduationCap className="w-5 h-5 text-[color:var(--w-a)]" />}
+              {activeMilestone.icon === "award" && <Award className="w-5 h-5 text-[color:var(--w-b)]" />}
               {activeMilestone.icon === "system" && <Cpu className="w-5 h-5 text-[#38BDF8]" />}
               {activeMilestone.icon === "rocket" && <Sparkles className="w-5 h-5 text-emerald-400" />}
               <span>{activeMilestone.title}</span>
@@ -421,7 +421,7 @@ export function MilestoneProgressVisualizer({ theme = "deep-space", onSoundBlip 
           <ul className="space-y-1.5 pt-1">
             {activeMilestone.details.map((detail, idx) => (
               <li key={idx} className="flex items-start gap-2 text-xs text-gray-300 font-light">
-                <CheckCircle2 className="w-3.5 h-3.5 text-[#00F2FE] shrink-0 mt-0.5" />
+                <CheckCircle2 className="w-3.5 h-3.5 text-[color:var(--w-a)] shrink-0 mt-0.5" />
                 <span>{detail}</span>
               </li>
             ))}
@@ -467,7 +467,7 @@ export function MilestoneProgressVisualizer({ theme = "deep-space", onSoundBlip 
             }}
             className={`px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-mono transition-all cursor-pointer ${
               activeIndex === idx
-                ? "bg-white/15 border border-[#00F2FE]/60 text-white shadow-sm font-semibold"
+                ? "bg-white/15 border border-[color:var(--w-a)]/60 text-white shadow-sm font-semibold"
                 : "bg-white/[0.02] border border-white/5 text-gray-400 hover:text-gray-200 hover:bg-white/5"
             }`}
           >
